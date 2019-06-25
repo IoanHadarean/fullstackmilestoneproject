@@ -37,11 +37,11 @@ def login(request):
                     return redirect(reverse('index'))
             else:
                 login_form.add_error(None, "Your username or password is incorrect")
-        else:
-            login_form = UserLoginForm()
+    else:
+        login_form = UserLoginForm()
             
-        args = {'login_form': login_form, 'next': request.GET.get('next', '')}
-        return render(request, 'login.html', args)
+    args = {'login_form': login_form, 'next': request.GET.get('next', '')}
+    return render(request, 'login.html', args)
         
 def registration(request):
     """Render the registration page"""
@@ -64,11 +64,11 @@ def registration(request):
             else:
                 messages.error(request, 'Unable to register your account at this time!')
                 
-        else:
-            registration_form = UserRegistrationForm()
+    else:
+        registration_form = UserRegistrationForm()
             
-        args = {'registration_form': registration_form}
-        return render(request, 'registration.html', args)
+    args = {'registration_form': registration_form}
+    return render(request, 'registration.html', args)
         
 def user_profile(request):
     """The user's profile page"""
