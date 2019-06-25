@@ -8,8 +8,8 @@
 <div class="content-section">
     <form method="POST">
         {% csrf_token %}
-        
-        
+        {{ registration_form | as_bootstrap }}
+        <button type="submit" class="btn btn-warning">Register</button>
     </form>
 </div>
 
