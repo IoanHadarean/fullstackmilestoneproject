@@ -24,7 +24,7 @@ def login(request):
 
         if login_form.is_valid():
             user = auth.authenticate(username=request.POST['username'],
-                                     password=request.POST['password'])
+                                     password=request.POST['password1'])
                                      
             if user:
                 auth.login(user=user, request=request)
@@ -55,7 +55,7 @@ def registration(request):
             registration_form.save()
             
             user = auth.authenticate(username=request.POST['username'],
-                                     password=request.POST['password1'])
+                                     password=request.POST['password'])
                                      
             if user:
                 auth.login(user=user, request=request)
