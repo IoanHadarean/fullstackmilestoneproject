@@ -2,8 +2,8 @@
 
 {% block page_title %} {{ user }} 's Profile {% endblock %}
 
-{% block page_heading %} {{ user }} 's Profile {% endblock %}
-
 {% block content %}
 <p>{{ user.email }}</p>
+<p>{{ user.profile }}</p>
+{{ user.profile.image }}
 {% endblock %}
