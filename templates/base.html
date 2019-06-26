@@ -11,25 +11,23 @@
 </head>
 
 <body>
-    {% include 'navbar.html' %}
+    <!-- Include navbar partial -->
+    {% include 'includes/navbar.html' %}
 
-    <!-- Alert messages -->
-    {% if messages %}
-    <div class="alert alert-success">
-        <div class="messages">
-            {% for message in messages %} {{ message }} {% endfor %}
-        </div>
-    </div>
-    {% endif %} 
+    <!-- Include alert messages -->
+    {% include 'includes/alerts.html' %}
     
+    <!-- Main Content -->
     {% block content %} {% endblock %}
     
-    {% include 'footer.html' %}
+    <!-- Include footer partial -->
+    {% include 'includes/footer.html' %}
 
 
-
+    <!-- Scripts -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <!-- Block scripts -->
     {% block body_js %} {% endblock body_js %}
 </body>
 
