@@ -6,7 +6,12 @@ body {
   margin-top: 5rem;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   color: #444444;
 }
 
@@ -14,8 +19,14 @@ ul {
   margin: 0;
 }
 
+.alert {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
 
 /* ---------------------------------------- Navigation ---------------------------------- */
+
 .bg-steel {
   background-color: #5f788a;
 }
@@ -44,7 +55,7 @@ ul {
 
 /* -------------------------------------------------Footer------------------------------------------------- */
 
- .footer {
+.footer {
   width: auto;
   background-color: black;
   bottom: 0;
@@ -52,21 +63,21 @@ ul {
   text-align: center;
   line-height: 10%;
   height: 6.25rem;
- }
+}
 
- .footer__copyright {
+.footer__copyright {
   color: white;
   line-height: 4;
   display: flex;
   align-items: center;
   justify-content: center;
   height: 6.25rem;
- }
+}
 
- .footer__copyright a {
+.footer__copyright a {
   color: white;
   margin-left: 0.625rem;
- }
+}
 
 /* ---------------------------------- Media Queries ------------------- */
 
