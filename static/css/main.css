@@ -1,0 +1,78 @@
+/* ------------------------------------- Special stylings --------------------------- */
+
+body {
+  background: #fafafa;
+  color: #333333;
+  margin-top: 5rem;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  color: #444444;
+}
+
+ul {
+  margin: 0;
+}
+
+
+/* ---------------------------------------- Navigation ---------------------------------- */
+.bg-steel {
+  background-color: #5f788a;
+}
+
+.site-header .navbar-nav .nav-link {
+  color: #cbd5db;
+}
+
+.site-header .navbar-nav .nav-link:hover {
+  color: #ffffff;
+}
+
+.site-header .navbar-nav .nav-link.active {
+  font-weight: 500;
+}
+
+/* ----------------------------------------------- Main content ---------------------------- */
+
+.content-section {
+  background: #ffffff;
+  padding: 0.625rem 1.25rem;
+  border: 0.0625rem solid #dddddd;
+  border-radius: 0.1875rem;
+  margin-bottom: 1.25rem;
+}
+
+/* -------------------------------------------------Footer------------------------------------------------- */
+
+ .footer {
+  width: auto;
+  background-color: black;
+  bottom: 0;
+  position: relative;
+  text-align: center;
+  line-height: 10%;
+  height: 6.25rem;
+ }
+
+ .footer__copyright {
+  color: white;
+  line-height: 4;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 6.25rem;
+ }
+
+ .footer__copyright a {
+  color: white;
+  margin-left: 0.625rem;
+ }
+
+/* ---------------------------------- Media Queries ------------------- */
+
+@media (min-width: 768px) and (max-width: 4000px) {
+  .footer {
+    position: absolute;
+    width: 100%;
+  }
+}

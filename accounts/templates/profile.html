@@ -1,5 +1,10 @@
 {% extends "base.html" %}
-{% load bootstrap_tags %}
+{% load staticfiles %}
+{% load crispy_forms_tags %}
+
+{% block head_css %}
+<link rel="stylesheet" type="text/css" href="{% static 'css/profile.css' %}">
+{% endblock %}
 {% block content %}
     <!-- User profile -->
     <div class="content-section">

@@ -1,28 +1,20 @@
-<!-- Fixed masthead -->
-<nav class="navbar navbar-masthead navbar-default navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-            <a class="navbar-brand" href="{% url 'index' %}">Ecommerce</a>
+<header class="site-header">
+    <nav class="navbar navbar-expand-md navbar-dark bg-steel fixed-top">
+        <div class="container">
+            <a class="navbar-brand mr-4" href="{% url 'index' %}">E-commerce</a>
+            <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarToggle" aria-controls="navbarToggle" aria-expanded="false" aria-label="Toggle navigation">
+          <span class="navbar-toggler-icon"></span>
+          </button>
+            <div class="collapse navbar-collapse" id="navbarToggle">
+                <!-- Navbar Right Side -->
+                <div class="navbar-nav">
+                    {% if user.is_authenticated %}
+                    <a class="nav-item nav-link" href="{% url 'profile' %}">Profile</a>
+                    <a class="nav-item nav-link" href="{% url 'logout' %}">Logout</a> {% else %}
+                    <a class="nav-item nav-link" href="{% url 'login' %}">Login</a>
+                    <a class="nav-item nav-link" href="{% url 'registration' %}">Register</a> {% endif %}
+                </div>
+            </div>
         </div>
-
-        <!-- Navbar navigation links according to whether the user is logged in or not -->
-        <div id="navbar" class="navbar-collapse collapse">
-            <ul class="nav navbar-nav navbar-right">
-                {% if user.is_authenticated %}
-                <li><a href="{% url 'profile' %}"><i class="fa fa-user"></i>Profile</a></li>
-                <li><a href="{% url 'logout' %}"><i class="fa fa-sign-out"></i>Logout</a></li>
-                {% else %}
-                <li><a href="{% url 'login' %}"><i class="fa fa-sign-in"></i>Login</a></li>
-                <li><a href="{% url 'registration' %}"><i class="fa fa-user-plus"></i>Register</a></li>
-                {% endif %}
-            </ul>
-        </div>
-    </div>
-</nav>
- 
+    </nav>
+</header>

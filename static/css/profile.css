@@ -1,0 +1,11 @@
+/* ------------------------------------------------- Profile --------------------------- */
+.account-img {
+  height: 7.8125rem;
+  width: 7.8125rem;
+  margin-right: 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.account-heading {
+  font-size: 2.5rem;
+}
