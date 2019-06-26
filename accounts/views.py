@@ -2,7 +2,7 @@ from django.shortcuts import render, redirect, reverse, HttpResponseRedirect
 from django.contrib import auth, messages
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
-from accounts.forms import UserLoginForm, UserRegistrationForm
+from accounts.forms import UserLoginForm, UserRegistrationForm, UserUpdateForm, ProfileUpdateForm
 
 def index(request):
     """Return the index.html file"""
@@ -73,5 +73,12 @@ def registration(request):
 def user_profile(request):
     """The user's profile page"""
     user = User.objects.get(email=request.user.email)
-    args = {'profile': user}
+    user_form = UserUpdateForm()
+    profile_form = ProfileUpdateForm()
+    
+    args = {
+        'user_form': user_form,
+        'profile_form': profile_form,
+        'profile': user
+    }
     return render(request, 'profile.html', args)
