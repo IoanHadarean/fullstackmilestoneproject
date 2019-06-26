@@ -1,9 +1,14 @@
-{% extends 'base.html' %}
-
-{% block page_title %} {{ user }} 's Profile {% endblock %}
-
+{% extends "base.html" %}
+{% load bootstrap_tags %}
 {% block content %}
-<p>{{ user.email }}</p>
-<p>{{ user.profile }}</p>
-{{ user.profile.image }}
+    <!-- User profile -->
+    <div class="content-section">
+      <div class="media">
+        <img class="rounded-circle account-img" src="{{ user.profile.image.url }}">
+        <div class="media-body">
+          <h2 class="account-heading">{{ user.username }}</h2>
+          <p class="text-secondary">{{ user.email }}</p>
+        </div>
+      </div>
+    </div>
 {% endblock %}
