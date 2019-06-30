@@ -11,13 +11,14 @@
   font-size: 2.5rem;
 }
 
-.form-group {
-  text-align: center;
+.img-profile {
+  margin-left: 40%;
 }
 
 .media-body {
-  margin-top: 150px;
-  margin-left: -100px;
+  margin-top: 9.375rem;
+  margin-left: -60%;
   max-width: 100%;
+  text-align: center;
 }
 
