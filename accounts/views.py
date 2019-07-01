@@ -16,7 +16,12 @@ def logout(request):
     return redirect(reverse('index'))
     
 def login(request):
-    """Return the login page"""
+    """
+    Return the login page if the login form is valid
+    else return an error message. Redirect the user back
+    to the previous page for an url that requires login using
+    next.
+    """
     if request.user.is_authenticated:
         return redirect(reverse('index'))
     if request.method == "POST":
@@ -44,7 +49,10 @@ def login(request):
     return render(request, 'login.html', args)
         
 def registration(request):
-    """Render the registration page"""
+    """
+    Render the registration page if the registration form
+    is valid else return an error message.
+    """
     if request.user.is_authenticated:
         return redirect(reverse('index'))
         
@@ -71,7 +79,10 @@ def registration(request):
     return render(request, 'registration.html', args)
         
 def user_profile(request):
-    """The user's profile page"""
+    """
+    Return the user's profile page. Allows editing the profile
+    for a user. 
+    """
     if request.method == 'POST':
         user_form = UserUpdateForm(request.POST, instance=request.user)
         profile_form = ProfileUpdateForm(request.POST, 
