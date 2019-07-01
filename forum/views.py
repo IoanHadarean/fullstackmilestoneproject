@@ -19,18 +19,32 @@ class PostDetailView(DetailView):
     model = Post
     
 class CreatePostView(LoginRequiredMixin, CreateView):
+    """
+    Create a post and redirect to the details for
+    that post. The user needs to be logged in to create a post.
+    """
     login_url = 'accounts/login/'
     redirect_field_name = 'forum/post_detail.html'
     form_class = PostForm
     model = Post
     
 class PostUpdateView(LoginRequiredMixin, UpdateView):
+    """
+    Update a single post and redirect to the details for
+    that post. The user needs to be logged in to update a post.
+    """
     login_url = 'accounts/login/'
     redirect_field_name = 'forum/post_detail.html'
     form_class = PostForm
     model = Post
     
 class PostDeleteView(LoginRequiredMixin, DeleteView):
+    """Delete a post and redirect to all posts"""
     model = Post
     success_url = reverse_lazy('post_list')
     
+class DraftListView(LoginRequiredMixin, ListView):
+    """Create a draft for a post"""
+    login_url = 'accounts/login/'
+    redirect_field_name = 'forum/post_list.html'
+    model = Post
