@@ -71,4 +71,18 @@ def add_comment_to_post(request,pk):
     else:
         form = CommentForm()
     return render(request, 'comment_form.html', {'form':form})
-            
+    
+@login_required
+def comment_approve(request):
+    """Approve a comment"""
+    comment = get_object_or_404(Comment,pk=pk)
+    comment.approve()
+    return redirect('post_detail',pk=comment.post.pk)
+    
+@login_required
+def comment_remove(request,pk):
+    """Delete a comment"""
+    comment = get_object_or_404(Comment,pk=pk)
+    post_pk = comment.post.pk
+    comment.delete()
+    return redirect('post_detail',pk=post_pk)
