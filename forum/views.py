@@ -1,7 +1,9 @@
 from django.shortcuts import render
 from forum.models import Post, Comment
 from django.utils import timezone
-from django.views.generic import (ListView, DetailView, CreateView)
+from forum.forms import PostForm, CommentForm
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.views.generic import (ListView, DetailView, CreateView, UpdateView)
 
 
 class PostListView(ListView):
@@ -15,5 +17,15 @@ class PostDetailView(DetailView):
     """A detail view for a single post"""
     model = Post
     
-
+class CreatePostView(LoginRequiredMixin, CreateView):
+    login_url = 'accounts/login/'
+    redirect_field_name = 'forum/post_detail.html'
+    form_class = PostForm
+    model = Post
+    
+class PostUpdateView(LoginRequiredMixin, UpdateView):
+    login_url = 'accounts/login/'
+    redirect_field_name = 'forum/post_detail.html'
+    form_class = PostForm
+    model = Post
     
