@@ -1,9 +1,10 @@
 from django.shortcuts import render
 from forum.models import Post, Comment
 from django.utils import timezone
+from django.urls import reverse_lazy
 from forum.forms import PostForm, CommentForm
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import (ListView, DetailView, CreateView, UpdateView)
+from django.views.generic import (ListView, DetailView, CreateView, UpdateView, DeleteView)
 
 
 class PostListView(ListView):
@@ -28,4 +29,8 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
     redirect_field_name = 'forum/post_detail.html'
     form_class = PostForm
     model = Post
+    
+class PostDeleteView(LoginRequiredMixin, DeleteView):
+    model = Post
+    success_url = reverse_lazy('post_list')
     
