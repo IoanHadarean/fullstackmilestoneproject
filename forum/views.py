@@ -34,7 +34,7 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
     Update a single post and redirect to the details for
     that post. The user needs to be logged in to update a post.
     """
-    login_url = 'accounts/login/'
+    login_url = '/login/'
     redirect_field_name = 'post_detail.html'
     form_class = PostForm
     model = Post
@@ -46,7 +46,7 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
     
 class DraftListView(LoginRequiredMixin, ListView):
     """Draft view for a post"""
-    login_url = 'accounts/login/'
+    login_url = '/login/'
     redirect_field_name = 'post_list.html'
     model = Post
     
@@ -59,6 +59,7 @@ class DraftListView(LoginRequiredMixin, ListView):
 
 @login_required
 def post_publish(request,pk):
+    """Allow publishing a post"""
     post = get_object_or_404(Post,pk=pk)
     post.publish()
     return redirect('post_detail',pk=pk)
@@ -80,14 +81,14 @@ def add_comment_to_post(request,pk):
     
 @login_required
 def comment_approve(request):
-    """Approve a comment"""
+    """Approve a post comment"""
     comment = get_object_or_404(Comment,pk=pk)
     comment.approve()
     return redirect('post_detail',pk=comment.post.pk)
     
 @login_required
 def comment_remove(request,pk):
-    """Delete a comment"""
+    """Delete a post comment"""
     comment = get_object_or_404(Comment,pk=pk)
     post_pk = comment.post.pk
     comment.delete()
