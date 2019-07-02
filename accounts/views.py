@@ -79,11 +79,12 @@ def registration(request):
     return render(request, 'registration.html', args)
         
 @login_required
-def user_profile(request):
+def profile(request):
     """
     Return the user's profile page. Allows editing the profile
     for a user. 
     """
+    
     if request.method == 'POST':
         user_form = UserUpdateForm(request.POST, instance=request.user)
         profile_form = ProfileUpdateForm(request.POST, 
@@ -93,7 +94,7 @@ def user_profile(request):
             user_form.save()
             profile_form.save()
             messages.success(request, f'Your account has been updated!')
-            return redirect('index')
+            return redirect('profile')
     else:
         user_form = UserUpdateForm(instance=request.user)
         profile_form = ProfileUpdateForm(instance=request.user.profile)

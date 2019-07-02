@@ -20,6 +20,8 @@ class UserRegistrationForm(UserCreationForm):
         label="Password Confirmation",
         widget=forms.PasswordInput)
         
+    email = forms.EmailField()
+    
     class Meta:
         model = User
         fields = ['email','username', 'password1', 'password2']
