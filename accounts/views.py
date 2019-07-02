@@ -39,7 +39,7 @@ def login(request):
                     next = request.GET['next']
                     return HttpResponseRedirect(next)
                 else:
-                    return redirect(reverse('index'))
+                    return redirect(reverse('profile'))
             else:
                 login_form.add_error(None, "Your username or password is incorrect")
     else:
@@ -78,6 +78,7 @@ def registration(request):
     args = {'registration_form': registration_form}
     return render(request, 'registration.html', args)
         
+@login_required
 def user_profile(request):
     """
     Return the user's profile page. Allows editing the profile
@@ -92,7 +93,7 @@ def user_profile(request):
             user_form.save()
             profile_form.save()
             messages.success(request, f'Your account has been updated!')
-            return redirect('profile')
+            return redirect('index')
     else:
         user_form = UserUpdateForm(instance=request.user)
         profile_form = ProfileUpdateForm(instance=request.user.profile)

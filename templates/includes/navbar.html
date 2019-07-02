@@ -9,7 +9,7 @@
                 <!-- Navbar Right Side -->
                 <div class="navbar-nav">
                     {% if user.is_authenticated %}
-                    <a class="nav-item nav-link" href="{% url 'profile' %}"><i class="fa fa-user"></i> Profile</a>
+                    <a class="nav-item nav-link" href="{% url 'user_profile' %}"><i class="fa fa-user"></i> Profile</a>
                     <a class="nav-item nav-link" href="{% url 'logout' %}"><i class="fa fa-sign-out"></i> Logout</a> {% else %}
                     <a class="nav-item nav-link" href="{% url 'login' %}"><i class="fa fa-sign-in"></i> Login</span></a>
                     <a class="nav-item nav-link" href="{% url 'registration' %}"><i class="fa fa-user-plus"></i> Register</a> {% endif %}

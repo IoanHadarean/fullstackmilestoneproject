@@ -24,7 +24,6 @@ urlpatterns = [
     path('forum/', include('forum.urls')),
     path('accounts/', include('accounts.urls')),
     path('reset/', include('accounts.urls_reset')),
-    path('forum/', include('forum.urls')),
 ]
 
 if settings.DEBUG:
