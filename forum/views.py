@@ -80,7 +80,7 @@ def add_comment_to_post(request,pk):
     return render(request, 'comment_form.html', {'form':form})
     
 @login_required
-def comment_approve(request):
+def comment_approve(request, pk):
     """Approve a post comment"""
     comment = get_object_or_404(Comment,pk=pk)
     comment.approve()
