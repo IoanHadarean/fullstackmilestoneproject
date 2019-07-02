@@ -47,7 +47,7 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
 class DraftListView(LoginRequiredMixin, ListView):
     """Draft view for a post"""
     login_url = '/login/'
-    redirect_field_name = 'post_list.html'
+    redirect_field_name = 'templates/post_list.html'
     model = Post
     
     def get_query_set(self):

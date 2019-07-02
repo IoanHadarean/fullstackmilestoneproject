@@ -6,6 +6,7 @@ body {
   margin-top: 5rem;
 }
 
+
 h1,
 h2,
 h3,
@@ -60,7 +61,7 @@ ul {
   width: auto;
   background-color: black;
   bottom: 0;
-  position: relative;
+  position: absolute;
   text-align: center;
   line-height: 10%;
   height: 6.25rem;
