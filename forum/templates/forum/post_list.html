@@ -1,7 +1,16 @@
-{% extends "base.html" %}
-{% load static %}
-{% block content %}
+{% extends "base.html" %} {% load static %} {% block content %}
 <div class="centerstage">
+
+    <!-- Search through posts -->
+    <div class="container">
+        <div class="display">
+            <form action="{% url 'search_posts' %}" method="GET">
+                <input type="text" name="posts">
+                <button type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+    
     
     <!-- Post list -->
     {% for post in post_list %}
@@ -13,6 +22,6 @@
         <a href="{% url 'post_detail' pk=post.pk %}">Comments: {{ post.approve_comments.count }}</a>
     </div>
     {% endfor %}
-    
+
 </div>
 {% endblock %}
