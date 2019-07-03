@@ -16,9 +16,16 @@ h6 {
   color: #444444;
 }
 
+a {
+  text-decoration: none !important;
+}
+
+ul, li {
+  list-style-type: none;
+}
+
 ul {
   margin: 0;
-  list-style-type: none;
 }
 
 .alert {
@@ -53,6 +60,32 @@ ul {
   border: 0.0625rem solid #dddddd;
   border-radius: 0.1875rem;
   margin-bottom: 1.25rem;
+}
+
+
+/* ----------------------------------------------- Forum Templates Styling---------------------------------- */
+
+.postdate {
+  text-align: center;
+}
+
+.posttitle {
+  font-size: 3em;
+  text-align: center;
+}
+
+.postcontent {
+  font-size: 1.5em;
+}
+
+.centerstage {
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.btn-comment {
+  position: absolute;
+  right: 0px;
 }
 
 /* -------------------------------------------------Footer------------------------------------------------- */

@@ -5,7 +5,9 @@ from django.urls import reverse_lazy
 from forum.forms import PostForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import (ListView, DetailView, CreateView, UpdateView, DeleteView)
+from django.views.generic import (ListView, DetailView, 
+                                  CreateView, UpdateView,
+                                  DeleteView)
 
 
 class PostListView(ListView):
@@ -77,7 +79,7 @@ def add_comment_to_post(request,pk):
             return redirect('post_detail',pk=post.pk)
     else:
         form = CommentForm()
-    return render(request, 'comment_form.html', {'form':form})
+    return render(request, 'forum/comment_form.html', {'form':form})
     
 @login_required
 def comment_approve(request, pk):
