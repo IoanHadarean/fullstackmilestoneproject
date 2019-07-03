@@ -1,5 +1,7 @@
 {% extends 'base.html' %}
 {% block content %}
+
+    <!-- Form for confirming post deletion -->
     <form method="POST">
         {% csrf token %}
         <p>Are you sure you want to delete {{ object }}?</p>
