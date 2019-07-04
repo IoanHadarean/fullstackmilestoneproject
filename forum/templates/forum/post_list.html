@@ -15,9 +15,10 @@
     <!-- Post list -->
     {% for post in post_list %}
     <div class="post">
+        <img class="rounded-circle" src="{{ post.author.profile.image.url }}">
         <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
         <div class="date">
-            <p>Published on: {{post.published_date|date:"D M Y"}}</p>
+            <p>Written by {{ post.author }} on {{post.published_date|date:"D M Y"}}</p>
         </div>
         <a href="{% url 'post_detail' pk=post.pk %}">Comments: {{ post.approve_comments.count }}</a>
     </div>

@@ -14,6 +14,7 @@ from django.views.generic import (ListView, DetailView,
 class PostListView(ListView):
     """A class that defines the view for all the posts"""
     model = Post
+    paginate_by = 5
     
     def get_queryset(self):
         return Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
@@ -32,12 +33,13 @@ class CreatePostView(LoginRequiredMixin, CreateView):
     form_class = PostForm
     model = Post
     
+    
 class PostUpdateView(LoginRequiredMixin, UpdateView):
     """
     Update a single post and redirect to the details for
     that post. The user needs to be logged in to update a post.
     """
-    login_url = '/login/'
+    login_url = 'accounts/login/'
     redirect_field_name = 'post_detail.html'
     form_class = PostForm
     model = Post
@@ -49,11 +51,11 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
     
 class DraftListView(LoginRequiredMixin, ListView):
     """Draft view for a post"""
-    login_url = '/login/'
-    redirect_field_name = 'templates/post_list.html'
+    login_url = 'accounts/login/'
+    redirect_field_name = 'forum/post_list.html'
     model = Post
     
-    def get_query_set(self):
+    def get_queryset(self):
         return Post.objects.filter(published_date__isnull=True).order_by('created_date')
         
         
@@ -78,7 +80,7 @@ def add_comment_to_post(request,pk):
             comment = form.save(commit=False)
             comment.post = post
             comment.save()
-            messages.success(request, "Your comment has been added successfully. Pending Approval...")
+            messages.success(request, "Your comment is pending approval...")
             return redirect('post_detail',pk=post.pk)
     else:
         form = CommentForm()
@@ -89,7 +91,7 @@ def comment_approve(request, pk):
     """Approve a post comment"""
     comment = get_object_or_404(Comment,pk=pk)
     comment.approve()
-    messages.success(request, "Your comment has been approved successfully.")
+    messages.success(request, "You have successfully approved the comment.")
     return redirect('post_detail',pk=comment.post.pk)
     
 @login_required
@@ -98,5 +100,5 @@ def comment_remove(request,pk):
     comment = get_object_or_404(Comment,pk=pk)
     post_pk = comment.post.pk
     comment.delete()
-    messages.success(request, "Your comment has been removed. A warning has been issued!!!")
+    messages.success(request, "You have successfully removed the comment.")
     return redirect('post_detail',pk=post_pk)

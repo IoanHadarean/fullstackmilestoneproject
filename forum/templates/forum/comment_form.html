@@ -11,5 +11,9 @@
 {% endblock %}
 
 {% block head_js %}
-     <script>var editor = new MediumEditor('.editable');</script>
+      <script>var editor = new MediumEditor('.editable', {
+         placeholder: {
+             text: "Add Your Comment Here"
+         }
+     });</script>
 {% endblock %}

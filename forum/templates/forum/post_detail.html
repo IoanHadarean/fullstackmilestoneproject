@@ -5,18 +5,22 @@
     <h1 class="posttitle">{{ post.title }}</h1>
     {% if post.published_date %}
         <div class="date postdate">
-            {{ post.published_date }}
+            Written by {{ post.author }} on {{post.published_date|date:"D M Y"}}
         </div>
     {% else %}
-    <a class="btn btn-default" href="{% url 'post_publish' pk=post.pk %}">Publish</a>
+        {% if post.author.id == user.id %}
+            <a class="btn btn-default" href="{% url 'post_publish' pk=post.pk %}">Publish</a>
+        {% endif %}
     {% endif %}
     
     <p class="postcontent">{{ post.text|safe|linebreaksbr }}</p>
     
     <!-- Buttons for editing and removing posts -->
     {% if user.is_authenticated %}
+        {% if post.author.id == user.id %}
         <a class="btn btn-primary" href="{% url 'post_edit' pk=post.pk %}"><i class="fa fa-edit"></i></a>
         <a class="btn btn-primary" href="{% url 'post_remove' pk=post.pk %}"><i class="fa fa-remove"></i></a>
+        {% endif %}
     {% endif %}
     
     <!-- Button for adding a comment -->
@@ -24,21 +28,25 @@
     <a class="btn btn-primary btn-comment" href="{% url 'add_comment_to_post' pk=post.pk %}">Add Comment</a>
     
     <!-- Comments container with details of all comments -->
-    <!-- If user is logged in or comment is approved show the creation date -->
-    <!-- If the comment is not approved add buttons for removing and approving the comment -->
+    <!-- If the comment is approved show the comment and the creation date -->
+    <!-- If the comment is not approved add buttons for removing and approving the comment for the superuser-->
     <!-- If there are no comments add a paragraph with a text of 'No Comments' -->
     <div class="container">
         {% for comment in post.comments.all %}
         <br>
-            {% if user.is_authenticated or comment.approved_comment %}
-                {{ comment.created_date }}
+            {% if user.is_authenticated %}
                 {% if not comment.approved_comment %}
-                    <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}"><i class="fa fa-remove"></i></a>
-                    <a class="btn btn-primary" href="{% url 'comment_approve' pk=comment.pk %}"><i class="fa fa-check"></i></a>
+                    {% if user.is_superuser %}
+                        <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}"><i class="fa fa-remove"></i></a>
+                        <a class="btn btn-primary" href="{% url 'comment_approve' pk=comment.pk %}"><i class="fa fa-check"></i></a>
+                    {% endif %}
                 {% endif %}
                 
-                <p class="break-words">{{comment.text|safe|linebreaks}}</p>
-                <p>Posted By: {{comment.author}}</p>
+                {% if comment.approved_comment %}
+                    <p>{{ comment.created_date }}</p>
+                    <p>{{comment.text|safe|linebreaks}}</p>
+                    <p>Posted By: {{comment.author}}</p>
+                {% endif %}
             {% endif %}
             {% empty %}
             <p>No Comments</p>

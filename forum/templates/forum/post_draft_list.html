@@ -1,15 +1,10 @@
-{% extends 'base.html' %}
-{% block content %}
-    
-    <!-- Drafts container -->
-    {% for post in posts %}
-    <div class="post">
-        <div class="date">Created: {{ post.created_date|date:'d-m-Y'}}</div>
-        <h1><a href="{% url 'post_detail' pk=post.pk %}">{{post.title}}</a></h1>
-        <p>{{post.text|truncatechars:200</p>
-    </div>
-    
-    
-    {% endfor %}
+{% extends 'base.html' %} {% block content %}
 
-{% endblock %}
+<!-- Drafts container -->
+{% for post in posts %} {% if post.author.id == user.id %}
+<div class="post">
+    <div class="date">Created: {{ post.created_date|date:'d-m-Y'}}</div>
+    <h1><a href="{% url 'post_detail' pk=post.pk %}">{{post.title}}</a></h1>
+    <p>{{ post.text|truncatechars:200 }}</p>
+</div>
+{% endif %} {% endfor %} {% endblock %}
