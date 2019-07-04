@@ -2,6 +2,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from forum.models import Post, Comment
 from django.utils import timezone
 from django.urls import reverse_lazy
+from django.contrib import messages
 from forum.forms import PostForm, CommentForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -64,6 +65,7 @@ def post_publish(request,pk):
     """Allow publishing a post"""
     post = get_object_or_404(Post,pk=pk)
     post.publish()
+    messages.success(request, "Your post has been published successfully.")
     return redirect('post_detail',pk=pk)
 
 @login_required
@@ -76,6 +78,7 @@ def add_comment_to_post(request,pk):
             comment = form.save(commit=False)
             comment.post = post
             comment.save()
+            messages.success(request, "Your comment has been added successfully. Pending Approval...")
             return redirect('post_detail',pk=post.pk)
     else:
         form = CommentForm()
@@ -86,6 +89,7 @@ def comment_approve(request, pk):
     """Approve a post comment"""
     comment = get_object_or_404(Comment,pk=pk)
     comment.approve()
+    messages.success(request, "Your comment has been approved successfully.")
     return redirect('post_detail',pk=comment.post.pk)
     
 @login_required
@@ -94,4 +98,5 @@ def comment_remove(request,pk):
     comment = get_object_or_404(Comment,pk=pk)
     post_pk = comment.post.pk
     comment.delete()
+    messages.success(request, "Your comment has been removed. A warning has been issued!!!")
     return redirect('post_detail',pk=post_pk)
