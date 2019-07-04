@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, redirect
 from forum.models import Post, Comment
 from django.utils import timezone
+from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.contrib import messages
 from forum.forms import PostForm, CommentForm
@@ -18,6 +19,15 @@ class PostListView(ListView):
     
     def get_queryset(self):
         return Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
+        
+class UserPostListView(ListView):
+    """A class that defines the view for a specific user's posts"""
+    model = Post
+    paginate_by = 5
+    
+    def get_queryset(self):
+        user = get_object_or_404(User, username=self.kwargs.get('username'))
+        return Post.objects.filter(author=user).order_by('-published_date')
 
 class PostDetailView(DetailView):
     """A detail view for a single post"""
@@ -52,7 +62,7 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
 class DraftListView(LoginRequiredMixin, ListView):
     """Draft view for a post"""
     login_url = 'accounts/login/'
-    redirect_field_name = 'forum/post_list.html'
+    redirect_field_name = 'post_draft_list.html'
     model = Post
     paginate_by = 5
     
