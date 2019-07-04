@@ -37,7 +37,7 @@
                     <a class="btn btn-primary" href="{% url 'comment_approve' pk=comment.pk %}"><i class="fa fa-check"></i></a>
                 {% endif %}
                 
-                <p>{{comment.text|safe|linebreaks}}</p>
+                <p class="break-words">{{comment.text|safe|linebreaks}}</p>
                 <p>Posted By: {{comment.author}}</p>
             {% endif %}
             {% empty %}

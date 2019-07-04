@@ -1,11 +1,19 @@
 /* ------------------------------------- Special stylings --------------------------- */
 
+html {
+  position: relative;
+  min-height: 100%;
+}
+
 body {
   background: #fafafa;
   color: #333333;
   margin-top: 5rem;
 }
 
+p {
+  word-wrap: break-word;
+}
 
 h1,
 h2,
@@ -88,13 +96,19 @@ ul {
   right: 0px;
 }
 
+.save,
+.btn-comment {
+  margin-bottom: 150px;
+}
+
 /* -------------------------------------------------Footer------------------------------------------------- */
 
 .footer {
   width: auto;
   background-color: black;
   bottom: 0;
-  position: absolute;
+  margin-top: 150px;
+  position: relative;
   text-align: center;
   line-height: 10%;
   height: 6.25rem;
