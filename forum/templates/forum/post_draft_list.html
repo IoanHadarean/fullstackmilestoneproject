@@ -1,10 +1,40 @@
 {% extends 'base.html' %} {% block content %}
 
-<!-- Drafts container -->
-{% for post in posts %} {% if post.author.id == user.id %}
-<div class="post">
-    <div class="date">Created: {{ post.created_date|date:'d-m-Y'}}</div>
-    <h1><a href="{% url 'post_detail' pk=post.pk %}">{{post.title}}</a></h1>
-    <p>{{ post.text|truncatechars:200 }}</p>
-</div>
-{% endif %} {% endfor %} {% endblock %}
+    <!-- Drafts container -->
+    {% for post in posts %} 
+        {% if post.author.id == user.id %}
+            <div class="post">
+                <div class="date">Created: {{ post.created_date|date:'d-m-Y'}}</div>
+                <h1><a href="{% url 'post_detail' pk=post.pk %}">{{post.title}}</a></h1>
+                <p>{{ post.text|truncatechars:200 }}</p>
+            </div>
+        {% endif %} 
+    
+    {% endfor %}
+
+    <!-- Pagination for posts -->
+    {% if is_paginated %}
+    
+        <!-- Pagination if the page has previous pages -->
+        {% if page_obj.has_previous %}
+            <a class="btn btn-outline-info mb-4" href="?page=1">First</a>
+            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.previous_page_number }}">Previous</a>
+        {% endif %}
+        
+        <!-- Get the current page and check if the page number is within three previous or three next pages -->
+        {% for num in page_obj.paginator.page_range %}
+            {% if page_obj.number == num %}
+                <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a>
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3'%}
+                <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+            {% endif %}
+        {% endfor %}
+        
+        <!-- Pagination if the page has next pages -->
+        {% if page_obj.has_next %}
+            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.next_page_number }}">Next</a>
+            <a class="btn btn-outline-info mb-4" href="?page={{ page_obj.paginator.num_pages }}">Last</a>
+        {% endif %}
+    {% endif %}
+
+{% endblock %}

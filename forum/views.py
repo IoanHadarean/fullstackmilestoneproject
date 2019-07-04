@@ -54,6 +54,7 @@ class DraftListView(LoginRequiredMixin, ListView):
     login_url = 'accounts/login/'
     redirect_field_name = 'forum/post_list.html'
     model = Post
+    paginate_by = 5
     
     def get_queryset(self):
         return Post.objects.filter(published_date__isnull=True).order_by('created_date')
