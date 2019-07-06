@@ -15,6 +15,13 @@
     
     <p class="postcontent">{{ post.text|safe|linebreaksbr }}</p>
     
+    <!-- Likes count -->
+    {% if total_likes != 1 %}
+    <p>{{ total_likes }} Likes</p>
+    {% else %}
+    <p>{{ total_likes }} Like</p>
+    {% endif %}
+    
     
     {% if post.author != request.user %}
     <!-- Form for likes/dislikes -->

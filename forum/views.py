@@ -78,6 +78,7 @@ def post_detail(request, pk):
     context = {
         'post': post,
         'is_liked': is_liked,
+        'total_likes': post.total_likes(),
     }
     return render(request, 'forum/post_detail.html', context)
     
