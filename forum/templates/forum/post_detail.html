@@ -8,7 +8,7 @@
             Written by <a class="mr-2" href="{% url 'user_posts' post.author.username %}">{{ post.author }}</a> on {{post.published_date|date:"D M Y"}}
         </div>
     {% else %}
-        {% if post.author.id == user.id %}
+        {% if post.author == request.user %}
             <a class="btn btn-default" href="{% url 'post_publish' pk=post.pk %}">Publish</a>
         {% endif %}
     {% endif %}
@@ -16,14 +16,11 @@
     <p class="postcontent">{{ post.text|safe|linebreaksbr }}</p>
     
     <!-- Likes count -->
-    {% if total_likes != 1 %}
-    <p>{{ total_likes }} Likes</p>
-    {% else %}
-    <p>{{ total_likes }} Like</p>
-    {% endif %}
+    <p>{{ total_likes }} Like{{ total_likes|pluralize }}</p>
+
     
     
-    {% if post.author != request.user %}
+    {% if post.author != request.user and request.user.is_authenticated %}
     <!-- Form for likes/dislikes -->
     <form action="{% url 'like_post' %}" method="POST">
         {% csrf_token %}
@@ -37,7 +34,7 @@
     
     <!-- Buttons for editing and removing posts -->
     {% if user.is_authenticated %}
-        {% if post.author.id == user.id %}
+        {% if post.author == request.user %}
         <a class="btn btn-primary" href="{% url 'post_edit' pk=post.pk %}"><i class="fa fa-edit"></i></a>
         <a class="btn btn-primary" href="{% url 'post_remove' pk=post.pk %}"><i class="fa fa-remove"></i></a>
         {% endif %}

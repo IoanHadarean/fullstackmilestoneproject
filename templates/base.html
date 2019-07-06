@@ -59,7 +59,7 @@
                   <a href="{% url 'post_new' %}">Add New Post</a>
                 </li>
                 <li class="list-group-item list-group-item-light">
-                  <a href="{% url 'post_draft_list' %}">Drafts</a>
+                  <a href="{% url 'post_draft_list' user.username %}">Drafts</a>
                 </li>
               </ul>
             </p>

@@ -3,6 +3,7 @@ from forum.models import Post, Comment
 from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
+from django.db.models import Q
 from django.contrib import messages
 from forum.forms import PostForm, CommentForm
 from django.contrib.auth.decorators import login_required
@@ -27,7 +28,8 @@ class UserPostListView(ListView):
     def get_queryset(self):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
         return Post.objects.filter(author=user).order_by('-published_date')
-    
+ 
+ 
 class CreatePostView(LoginRequiredMixin, CreateView):
     """
     Create a post and redirect to the details for
@@ -37,7 +39,6 @@ class CreatePostView(LoginRequiredMixin, CreateView):
     redirect_field_name = 'post_detail.html'
     form_class = PostForm
     model = Post
-    
     
 class PostUpdateView(LoginRequiredMixin, UpdateView):
     """
@@ -54,15 +55,16 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
     model = Post
     success_url = reverse_lazy('post_list')
     
-class DraftListView(LoginRequiredMixin, ListView):
+class DraftListView(ListView):
     """Draft view for a post"""
-    login_url = 'accounts/login/'
-    redirect_field_name = 'post_list.html'
+    # login_url = 'accounts/login/'
+    # redirect_field_name = 'post_list.html'
     model = Post
     paginate_by = 5
     
     def get_queryset(self):
-        return Post.objects.filter(published_date__isnull=True).order_by('created_date')
+        user = get_object_or_404(User, username=self.kwargs.get('username'))
+        return Post.objects.filter(Q(author=user) & Q(published_date__isnull=True)).order_by('created_date')
         
 #######################################
 #######################################
@@ -138,4 +140,9 @@ def comment_remove(request,pk):
     messages.success(request, "You have successfully removed the comment.")
     return redirect('post_detail',pk=post_pk)
     
-    
+# @login_required
+# def drafts(request):
+#     """See the drafts, meaning the posts that are not yet published"""
+#     posts = Post.objects.filter(published_date__isnull=True).order_by('created_date')
+#     paginate_by = 2
+#     return render(request, 'forum/post_draft_list.html', {'posts': posts})
