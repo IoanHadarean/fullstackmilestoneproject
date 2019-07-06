@@ -15,6 +15,15 @@
     
     <p class="postcontent">{{ post.text|safe|linebreaksbr }}</p>
     
+    
+    {% if post.author != request.user %}
+    <!-- Form for likes/dislikes -->
+    <form action="{% url 'like_post' %}" method="POST">
+        {% csrf_token %}
+        <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary">Like</button>
+    </form>
+    {% endif %}
+    
     <!-- Buttons for editing and removing posts -->
     {% if user.is_authenticated %}
         {% if post.author.id == user.id %}

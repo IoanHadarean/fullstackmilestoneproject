@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404, redirect
+from django.shortcuts import render, get_object_or_404, redirect, HttpResponseRedirect
 from forum.models import Post, Comment
 from django.utils import timezone
 from django.contrib.auth.models import User
@@ -62,13 +62,12 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
 class DraftListView(LoginRequiredMixin, ListView):
     """Draft view for a post"""
     login_url = 'accounts/login/'
-    redirect_field_name = 'post_draft_list.html'
+    redirect_field_name = 'post_list.html'
     model = Post
     paginate_by = 5
     
     def get_queryset(self):
         return Post.objects.filter(published_date__isnull=True).order_by('created_date')
-        
         
 #######################################
 #######################################
@@ -113,3 +112,9 @@ def comment_remove(request,pk):
     comment.delete()
     messages.success(request, "You have successfully removed the comment.")
     return redirect('post_detail',pk=post_pk)
+    
+def like_post(request):
+    """Like a specific post"""
+    post = get_object_or_404(Post, id=request.POST.get('post_id'))
+    post.likes.add(request.user)
+    return HttpResponseRedirect(post.get_absolute_url())

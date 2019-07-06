@@ -2,7 +2,7 @@
 
     <!-- Drafts container -->
     {% for post in posts %} 
-        {% if post.author.id == user.id %}
+        {% if post.author == request.user %}
             <div class="post">
                 <div class="date">Created: {{ post.created_date|date:'d-m-Y'}}</div>
                 <h1><a href="{% url 'post_detail' pk=post.pk %}">{{post.title}}</a></h1>
