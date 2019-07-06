@@ -20,7 +20,11 @@
     <!-- Form for likes/dislikes -->
     <form action="{% url 'like_post' %}" method="POST">
         {% csrf_token %}
-        <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary">Like</button>
+        {% if is_liked %}
+        <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-danger">Dislike</button>
+        {% else %}
+         <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary">Like</button>
+        {% endif %}
     </form>
     {% endif %}
     

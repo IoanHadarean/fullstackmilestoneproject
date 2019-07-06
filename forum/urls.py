@@ -5,7 +5,7 @@ from search import urls as urls_search
 urlpatterns = [
     path('', views.PostListView.as_view(), name='post_list'),
     path('user/<str:username>', views.UserPostListView.as_view(), name='user_posts'),
-    re_path(r'^post/(?P<pk>\d+)$', views.PostDetailView.as_view(), name='post_detail'),
+    re_path(r'^post/(?P<pk>\d+)$', views.post_detail, name='post_detail'),
     path('posts/new/', views.CreatePostView.as_view(), name='post_new'),
     re_path(r'^post/(?P<pk>\d+)/edit/$', views.PostUpdateView.as_view(), name='post_edit'),
     re_path(r'^post/(?P<pk>\d+)/remove/$', views.PostDeleteView.as_view(), name='post_remove'),
