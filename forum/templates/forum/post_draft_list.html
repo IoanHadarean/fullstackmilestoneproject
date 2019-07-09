@@ -11,7 +11,7 @@
         {% endif %} 
     
     {% endfor %}
-
+    
     <!-- Pagination for posts -->
     {% if is_paginated %}
     
@@ -37,4 +37,8 @@
         {% endif %}
     {% endif %}
 
+{% endblock %}
+<!-- Include forum-box -->
+{% block forum %}
+    {% include 'includes/forum-box.html' %}
 {% endblock %}
