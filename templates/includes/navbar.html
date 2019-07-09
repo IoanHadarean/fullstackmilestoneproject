@@ -1,72 +1,61 @@
 <!-- Navbar -->
-  <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
-    <div class="container">
+<nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
+  <div class="container">
 
-      <!-- Brand -->
-      <a class="navbar-brand waves-effect" href="https://mdbootstrap.com/docs/jquery/" target="_blank">
-        <strong class="blue-text">MDB</strong>
-      </a>
-
-      <!-- Collapse -->
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <!-- Collapse -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
 
-      <!-- Links -->
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <!-- Links -->
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
 
-        <!-- Left -->
-        
-        <ul class="navbar-nav mr-auto">
-            {% if user.is_authenticated %}
-          <li class="nav-item active">
-            <a class="nav-link waves-effect" href="{% url 'index' %}">E-commerce</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link waves-effect" href="{% url 'profile' %}" target="_blank"><i class="fa fa-user"></i>Profile</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link waves-effect" href="{% url 'logout' %}" target="_blank"><i class="fa fa-sign-out"></i>Logout</a>
-          </li>
-          {% else %}
-          <li class="nav-item">
-            <a class="nav-link waves-effect" href="{% url 'login' %}" target="_blank"><i class="fa fa-sign-in"></i>Login</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link waves-effect" href="{% url 'login' %}" target="_blank"><i class="fa fa-user-plus"></i> Register</a>
-          </li>
-          {% endif %}
-        </ul>
+      <!-- Left -->
 
-        <!-- Right -->
-        <ul class="navbar-nav nav-flex-icons">
-          <li class="nav-item">
-            <a class="nav-link waves-effect">
+      <ul class="navbar-nav mr-auto">
+        <!-- Brand -->
+        <a class="navbar-brand waves-effect" href="{% url 'index' %}">
+          <strong>Auction Place</strong>
+        </a>
+      </ul>
+
+      <!-- Right -->
+      <ul class="navbar-nav nav-flex-icons">
+        {% if user.is_authenticated %}
+        <li class="nav-item">
+          <a class="nav-link waves-effect" href="{% url 'profile' %}"><i class="fa fa-user"></i>Profile</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link waves-effect" href="{% url 'logout' %}"><i class="fa fa-sign-out"></i>Logout</a>
+        </li>
+        {% else %}
+        <li class="nav-item">
+          <a class="nav-link waves-effect" href="{% url 'login' %}"><i class="fa fa-sign-in"></i>Login</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link waves-effect" href="{% url 'login' %}"><i class="fa fa-user-plus"></i> Register</a>
+        </li>
+        {% endif %}
+        <li class="nav-item">
+          <a class="nav-link waves-effect">
               <span class="badge red z-depth-1 mr-1"> 1 </span>
               <i class="fas fa-shopping-cart"></i>
               <span class="clearfix d-none d-sm-inline-block"> Cart </span>
             </a>
-          </li>
-          <li class="nav-item">
-            <a href="https://www.facebook.com/mdbootstrap" class="nav-link waves-effect" target="_blank">
-              <i class="fab fa-facebook-f"></i>
-            </a>
-          </li>
-          <li class="nav-item">
-            <a href="https://twitter.com/MDBootstrap" class="nav-link waves-effect" target="_blank">
+        </li>
+        <li class="nav-item">
+          <a href="https://twitter.com/MDBootstrap" class="nav-link waves-effect" target="_blank">
               <i class="fab fa-twitter"></i>
             </a>
-          </li>
-          <li class="nav-item">
-            <a href="https://github.com/mdbootstrap/bootstrap-material-design" class="nav-link border border-light rounded waves-effect"
-              target="_blank">
-              <i class="fab fa-github mr-2"></i>MDB GitHub
+        </li>
+        <li class="nav-item">
+          <a href="https://github.com/IoanHadarean?tab=repositories" class="nav-link waves-effect" target="_blank">
+              <i class="fab fa-github mr-2"></i>
             </a>
-          </li>
-        </ul>
-
-      </div>
+        </li>
+      </ul>
 
     </div>
-  </nav>
+
+  </div>
+</nav>
