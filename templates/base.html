@@ -1,86 +1,123 @@
 {% load static %}
 <!DOCTYPE html>
 <html>
+
 <head>
 
-    <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
 
-    <!-- Bootstrap CSS -->
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+  <!-- Font Awesome -->
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
+  <!-- Bootstrap core CSS -->
+  <link href="{% static 'css/bootstrap.min.css' %}" rel="stylesheet">
+  <!-- Material Design Bootstrap -->
+  <link href="{% static 'css/mdb.min.css' %}" rel="stylesheet">
+
+  <!-- Medium Style Editor CSS-->
+  <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
+
+  <!-- Load main css file -->
+  <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
   
-    <!-- Medium Style Editor CSS-->
-    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/css/medium-editor.min.css" type="text/css" media="screen" charset="utf-8">
-    
-    <!-- Font Awesome -->
-    <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" rel="stylesheet" integrity="sha384-wvfXpqpZZVQGK6TAh5PVlGOfQNHSoD2xbE+QkPxCAFlNEevoEH3Sl0sibVcOQVnN" crossorigin="anonymous">
-    
-    <!-- Load main css file -->
-    <link rel="stylesheet" type="text/css" href="{% static 'css/main.css' %}">
-    
-    <!-- Custom css block -->
-    {% block head_css %}
-    {% endblock %}
-    
-    {% if title %}
-        <title>Django Blog - {{ title }}</title>
-    {% else %}
-        <title>Django Blog</title>
-    {% endif %}
-</head>
-<body>
-    <!-- Include navbar -->
-    {% include 'includes/navbar.html' %}
-    
-    <!-- Main content -->
-    <main role="main" class="container">
-      <div class="row">
-        <div class="col-md-8">
-          {% if messages %}
-            {% for message in messages %}
-              <div class="alert alert-{{ message.tags }}">
-                {{ message }}
-              </div>
-            {% endfor %}
-          {% endif %}
-          {% block content %}{% endblock %}
-        </div>
-        {% if user.is_authenticated %}
-        <div class="col-md-4">
-          <div class="content-section">
-            <h3>Check out our forum!</h3>
-            <p class='text-muted'>Get the latest updates and find out what our customers say about us.
-              <ul class="list-group">
-                <li class="list-group-item list-group-item-light">
-                  <a href="{% url 'post_list' %}">All Posts</a>
-                </li>
-                <li class="list-group-item list-group-item-light">
-                  <a href="{% url 'post_new' %}">Add New Post</a>
-                </li>
-                <li class="list-group-item list-group-item-light">
-                  <a href="{% url 'post_draft_list' user.username %}">Drafts</a>
-                </li>
-              </ul>
-            </p>
-          </div>
-        </div>
-        {% endif %}
-      </div>
-    </main>
-    
-    <!-- Include Footer -->
-    {% include 'includes/footer.html' %}
+  <!-- Title -->
+  <title>Django E-commerce</title>
 
-    <!-- Optional JavaScript -->
-    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/GpGFF93hXpG5KkN" crossorigin="anonymous"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
-    <script src="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/js/medium-editor.min.js"></script>
-    
-    <!-- Custom JavaScript block -->
-    {% block head_js %}
-    <script src="{% static 'js/alerts.js' %}"></script>
-    {% endblock %}
+  <!-- Custom css block -->
+  {% block head_css %} {% endblock %}
+  
+  <!-- Custom style -->
+  <style type="text/css">
+    html,
+    body,
+    header,
+    .carousel {
+      height: 60vh;
+    }
+
+    @media (max-width: 740px) {
+
+      html,
+      body,
+      header,
+      .carousel {
+        height: 100vh;
+      }
+    }
+
+    @media (min-width: 800px) and (max-width: 850px) {
+
+      html,
+      body,
+      header,
+      .carousel {
+        height: 100vh;
+      }
+    }
+
+  </style>
+</head>
+
+<body>
+  <!-- Include navbar -->
+  {% include 'includes/navbar.html' %}
+
+  <!-- Main content -->
+  <main role="main" class="container">
+    <div class="row">
+      <div class="col-md-8">
+        {% if messages %} {% for message in messages %}
+        <div class="alert alert-{{ message.tags }}">
+          {{ message }}
+        </div>
+        {% endfor %} {% endif %} {% block content %}{% endblock %}
+      </div>
+      {% if user.is_authenticated %}
+      <div class="col-md-4">
+        <div class="content-section">
+          <h3>Check out our forum!</h3>
+          <p class='text-muted'>Get the latest updates and find out what our customers say about us.
+            <ul class="list-group">
+              <li class="list-group-item list-group-item-light">
+                <a href="{% url 'post_list' %}">All Posts</a>
+              </li>
+              <li class="list-group-item list-group-item-light">
+                <a href="{% url 'post_new' %}">Add New Post</a>
+              </li>
+              <li class="list-group-item list-group-item-light">
+                <a href="{% url 'post_draft_list' user.username %}">Drafts</a>
+              </li>
+            </ul>
+          </p>
+        </div>
+      </div>
+      {% endif %}
+    </div>
+  </main>
+
+  <!-- Include Footer -->
+  {% include 'includes/footer.html' %}
+
+  <!-- SCRIPTS -->
+  <!-- JQuery -->
+  <script type="text/javascript" src="{% static 'js/jquery-3.4.1.min.js' %}"></script>
+  <!-- Bootstrap tooltips -->
+  <script type="text/javascript" src="{% static 'js/popper.min.js' %}"></script>
+  <!-- Bootstrap core JavaScript -->
+  <script type="text/javascript" src="{% static 'js/bootstrap.min.js' %}"></script>
+  <!-- MDB core JavaScript -->
+  <script type="text/javascript" src="{% static 'js/mdb.min.js' %}"></script>
+  <!-- Initializations -->
+  <script type="text/javascript">
+    // Animations initialization
+    new WOW().init();
+  </script>
+
+  <!-- Custom JavaScript block -->
+  {% block head_js %}
+  <script src="{% static 'js/alerts.js' %}"></script>
+  {% endblock %}
 </body>
+
 </html>

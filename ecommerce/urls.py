@@ -15,7 +15,6 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path, include
-from accounts import views as user_views
 from django.conf import settings
 from django.conf.urls.static import static
 
@@ -24,6 +23,7 @@ urlpatterns = [
     path('forum/', include('forum.urls')),
     path('accounts/', include('accounts.urls')),
     path('reset/', include('accounts.urls_reset')),
+    path('shoppingcart/', include('shoppingcart.urls'))
 ]
 
 if settings.DEBUG:
