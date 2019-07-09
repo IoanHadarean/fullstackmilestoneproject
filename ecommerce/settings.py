@@ -43,6 +43,7 @@ INSTALLED_APPS = [
     'crispy_forms',
     'forum',
     'search',
+    'shoppingcart',
     'accounts.apps.AccountsConfig',
 ]
 
