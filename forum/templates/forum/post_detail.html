@@ -13,7 +13,7 @@
         {% endif %}
     {% endif %}
     
-    <p class="postcontent">{{ post.text|safe|linebreaksbr }}</p>
+    <p class="postcontent">{{post.text|striptags|safe|linebreaksbr}}</p>
     
     <!-- Likes count -->
     <p>{{ total_likes }} Like{{ total_likes|pluralize }}</p>
@@ -36,7 +36,7 @@
     {% if user.is_authenticated %}
         {% if post.author == request.user %}
         <a class="btn btn-primary" href="{% url 'post_edit' pk=post.pk %}"><i class="fa fa-edit"></i></a>
-        <a class="btn btn-primary" href="{% url 'post_remove' pk=post.pk %}"><i class="fa fa-remove"></i></a>
+        <a class="btn btn-primary" href="{% url 'post_remove' pk=post.pk %}"><i class="fa fa-trash-alt"></i></a>
         {% endif %}
     {% endif %}
     
@@ -70,3 +70,5 @@
         {% endfor %}
     </div>
 {% endblock %}
+<!-- Include forum-box -->
+{% block forum %} {% include 'includes/forum-box.html' %} {% endblock %}

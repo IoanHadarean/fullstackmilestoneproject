@@ -14,7 +14,7 @@
 
       <ul class="navbar-nav mr-auto">
         <!-- Brand -->
-        <a class="navbar-brand waves-effect" href="{% url 'index' %}">
+        <a class="navbar-brand waves-effect" href="{% url 'home' %}">
           <strong>Auction Place</strong>
         </a>
       </ul>
@@ -26,16 +26,11 @@
           <a class="nav-link waves-effect" href="{% url 'profile' %}"><i class="fa fa-user"></i>Profile</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link waves-effect" href="{% url 'logout' %}"><i class="fa fa-sign-out"></i>Logout</a>
-        </li>
-        {% else %}
-        <li class="nav-item">
-          <a class="nav-link waves-effect" href="{% url 'login' %}"><i class="fa fa-sign-in"></i>Login</a>
+          <a class="nav-link waves-effect" href="{% url 'logout' %}"><i class="fa fa-sign-out-alt"></i>Logout</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link waves-effect" href="{% url 'login' %}"><i class="fa fa-user-plus"></i> Register</a>
+          <a class="nav-link waves-effect" href="{% url 'post_list' %}"><i class="fa fa-comments"></i>Forum</a>
         </li>
-        {% endif %}
         <li class="nav-item">
           <a class="nav-link waves-effect">
               <span class="badge red z-depth-1 mr-1"> 1 </span>
@@ -43,16 +38,14 @@
               <span class="clearfix d-none d-sm-inline-block"> Cart </span>
             </a>
         </li>
+        {% else %}
         <li class="nav-item">
-          <a href="https://twitter.com/MDBootstrap" class="nav-link waves-effect" target="_blank">
-              <i class="fab fa-twitter"></i>
-            </a>
+          <a class="nav-link waves-effect" href="{% url 'login' %}"><i class="fa fa-sign-in-alt"></i>Login</a>
         </li>
         <li class="nav-item">
-          <a href="https://github.com/IoanHadarean?tab=repositories" class="nav-link waves-effect" target="_blank">
-              <i class="fab fa-github mr-2"></i>
-            </a>
+          <a class="nav-link waves-effect" href="{% url 'registration' %}"><i class="fa fa-user-plus"></i> Register</a>
         </li>
+        {% endif %}
       </ul>
 
     </div>

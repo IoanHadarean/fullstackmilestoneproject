@@ -139,10 +139,3 @@ def comment_remove(request,pk):
     comment.delete()
     messages.success(request, "You have successfully removed the comment.")
     return redirect('post_detail',pk=post_pk)
-    
-# @login_required
-# def drafts(request):
-#     """See the drafts, meaning the posts that are not yet published"""
-#     posts = Post.objects.filter(published_date__isnull=True).order_by('created_date')
-#     paginate_by = 2
-#     return render(request, 'forum/post_draft_list.html', {'posts': posts})
