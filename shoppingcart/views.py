@@ -1,7 +1,9 @@
+from django.contrib import messages
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView
 from django.utils import timezone
 from .models import Item, OrderItem, Order
+
 
     
 def checkout(request):
@@ -28,6 +30,18 @@ class ItemDetailView(DetailView):
     
     
 def add_to_cart(request, slug):
+    """
+    Get the item that needs to be added to cart or show a 404 error.
+    Then get or create the order item that corresponds to a user and
+    has an ordered attribute of False.
+    Filter the orders by the user and by the 'ordered=False' attribute.
+    If the order query set exists, check if the order item is in the order.
+    If it is then increase the quantity by 1 each time it's added to the cart,
+    else add it to the order.
+    If the order query set does not exist, create a new order that has an ordered
+    date and a user and add the order item to the order.
+    """
+    
     item = get_object_or_404(Item, slug=slug)
     order_item, created = OrderItem.objects.get_or_create(
         item=item,
@@ -41,17 +55,30 @@ def add_to_cart(request, slug):
         if order.items.filter(item__slug=item.slug).exists():
             order_item.quantity += 1
             order_item.save()
+            messages.info(request, "This item quantity was updated.")
         else:
+            messages.info(request, "This item was added to your cart.")
             order.items.add(order_item)
     else:
         ordered_date = timezone.now()
         order = Order.objects.create(
             user=request.user, ordered_date=ordered_date)
         order.items.add(order_item)
+        messages.info(request, "This item was added to your cart.")
     return redirect("product", slug=slug)
     
     
-def remove_from_cart(request, slug)
+def remove_from_cart(request, slug):
+    """
+    Get the item that needs to be added to cart or show a 404 error.
+    Filter the orders by the user and by the 'ordered=False' attribute.
+    If the order query set exists, check if the order item is in the order.
+    If it is, get the order item and remove it from the orders, else
+    display a message saying the order does not contain the order item.
+    If the order query set does not exist display a message saying the user
+    does not have an order.
+    """
+    
     item = get_object_or_404(Item, slug=slug)
     order_qs = Order.objects.filter(
         user=request.user, 
@@ -59,17 +86,19 @@ def remove_from_cart(request, slug)
     )
     if order_qs.exists():
         order = order_qs[0]
+        """ Check if the order item is in the order"""
         if order.items.filter(item__slug=item.slug).exists():
-            order_item, created = OrderItem.objects.filter(
+            order_item = OrderItem.objects.filter(
                 item=item,
                 user=request.user,
                 ordered=False
             )[0]
             order.items.remove(order_item)
+            messages.info(request, "This item was removed from your cart.")
         else:
-            """ Add a message saying the order does not contain the order item"""
+            messages.info(request, "This item was not in your cart.")
             return redirect("product", slug=slug)
     else:
-        """ Add a message saying the user does not have an order"""
+        messages.info(request, "You do not have an active order.")
         return redirect("product", slug=slug)
     return redirect("product", slug=slug)
