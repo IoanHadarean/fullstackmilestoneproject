@@ -37,7 +37,7 @@ def add_to_cart(request, slug):
     order_qs = Order.objects.filter(user=request.user, ordered=False)
     if order_qs.exists():
         order = order_qs[0]
-        # check if the order item is in the order
+        """Check if the order item is in the order"""
         if order.items.filter(item__slug=item.slug).exists():
             order_item.quantity += 1
             order_item.save()
@@ -50,4 +50,26 @@ def add_to_cart(request, slug):
         order.items.add(order_item)
     return redirect("product", slug=slug)
     
-
+    
+def remove_from_cart(request, slug)
+    item = get_object_or_404(Item, slug=slug)
+    order_qs = Order.objects.filter(
+        user=request.user, 
+        ordered=False
+    )
+    if order_qs.exists():
+        order = order_qs[0]
+        if order.items.filter(item__slug=item.slug).exists():
+            order_item, created = OrderItem.objects.filter(
+                item=item,
+                user=request.user,
+                ordered=False
+            )[0]
+            order.items.remove(order_item)
+        else:
+            """ Add a message saying the order does not contain the order item"""
+            return redirect("product", slug=slug)
+    else:
+        """ Add a message saying the user does not have an order"""
+        return redirect("product", slug=slug)
+    return redirect("product", slug=slug)
