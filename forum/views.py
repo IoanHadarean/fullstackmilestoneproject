@@ -57,14 +57,16 @@ class PostDeleteView(LoginRequiredMixin, DeleteView):
     
 class DraftListView(ListView):
     """Draft view for a post"""
-    # login_url = 'accounts/login/'
-    # redirect_field_name = 'post_list.html'
+    login_url = 'accounts/login/'
+    redirect_field_name = 'post_list.html'
     model = Post
     paginate_by = 5
     
     def get_queryset(self):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
         return Post.objects.filter(Q(author=user) & Q(published_date__isnull=True)).order_by('created_date')
+        
+        
         
 #######################################
 #######################################
@@ -105,7 +107,7 @@ def post_publish(request,pk):
     post = get_object_or_404(Post,pk=pk)
     post.publish()
     messages.success(request, "Your post has been published successfully.")
-    return redirect('post_detail',pk=pk)
+    return redirect('post_list')
 
 @login_required
 def add_comment_to_post(request,pk):

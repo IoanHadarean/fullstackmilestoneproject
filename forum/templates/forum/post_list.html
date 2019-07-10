@@ -1,15 +1,24 @@
 {% extends "base.html" %} {% load static %} {% block content %}
 <div class="centerstage">
 
-    <!-- Search through posts -->
+    <!-- Search through posts if there are any-->
+    {% if post_list %}
     <div class="container">
         <div class="display">
+            {% if 'drafts/' in request.path %}
+            <form action="{% url 'search_drafts' %}" method="GET">
+                <input type="text" name="posts">
+                <button class="btn btn-primary" type="submit">Search</button>
+            </form>
+            {% else %}
             <form action="{% url 'search_posts' %}" method="GET">
                 <input type="text" name="posts">
                 <button class="btn btn-primary" type="submit">Search</button>
             </form>
+            {% endif %}
         </div>
     </div>
+    {% endif %}
 
     <!-- Post list -->
     {% for post in post_list %}
@@ -33,8 +42,7 @@
 
     <!-- Get the current page and check if the page number is within three previous or three next pages -->
     {% for num in page_obj.paginator.page_range %} {% if page_obj.number == num %}
-    <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a> {% elif num > page_obj.number|add:'-3' and num
-    < page_obj.number|add: '3'%} <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
+    <a class="btn btn-info mb-4" href="?page={{ num }}">{{ num }}</a> {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <a class="btn btn-outline-info mb-4" href="?page={{ num }}">{{ num }}</a>
         {% endif %} {% endfor %}
 
         <!-- Pagination if the page has next pages -->
