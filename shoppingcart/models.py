@@ -49,7 +49,9 @@ class Item(models.Model):
 class OrderItem(models.Model):
     """
     OrderItem class that makes the connection between
-    order and item
+    order and item. Has a method that gets the total item
+    price, a method that gets the total item discount price
+    and another one that returns the amount of money saved.
     """
     user = models.ForeignKey(settings.AUTH_USER_MODEL, 
                              on_delete=models.CASCADE)
@@ -59,6 +61,15 @@ class OrderItem(models.Model):
 
     def __str__(self):
         return f"{self.quantity} of {self.item.title}"
+        
+    def get_total_item_price(self):
+        return self.quantity * self.item.price
+    
+    def get_total_item_discount_price(self):
+        return self.quantity * self.item.discount_price
+        
+    def get_amount_saved(self):
+        return self.get_total_item_price() - self.get_total_item_discount_price()
 
 class Order(models.Model):
     """
