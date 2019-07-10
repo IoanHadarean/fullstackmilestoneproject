@@ -3,15 +3,17 @@ from django.conf import settings
 from django.shortcuts import reverse
 
 CATEGORY_CHOICES = (
-    ('ED', 'Evening dresses'),
-    ('WD', 'Wedding dresses'),
-    ('OD', 'Occasion dresses'),
-    ('MXD', 'Maxi dresses'),
-    ('MND', 'Mini dresses'),
-    ('PD', 'Party dresses'),
-    ('ED', 'Cocktail dresses'),
-    ('WD', 'Day dresses'),
-    ('OD', 'Festival dresses')
+    ('DR', 'Dresses'),
+    ('SH', 'Shoes'),
+    ('SU', 'Suits'),
+    ('VL', 'Veils'),
+    ('RN', 'Rings'),
+    ('FL', 'Flowers'),
+    ('HA', 'Hair Accessories'),
+    ('BP', 'Bags & Purses'),
+    ('NT', 'Neckties'),
+    ('SH', 'Shirts'),
+    ('BS', 'Belts & Sashes'),
 )
 
 LABEL_CHOICES = (
@@ -27,7 +29,7 @@ class Item(models.Model):
     title = models.CharField(max_length=100)
     price = models.FloatField()
     discount_price = models.FloatField(blank=True, null=True)
-    category = models.CharField(choices=CATEGORY_CHOICES, max_length=3)
+    category = models.CharField(choices=CATEGORY_CHOICES, max_length=2)
     label = models.CharField(choices=LABEL_CHOICES, max_length=1)
     slug = models.SlugField()
     description = models.TextField()
