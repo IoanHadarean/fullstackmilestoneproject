@@ -1,4 +1,4 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView
 from .models import Item, OrderItem, Order
 
@@ -35,5 +35,9 @@ def add_to_cart(request, slug):
         # check if the order item is in the order
         if order.items.filter(item__slug=item.slug).exists():
             order_item.quantity += 1
+    else:
+        order = Order.objects.create(user=request.user)
+        order.items.add(order_item)
+    return redirect("product", kwargs={'slug': slug})
     
 
