@@ -18,6 +18,7 @@ class HomeView(ListView):
     View for home page with all the products
     """
     model = Item
+    paginate_by = 10
     template_name = "shoppingcart/home.html"
 
 
