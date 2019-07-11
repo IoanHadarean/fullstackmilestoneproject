@@ -5,15 +5,27 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, View
 from django.utils import timezone
+from .forms import CheckoutForm
 from .models import Item, OrderItem, Order
 
 
-def checkout(request):
+def CheckoutView(View):
     """
     Form for an order checkout
     """
-    return render(request, "shoppingcart/checkout.html")
+    def get(self, *args, **kwargs):
+        # form
+        form = CheckoutForm()
+        context = {
+            'form': form
+        }
+        return render(self.request, "shoppingcart/checkout.html", context)
     
+    def post(self, *args, **kwargs):
+        form = CheckoutForm(self.request.POST or None)
+        if form.is_valid():
+            print("The form is valid")
+            return redirect('checkout')
 
 class HomeView(ListView):
     """
