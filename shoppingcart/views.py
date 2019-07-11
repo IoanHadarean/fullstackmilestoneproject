@@ -58,6 +58,11 @@ class CheckoutView(View):
             return redirect("order_summary")
 
 
+class PaymentView(View):
+    def get(self, *args, **kwargs):
+        return render(self.request, "shoppingcart/payment.html")
+
+
 class HomeView(ListView):
     """
     View for home page with all the products
@@ -65,6 +70,7 @@ class HomeView(ListView):
     model = Item
     paginate_by = 10
     template_name = "shoppingcart/home.html"
+    
     
 class OrderSummaryView(LoginRequiredMixin, View):
     """
