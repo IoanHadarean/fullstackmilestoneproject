@@ -52,6 +52,8 @@ class OrderItem(models.Model):
     order and item. Has a method that gets the total item
     price, a method that gets the total item discount price
     and another one that returns the amount of money saved.
+    Also returns the final price depending if there is a
+    discount on the item or not.
     """
     user = models.ForeignKey(settings.AUTH_USER_MODEL, 
                              on_delete=models.CASCADE)
@@ -71,9 +73,15 @@ class OrderItem(models.Model):
     def get_amount_saved(self):
         return self.get_total_item_price() - self.get_total_item_discount_price()
 
+    def get_final_price(self):
+        if self.item.discount_price:
+            return self.get_total_item_discount_price()
+        return self.get_total_item_price()
+
 class Order(models.Model):
     """
-    Order class that contains the details of an order
+    Order class that contains the details of an order.
+    Has a method that gets the order summary total.
     """
     user = models.ForeignKey(settings.AUTH_USER_MODEL, 
                              on_delete=models.CASCADE)
@@ -84,3 +92,12 @@ class Order(models.Model):
 
     def __str__(self):
         return self.user.username
+
+    def get_total(self):
+        total = 0
+        for order_item in self.items.all():
+            total += order_item.get_final_price()
+        return total
+
+
+
