@@ -25,6 +25,11 @@ class HomeView(ListView):
     template_name = "shoppingcart/home.html"
     
 class OrderSummaryView(LoginRequiredMixin, View):
+    """
+    Get the order summary for a user if it exists,
+    else show an error stating that the user does not
+    have an active order
+    """
     def get(self, *args, **kwargs):
         try:
             order = Order.objects.get(user=self.request.user, ordered=False)
@@ -72,18 +77,18 @@ def add_to_cart(request, slug):
             order_item.quantity += 1
             order_item.save()
             messages.info(request, "This item quantity was updated.")
-            return redirect("product", slug=slug)
+            return redirect("order_summary")
         else:
             order.items.add(order_item)
             messages.info(request, "This item was added to your cart.")
-            return redirect("product", slug=slug)
+            return redirect("order_summary")
     else:
         ordered_date = timezone.now()
         order = Order.objects.create(
             user=request.user, ordered_date=ordered_date)
         order.items.add(order_item)
         messages.info(request, "This item was added to your cart.")
-        return redirect("product", slug=slug)
+        return redirect("order_summary")
     
 @login_required 
 def remove_from_cart(request, slug):
@@ -92,7 +97,7 @@ def remove_from_cart(request, slug):
     Filter the orders by the user and by the 'ordered=False' attribute.
     If the order query set exists, check if the order item is in the order.
     If it is, get the order item and remove it from the orders, else
-    display a message saying the order does not contain the order item.
+    display a message saying the item is not in the cart.
     If the order query set does not exist display a message saying the user
     does not have an order.
     """
@@ -114,6 +119,43 @@ def remove_from_cart(request, slug):
             order.items.remove(order_item)
             messages.info(request, "This item was removed from your cart.")
             return redirect("product", slug=slug)
+        else:
+            messages.info(request, "This item is not in your cart.")
+            return redirect("product", slug=slug)
+    else:
+        messages.info(request, "You do not have an active order.")
+        return redirect("product", slug=slug)
+        
+@login_required 
+def remove_single_item_from_cart(request, slug):
+    """
+    Get the item that needs to be added to cart or show a 404 error.
+    Filter the orders by the user and by the 'ordered=False' attribute.
+    If the order query set exists, check if the order item is in the order.
+    If it is, get the order item and decrease the quantity by 1, else
+    display a message saying the item is not in the cart.
+    If the order query set does not exist display a message saying the user
+    does not have an active order.
+    """
+    
+    item = get_object_or_404(Item, slug=slug)
+    order_qs = Order.objects.filter(
+        user=request.user, 
+        ordered=False
+    )
+    if order_qs.exists():
+        order = order_qs[0]
+        """ Check if the order item is in the order"""
+        if order.items.filter(item__slug=item.slug).exists():
+            order_item = OrderItem.objects.filter(
+                item=item,
+                user=request.user,
+                ordered=False
+            )[0]
+            order_item.quantity -= 1
+            order_item.save()
+            messages.info(request, "This item quantity was updated")
+            return redirect("order_summary")
         else:
             messages.info(request, "This item is not in your cart.")
             return redirect("product", slug=slug)
