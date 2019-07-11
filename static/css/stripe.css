@@ -2,7 +2,7 @@
 
 #stripeBtnLabel {
   font-family: "Helvetica Neue", Helvetica, sans-serif;
-  font-size: 16px;
+  font-size: 1rem;
   font-variant: normal;
   padding: 0;
   margin: 0;
@@ -13,53 +13,46 @@
 }
 #stripeBtn {
   border: none;
-  border-radius: 4px;
   outline: none;
   text-decoration: none;
   color: #fff;
   background: #32325d;
   white-space: nowrap;
   display: inline-block;
-  height: 40px;
-  line-height: 40px;
-  box-shadow: 0 4px 6px rgba(50, 50, 93, .11), 0 1px 3px rgba(0, 0, 0, .08);
-  border-radius: 4px;
-  font-size: 15px;
+  height: 2.5rem;
+  line-height: 2.5rem;
+  box-shadow: 0 0.25rem 0.375rem rgba(50, 50, 93, .11), 0 0.0625rem 0.1875rem rgba(0, 0, 0, .08);
+  border-radius: 0.25rem;
+  font-size: 0.9375rem;
   font-weight: 600;
-  letter-spacing: 0.025em;
-  text-decoration: none;
+  letter-spacing: 0.025rem;
   -webkit-transition: all 150ms ease;
   -moz-transition: all 150ms ease;
   -o-transition: all 150ms ease;
   transition: all 150ms ease;
-  float: left;
-  width: 100%
+  width: 100%;
 }
 
 button:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 7px 14px rgba(50, 50, 93, .10), 0 3px 6px rgba(0, 0, 0, .08);
+  transform: translateY(-0.0625rem);
+  box-shadow: 0 0.4375rem 0.875rem rgba(50, 50, 93, .10), 0 0.1875rem 0.375rem rgba(0, 0, 0, .08);
   background-color: #43458b;
 }
 
 .stripe-form {
-  padding: 5px 30px;
+  padding: 0.3125rem 1.875rem;
 }
 
-#stripe-form {
-    padding: 30px;
-    height: 120px;
-}
 #card-errors {
-  height: 20px;
-  padding: 4px 0;
+  height: 1.25rem;
+  padding: 0.25rem 0;
   color: #fa755a;
 }
 .stripe-form-row {
   width: 100%;
   float: left;
-  margin-top: 5px;
-  margin-bottom: 5px;
+  margin-top: 0.3125rem;
+  margin-bottom: 0.3125rem;
 }
 
 .current-card-form {
@@ -74,21 +67,21 @@ button:hover {
 .StripeElement {
   box-sizing: border-box;
 
-  height: 40px;
+  height: 2.5rem;
 
-  padding: 10px 12px;
+  padding: 0.625rem 0.75rem;
 
-  border: 1px solid transparent;
-  border-radius: 4px;
+  border: 0.0625rem solid transparent;
+  border-radius: 0.25rem;
   background-color: white;
 
-  box-shadow: 0 1px 3px 0 #e6ebf1;
+  box-shadow: 0 0.0625rem 0.1875rem 0 #e6ebf1;
   -webkit-transition: box-shadow 150ms ease;
   transition: box-shadow 150ms ease;
 }
 
 .StripeElement--focus {
-  box-shadow: 0 1px 3px 0 #cfd7df;
+  box-shadow: 0 0.0625rem 0.1875rem 0 #cfd7df;
 }
 
 .StripeElement--invalid {
