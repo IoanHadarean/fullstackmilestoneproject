@@ -6,7 +6,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, View
 from django.utils import timezone
 from .forms import CheckoutForm
-from .models import Item, OrderItem, Order
+from .models import Item, OrderItem, Order, BillingAddress
 
 
 class CheckoutView(View):
@@ -22,10 +22,41 @@ class CheckoutView(View):
     
     def post(self, *args, **kwargs):
         form = CheckoutForm(self.request.POST or None)
-        if form.is_valid():
-            return redirect('checkout')
+        """
+        Check if the order exists. If it does, get the details of the order
+        from the form if the form is valid and save the billing address, else
+        raise an error saying that the user does not have an active order.
+        """
+        try:
+            order = Order.objects.get(user=self.request.user, ordered=False)
+            if form.is_valid():
+                street_address = form.cleaned_data.get('street_address')
+                appartment_address = form.cleaned_data.get('appartment_address')
+                country = form.cleaned_data.get('country')
+                zip_code = form.cleaned_data.get('zip_code')
+                """TODO: add functionality for these fields
+                same_shipping_address = form.cleaned_data.get(
+                'same_shipping_address')
+                save_info = form.cleaned_data.get('save_info')"""
+                payment_option = form.cleaned_data.get('payment_option')
+                billing_address = BillingAddress(
+                    user=self.request.user,
+                    street_address=street_address,
+                    appartment_address=appartment_address,
+                    country=country,
+                    zip_code=zip_code
+                )
+                billing_address.save()
+                order.billing_address = billing_address
+                order.save()
+                """TODO: add redirect to the selected payment option"""
+                return redirect('checkout')
             messages.warning(self.request, "Failed checkout")
-        return redirect('checkout')
+            return redirect('checkout')
+        except ObjectDoesNotExist:
+            messages.error(self.request, "You do not have an active order")
+            return redirect("order_summary")
+
 
 class HomeView(ListView):
     """
