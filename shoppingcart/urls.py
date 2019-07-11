@@ -11,7 +11,7 @@ from .views import (
 
 urlpatterns = [
     path('product/<slug>/', ItemDetailView.as_view(), name='product'),
-    path('checkout/', CheckoutView, name='checkout'),
+    path('checkout/', CheckoutView.as_view(), name='checkout'),
     path('order_summary/', OrderSummaryView.as_view(), name='order_summary'),
     path('home/', HomeView.as_view(), name='home'),
     path('add_to_cart/<slug>/', add_to_cart, name='add_to_cart'),

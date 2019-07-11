@@ -9,12 +9,11 @@ from .forms import CheckoutForm
 from .models import Item, OrderItem, Order
 
 
-def CheckoutView(View):
+class CheckoutView(View):
     """
     Form for an order checkout
     """
     def get(self, *args, **kwargs):
-        # form
         form = CheckoutForm()
         context = {
             'form': form
