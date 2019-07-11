@@ -7,12 +7,12 @@
         <div class="display">
             {% if 'drafts/' in request.path %}
             <form action="{% url 'search_drafts' %}" method="GET">
-                <input type="text" name="posts">
+                <input type="text" class="col-md-8" name="posts">
                 <button class="btn btn-primary" type="submit">Search</button>
             </form>
             {% else %}
             <form action="{% url 'search_posts' %}" method="GET">
-                <input type="text" name="posts">
+                <input type="text" class="col-md-8" name="posts">
                 <button class="btn btn-primary" type="submit">Search</button>
             </form>
             {% endif %}
