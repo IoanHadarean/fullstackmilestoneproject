@@ -8,7 +8,6 @@ from django.utils import timezone
 from .models import Item, OrderItem, Order
 
 
-    
 def checkout(request):
     """
     Form for an order checkout
