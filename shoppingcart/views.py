@@ -69,8 +69,12 @@ class CheckoutView(View):
 
 class PaymentView(View):
     def get(self, *args, **kwargs):
-        """Render the payment view"""
-        return render(self.request, "shoppingcart/payment.html")
+        """Render the payment view and pass the order to the template"""
+        order = Order.objects.get(user=self.request.user, ordered=False)
+        context = {
+            'order': order
+        }
+        return render(self.request, "shoppingcart/payment.html", context)
     
     def post(self, *args, **kwargs):
         """ Get the stripe token and create a charge for a user order"""
