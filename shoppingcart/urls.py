@@ -17,7 +17,7 @@ urlpatterns = [
     path('order_summary/', OrderSummaryView.as_view(), name='order_summary'),
     path('home/', HomeView.as_view(), name='home'),
     path('add_to_cart/<slug>/', add_to_cart, name='add_to_cart'),
-    path('add_coupon/<code>/', add_coupon, name='add_coupon'),
+    path('add_coupon/', add_coupon, name='add_coupon'),
     path('remove_from_cart/<slug>/', remove_from_cart, name='remove_from_cart'),
     path('remove_single_item_from_cart/<slug>/', remove_single_item_from_cart, 
          name='remove_single_item_from_cart'),
