@@ -57,8 +57,6 @@ class CheckoutView(View):
                 """Redirect according to payment option"""
                 if payment_option == 'S':
                     return redirect('payment', payment_option='stripe')
-                elif payment_option == 'P':
-                    return redirect('payment', payment_option='paypal')
                 else:
                     messages.warning(self.request, "Invalid payment option selected")
                     return redirect('checkout')
