@@ -130,4 +130,12 @@ class Payment(models.Model):
     
     def _str_(self):
         return self.user.username
+        
+
+class Coupon(models.Model):
+    """Coupon code for an order item"""
+    code = models.CharField(max_length=15)
+    
+    def __str__(self):
+        return self.code
 
