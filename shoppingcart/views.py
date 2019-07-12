@@ -95,7 +95,13 @@ class PaymentView(View):
             payment.save()
             
             """Assign the payment to the order"""
-            order.ordered=True
+            
+            order_items = order.items.all()
+            order_items.update(ordered=True)
+            for item in order_items:
+                item.save()
+                
+            order.ordered = True
             order.payment = payment
             order.save()
             
