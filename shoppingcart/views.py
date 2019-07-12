@@ -15,14 +15,22 @@ stripe.api_key = settings.STRIPE_SECRET_KEY
 
 class CheckoutView(View):
     """
-    Form for an order checkout
+    Render the checkout form with the order if the order exists.
+    If the order does not exist, notify the user that he/she does not
+    have an active order.
     """
     def get(self, *args, **kwargs):
-        form = CheckoutForm()
-        context = {
-            'form': form
-        }
-        return render(self.request, "shoppingcart/checkout.html", context)
+        try:
+            order = Order.objects.get(user=self.request.user, ordered=False)
+            form = CheckoutForm()
+            context = {
+                'form': form,
+                'order': order
+            }
+            return render(self.request, "shoppingcart/checkout.html", context)
+        except ObjectDoesNotExist:
+            messages.info(request, "You do not have an active order")
+            return redirect("checkout")
     
     def post(self, *args, **kwargs):
         form = CheckoutForm(self.request.POST or None)
