@@ -26,7 +26,8 @@ class CheckoutView(View):
             context = {
                 'form': form,
                 'couponform': CouponForm(),
-                'order': order
+                'order': order,
+                'DISPLAY_COUPON_FORM': True
             }
             return render(self.request, "shoppingcart/checkout.html", context)
         except ObjectDoesNotExist:
@@ -79,7 +80,8 @@ class PaymentView(View):
         """Render the payment view and pass the order to the template"""
         order = Order.objects.get(user=self.request.user, ordered=False)
         context = {
-            'order': order
+            'order': order,
+            'DISPLAY_COUPON_FORM': False
         }
         return render(self.request, "shoppingcart/payment.html", context)
     

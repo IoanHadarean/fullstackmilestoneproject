@@ -79,6 +79,7 @@ class OrderItem(models.Model):
         if self.item.discount_price:
             return self.get_total_item_discount_price()
         return self.get_total_item_price()
+        
 
 class Order(models.Model):
     """
@@ -97,15 +98,18 @@ class Order(models.Model):
         'Payment', on_delete=models.SET_NULL, blank=True, null=True)
     coupon = models.ForeignKey(
         'Coupon', on_delete=models.SET_NULL, blank=True, null=True)
+
                                         
-    
     def __str__(self):
         return self.user.username
 
+    
     def get_total(self):
         total = 0
         for order_item in self.items.all():
             total += order_item.get_final_price()
+        if self.coupon:
+            total -= self.coupon.amount
         return total
         
         
@@ -133,11 +137,11 @@ class Payment(models.Model):
     def _str_(self):
         return self.user.username
         
-
+        
 class Coupon(models.Model):
     """Coupon code for an order item"""
     code = models.CharField(max_length=15)
+    amount = models.FloatField()
     
     def __str__(self):
         return self.code
-
