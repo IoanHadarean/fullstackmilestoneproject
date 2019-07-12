@@ -53,10 +53,15 @@ class CheckoutView(View):
                 billing_address.save()
                 order.billing_address = billing_address
                 order.save()
-                """TODO: add redirect to the selected payment option"""
-                return redirect('checkout')
-            messages.warning(self.request, "Failed checkout")
-            return redirect('checkout')
+                
+                """Redirect according to payment option"""
+                if payment_option == 'S':
+                    return redirect('payment', payment_option='stripe')
+                elif payment_option == 'P':
+                    return redirect('payment', payment_option='paypal')
+                else:
+                    messages.warning(self.request, "Invalid payment option selected")
+                    return redirect('checkout')
         except ObjectDoesNotExist:
             messages.error(self.request, "You do not have an active order")
             return redirect("order_summary")
@@ -71,7 +76,7 @@ class PaymentView(View):
         """ Get the stripe token and create a charge for a user order"""
         order = Order.objects.get(user=self.request.user, ordered=False)
         token = self.request.POST.get('stripeToken')
-        amount=order.get_total() * 100
+        amount = int(order.get_total() * 100)
         
         try:
             charge = stripe.Charge.create(
@@ -84,7 +89,7 @@ class PaymentView(View):
             payment = Payment()
             payment.stripe_charge_id = charge['id']
             payment.user = self.request.user
-            payment.amount = amount
+            payment.amount = order.get_total()
             payment.save()
             
             """Assign the payment to the order"""
@@ -126,31 +131,7 @@ class PaymentView(View):
           """Send an email to the user"""
           messages.error(self.request, "A serious error occured. We have been notified.")
           return redirect("/")
-        
-        
-        
-        
-        
-        
-        
-        
-        charge = stripe.Charge.create(
-            amount=amount, 
-            currency="gbp",
-            source=token
-        )
-        
-        """Create the payment"""
-        payment = Payment()
-        payment.stripe_charge_id = charge['id']
-        payment.user = self.request.user
-        payment.amount = amount
-        payment.save()
-        
-        """Assign the payment to the order"""
-        order.ordered=True
-        order.payment = payment
-        order.save()
+
 
 class HomeView(ListView):
     """
