@@ -326,7 +326,7 @@ class AddCouponView(View):
                 code = form.cleaned_data.get('code')
                 order = Order.objects.get(
                     user=self.request.user, ordered=False)
-                order.cupon = get_coupon(self.request, code)
+                order.coupon = get_coupon(self.request, code)
                 order.save()
                 messages.success(self.request, "Successfully added coupon")
                 return redirect("checkout")
