@@ -98,7 +98,22 @@ class Order(models.Model):
         'Payment', on_delete=models.SET_NULL, blank=True, null=True)
     coupon = models.ForeignKey(
         'Coupon', on_delete=models.SET_NULL, blank=True, null=True)
-
+    being_delivered = models.BooleanField(default=False)
+    received = models.BooleanField(default=False)
+    refund_requested = models.BooleanField(default=False)
+    refund_granted = models.BooleanField(default=False)
+    
+    """
+    Phases of an order:
+    1. Item added to cart
+    2. Adding a billing address
+    (Failed checkout)
+    3. Payment
+    (Preprocessing, processing, packaging etc.)
+    4. Being delivered
+    5. Received
+    6. Refunds
+    """
                                         
     def __str__(self):
         return self.user.username
