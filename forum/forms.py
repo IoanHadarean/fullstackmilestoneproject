@@ -8,6 +8,9 @@ class PostForm(forms.ModelForm):
     A form class that is connected to the Post model.
     Takes in a widgets dictionary for the Meta class
     that allows customizing different parts of the form.
+    The __init__ function is overwritten and the author field
+    is filtered by the 'user.username' to prevent selecting from
+    a dropdown of multiple users.
     """
     
     class Meta():
@@ -23,6 +26,24 @@ class PostForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['author'].queryset = User.objects.filter(username=user.username)
  
+ 
+class PostEditForm(forms.ModelForm):
+    """
+    A form class that is connected to the Post model
+    and allows editing a post. Takes in a widgets dictionary 
+    for the Meta class that allows customizing different parts
+    of the form.
+    """
+    
+    class Meta():
+        model = Post
+        fields = ('author', 'title', 'text')
+        
+        widgets = {
+            'title':forms.TextInput(attrs={'class': 'textinputclass'}),
+            'text':forms.Textarea(attrs={'class':'editable medium-editor-textarea'})
+        }
+
 
 class CommentForm(forms.ModelForm):
     """

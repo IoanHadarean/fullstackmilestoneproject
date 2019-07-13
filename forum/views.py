@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.db.models import Q
 from django.contrib import messages
-from forum.forms import PostForm, CommentForm
+from forum.forms import PostForm, CommentForm, PostEditForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import (ListView,CreateView, 
@@ -62,7 +62,7 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
     """
     login_url = 'accounts/login/'
     redirect_field_name = 'post_detail.html'
-    form_class = PostForm
+    form_class = PostEditForm
     model = Post
     
 class PostDeleteView(LoginRequiredMixin, DeleteView):
