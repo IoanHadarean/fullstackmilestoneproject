@@ -1,5 +1,7 @@
 from django import forms
+from django.shortcuts import get_object_or_404
 from forum.models import Post, Comment
+from django.contrib.auth.models import User
 
 class PostForm(forms.ModelForm):
     """
@@ -15,7 +17,12 @@ class PostForm(forms.ModelForm):
         widgets = {
             'title':forms.TextInput(attrs={'class': 'textinputclass'}),
             'text':forms.Textarea(attrs={'class':'editable medium-editor-textarea'})
-        }  
+        }
+        
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['author'].queryset = User.objects.filter(username=user.username)
+ 
 
 class CommentForm(forms.ModelForm):
     """

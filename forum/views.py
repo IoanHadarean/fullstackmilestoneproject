@@ -35,10 +35,15 @@ class CreatePostView(LoginRequiredMixin, CreateView):
     Create a post and redirect to the details for
     that post. The user needs to be logged in to create a post.
     """
-    login_url = 'accounts/login/'
-    redirect_field_name = 'post_detail.html'
-    form_class = PostForm
-    model = Post
+    def get(self, *args, **kwargs):
+        user = self.request.user
+        print(user)
+        form = PostForm(user)
+        form.author = user
+        context = {
+            'form': form
+        }
+        return render(self.request, "forum/post_form.html", context)
     
 class PostUpdateView(LoginRequiredMixin, UpdateView):
     """
