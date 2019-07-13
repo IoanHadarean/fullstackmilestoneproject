@@ -60,6 +60,12 @@ ul {
   font-weight: 500;
 }
 
+.logo-image {
+  width: 90px;
+  height: 60px;
+  margin-top: -10px;
+}
+
 /* ----------------------------------------------- Main content ---------------------------- */
 
 .content-section {

@@ -1,4 +1,5 @@
 {% load cart_template_tags %}
+{% load static %}
 
 <!-- Navbar -->
 <nav class="navbar fixed-top navbar-expand-lg navbar-light white scrolling-navbar">
@@ -17,8 +18,9 @@
       <ul class="navbar-nav mr-auto">
         <!-- Brand -->
         <a class="navbar-brand waves-effect" href="{% url 'home' %}">
-          <strong>Auction Place</strong>
+          <strong>Wedding Planner</strong>
         </a>
+        <img class="logo-image" src="{% static 'img/logo.jpg' %}" alt="brand-logo">
       </ul>
 
       <!-- Right -->
