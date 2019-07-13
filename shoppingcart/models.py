@@ -164,6 +164,7 @@ class Coupon(models.Model):
         
         
 class Refund(models.Model):
+    """Refund details for an order"""
     order = models.ForeignKey(Order, on_delete=models.CASCADE)
     reason = models.TextField()
     accepted = models.BooleanField(default=False)
