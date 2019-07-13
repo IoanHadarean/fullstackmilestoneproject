@@ -6,7 +6,7 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, View
 from django.utils import timezone
-from .forms import CheckoutForm, CouponForm
+from .forms import CheckoutForm, CouponForm, RefundForm
 from .models import Item, OrderItem, Order, BillingAddress, Payment, Coupon
 
 import random
@@ -343,7 +343,15 @@ class AddCouponView(View):
                 return redirect("checkout")
 
         
-        
+class RequestRefundView(view):
+    def post(self, *args, **kwargs):
+        form = RefundForm(request.POST)
+        if form.is_valid():
+            ref_code = form.cleaned_data.get('ref_code')
+            message = form.cleaned_data.get('message')
+            # edit the order
+            
+            # store the refund
         
         
         
