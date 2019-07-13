@@ -45,6 +45,7 @@ class RefundForm(forms.Form):
     """
     ref_code = forms.CharField()
     message = forms.Textarea()
+    email = forms.EmailField()
     
     
     

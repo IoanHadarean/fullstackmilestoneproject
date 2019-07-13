@@ -7,7 +7,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, View
 from django.utils import timezone
 from .forms import CheckoutForm, CouponForm, RefundForm
-from .models import Item, OrderItem, Order, BillingAddress, Payment, Coupon
+from .models import Item, OrderItem, Order, BillingAddress, Payment, Coupon, Refund
 
 import random
 import stripe
@@ -343,15 +343,32 @@ class AddCouponView(View):
                 return redirect("checkout")
 
         
-class RequestRefundView(view):
+class RequestRefundView(View):
     def post(self, *args, **kwargs):
-        form = RefundForm(request.POST)
+        form = RefundForm(self.request.POST)
         if form.is_valid():
             ref_code = form.cleaned_data.get('ref_code')
             message = form.cleaned_data.get('message')
-            # edit the order
-            
-            # store the refund
+            email = form.cleaned_data.get('email')
+            """Edit the order"""
+            try:
+                order = Order.objects.get(ref_code=ref_code)
+                order.refund_requested = True
+                order.save()
+                
+                """Store the refund"""
+                refund = Refund()
+                refund.order = order
+                refund.reason = message
+                refund.email = email
+                refund.save()
+                
+                messages.info(self.request, "Your request was received.")
+                return redirect("/")
+                
+            except ObjectDoesNotExist:
+                messages.info(self.request, "This order does not exist")
+                return redirect("/")
         
         
         

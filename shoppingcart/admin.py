@@ -1,5 +1,5 @@
 from django.contrib import admin
-from shoppingcart.models import Item, OrderItem, Order, Payment, Coupon
+from shoppingcart.models import Item, OrderItem, Order, Payment, Coupon, Refund 
 
 class OrderAdmin(admin.ModelAdmin):
     """
@@ -38,3 +38,4 @@ admin.site.register(OrderItem)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Payment)
 admin.site.register(Coupon)
+admin.site.register(Refund)
