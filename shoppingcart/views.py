@@ -351,7 +351,7 @@ class RequestRefundView(View):
         context = {
             'form': form
         }
-        return render(self.request, "request_refund.html", context)
+        return render(self.request, "shoppingcart/request_refund.html", context)
     
     """
     Post the refund form ref_code, message and email
