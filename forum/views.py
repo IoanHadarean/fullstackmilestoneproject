@@ -37,14 +37,24 @@ class CreatePostView(LoginRequiredMixin, CreateView):
     """
     def get(self, *args, **kwargs):
         user = self.request.user
-        print(user)
         form = PostForm(user)
         form.author = user
         context = {
             'form': form
         }
         return render(self.request, "forum/post_form.html", context)
-    
+        
+    def post(self, *args, **kwargs):
+        user = self.request.user
+        form = PostForm(user, self.request.POST or None)
+        if form.is_valid():
+            author = form.cleaned_data.get('author')
+            title = form.cleaned_data.get('title')
+            text = form.cleaned_data.get('text')
+            post = Post(author=author, title=title, text=text)
+            post.save()
+            return redirect('post_draft_list', username=user.username)
+
 class PostUpdateView(LoginRequiredMixin, UpdateView):
     """
     Update a single post and redirect to the details for

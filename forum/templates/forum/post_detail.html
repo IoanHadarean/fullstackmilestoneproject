@@ -42,7 +42,10 @@
     
     <!-- Button for adding a comment -->
     <hr>
+    <!-- Add comment button only if the post is published -->
+    {% if post.published_date %}
     <a class="btn btn-primary btn-comment" href="{% url 'add_comment_to_post' pk=post.pk %}">Add Comment</a>
+    {% endif %}
     
     <!-- Comments container with details of all comments -->
     <!-- If the comment is approved show the comment and the creation date -->
