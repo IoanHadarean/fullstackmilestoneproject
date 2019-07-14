@@ -165,6 +165,9 @@ class Payment(models.Model):
     def _str_(self):
         return self.user.username
         
+    class Meta:
+        verbose_name_plural = 'Addresses'
+        
         
 class Coupon(models.Model):
     """Coupon code for an order item"""

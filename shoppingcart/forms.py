@@ -8,21 +8,36 @@ PAYMENT_CHOICES = (
 )
 
 class CheckoutForm(forms.Form):
-    """Checkout form details"""
-    street_address = forms.CharField(widget=forms.TextInput(attrs={
-        'placeholder': '1234 Main St'
-    }))
-    appartment_address = forms.CharField(required=False, widget=forms.TextInput(attrs={
-        'placeholder': 'Appartment or suite'
-    }))
-    country = CountryField(blank_label='(select country)').formfield(
+    """
+    Checkout form details, including a shipping address and
+    a billing address. Has the options to use a default shipping
+    address and to set the billing address the same as the
+    shipping address.
+    """
+    shipping_address = forms.CharField(required=False)
+    shipping_address2 = forms.CharField(required=False)
+    shipping_country = CountryField(blank_label='(select country)').formfield(
+        required=False,
         widget=CountrySelectWidget(attrs={
             'class': 'custom-select d-block w-100'
         }))
-    zip_code = forms.CharField(widget=forms.TextInput(attrs={
-        'class': 'form-control'
-    }))
-    same_shipping_address = forms.BooleanField(required=False)
+    shipping_zip_code = forms.CharField(required=False)
+    
+    billing_address = forms.CharField(required=False)
+    billing_address2 = forms.CharField(required=False)
+    billing_country = CountryField(blank_label='(select country)').formfield(
+        required=False,
+        widget=CountrySelectWidget(attrs={
+            'class': 'custom-select d-block w-100'
+        }))
+    billing_zip_code = forms.CharField(required=False)
+    
+    same_billing_address = forms.BooleanField(required=False)
+    set_default_shipping = forms.BooleanField(required=False)
+    use_default_shipping = forms.BooleanField(required=False)
+    set_default_billing = forms.BooleanField(required=False)
+    use_default_billing = forms.BooleanField(required=False)
+    
     save_info = forms.BooleanField(required=False)
     payment_option = forms.ChoiceField(
         widget=forms.RadioSelect, choices=PAYMENT_CHOICES)
