@@ -7,7 +7,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, View
 from django.utils import timezone
 from .forms import CheckoutForm, CouponForm, RefundForm
-from .models import Item, OrderItem, Order, BillingAddress, Payment, Coupon, Refund
+from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund
 
 import random
 import stripe
@@ -59,12 +59,13 @@ class CheckoutView(View):
                 'same_shipping_address')
                 save_info = form.cleaned_data.get('save_info')"""
                 payment_option = form.cleaned_data.get('payment_option')
-                billing_address = BillingAddress(
+                billing_address = Address(
                     user=self.request.user,
                     street_address=street_address,
                     appartment_address=appartment_address,
                     country=country,
-                    zip_code=zip_code
+                    zip_code=zip_code,
+                    address_type='B'
                 )
                 billing_address.save()
                 order.billing_address = billing_address

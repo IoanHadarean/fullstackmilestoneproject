@@ -11,10 +11,10 @@ CATEGORY_CHOICES = (
     ('RN', 'Rings'),
     ('FL', 'Flowers'),
     ('HA', 'Hair Accessories'),
-    ('BP', 'Bags & Purses'),
+    ('BP', 'Purses'),
     ('NT', 'Neckties'),
     ('SH', 'Shirts'),
-    ('BS', 'Belts & Sashes'),
+    ('BS', 'Belts'),
 )
 
 LABEL_CHOICES = (
@@ -22,6 +22,12 @@ LABEL_CHOICES = (
     ('S', 'secondary'),
     ('D', 'danger')
 )
+
+ADDRESS_CHOICES = (
+    ('B', 'Billing'),
+    ('S', 'Shipping'),
+)
+
 
 class Item(models.Model):
     """
@@ -94,7 +100,11 @@ class Order(models.Model):
     ordered_date = models.DateTimeField()
     ordered = models.BooleanField(default=False)
     billing_address = models.ForeignKey(
-        'BillingAddress', on_delete=models.SET_NULL, blank=True, null=True)
+        'Address', related_name='billing_address', 
+        on_delete=models.SET_NULL, blank=True, null=True)
+    shipping_address = models.ForeignKey(
+        'Address', related_name='shipping_address', 
+        on_delete=models.SET_NULL, blank=True, null=True)
     payment = models.ForeignKey(
         'Payment', on_delete=models.SET_NULL, blank=True, null=True)
     coupon = models.ForeignKey(
@@ -129,14 +139,16 @@ class Order(models.Model):
         return total
         
         
-class BillingAddress(models.Model):
-    """Billing address details for a user"""
+class Address(models.Model):
+    """Address details for a user"""
     user = models.ForeignKey(settings.AUTH_USER_MODEL, 
                              on_delete=models.CASCADE)
     street_address = models.CharField(max_length=100)
     appartment_address = models.CharField(max_length=100)
     country = CountryField(multiple=True)
     zip_code = models.CharField(max_length=100)
+    address_type = models.CharField(max_length=1, choices=ADDRESS_CHOICES)
+    default = models.BooleanField(default=False)
     
     def __str__(self):
         return self.user.username
