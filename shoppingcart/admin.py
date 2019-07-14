@@ -1,5 +1,5 @@
 from django.contrib import admin
-from shoppingcart.models import Item, OrderItem, Order, Payment, Coupon, Refund 
+from shoppingcart.models import Item, OrderItem, Order, Payment, Coupon, Refund, Address 
 
 
 """Change the order from refund requested to refund granted"""
@@ -25,42 +25,75 @@ order_received.short_description = 'Update order to order received'
 
 class OrderAdmin(admin.ModelAdmin):
     """
-    Added order display by user and ordered 
-    into the admin page
+    Custom order admin display, including search
+    and filters.
     """
-    list_display = ['user', 
+    list_display = [
+                    'user', 
                     'ordered', 
                     'being_delivered',
                     'received',
                     'refund_requested',
                     'refund_granted',
                     'billing_address',
+                    'shipping_address',
                     'payment',
                     'coupon'
                    ]
     list_display_links = [
         'user',
         'billing_address',
+        'shipping_address',
         'payment',
         'coupon'
     ]
-    list_filter = ['ordered', 
+    list_filter = [
+                   'ordered', 
                    'being_delivered',
                    'received',
                    'refund_requested',
                    'refund_granted'
                   ]
     search_fields = [
-        'user__username',
-        'ref_code'
-    ]
-    actions = [make_refund_accepted, 
+                     'user__username',
+                     'ref_code'
+                    ]
+    actions = [
+               make_refund_accepted, 
                order_being_delivered,
-               order_received]
-    
+               order_received
+              ]
+               
+
+class AddressAdmin(admin.ModelAdmin):
+    """
+    Custom address admin display, including search 
+    and filters.
+    """
+    list_display = [
+                    'user',
+                    'street_address',
+                    'appartment_address',
+                    'country',
+                    'zip_code',
+                    'address_type',
+                    'default'
+                   ]
+    list_filter = [
+                   'default',
+                   'address_type',
+                   'country'
+                  ]
+    search_fields = [
+                     'user',
+                     'street_address',
+                     'appartment_address',
+                     'zip_code'
+                    ]
 admin.site.register(Item)
 admin.site.register(OrderItem)
 admin.site.register(Order, OrderAdmin)
 admin.site.register(Payment)
 admin.site.register(Coupon)
 admin.site.register(Refund)
+admin.site.register(Address, AddressAdmin)
