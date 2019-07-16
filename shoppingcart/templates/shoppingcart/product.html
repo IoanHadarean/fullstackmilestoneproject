@@ -21,7 +21,7 @@
           <div class="p-4">
 
             <div class="mb-3">
-              <a href="">
+              <a href="{% url 'filter_by_dresses' category='{{ object.category }}' %}">
                 <span class="badge purple mr-1">{{ object.get_category_display }}</span>
               </a>
             </div>
@@ -57,7 +57,7 @@
 
         <!--Grid column-->
         <div class="col-md-6 text-center">
-          <h4 class="my-4 h4">Check out our other products</h4>
+          <h4 class="my-4 h4">Liked these? You'll love these!</h4>
           <p> </p>
         </div>
       </div>

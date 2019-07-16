@@ -27,7 +27,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'filter_by_dresses' %}">Dresses</a>
+              <a class="nav-link" href="{% url 'filter_by_dresses' category='{{ object.category }}' %}">Dresses</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Shoes</a>
@@ -95,7 +95,7 @@
               <!--Card content-->
               <div class="card-body text-center">
                 <!--Category & Title-->
-                <a href="" class="grey-text">
+                <a href="{% url 'filter_by_dresses' category='{{ object.category }}' %}" class="grey-text">
                   <h5>{{ item.get_category_display }}</h5>
                 </a>
                 <h5>
