@@ -29,7 +29,11 @@
         {% endif %}
         <li class="list-group-item d-flex justify-content-between">
             <span>Total (GBP)</span>
+             {% if object.get_total > 0 %}
             <strong>£{{ order.get_total }}</strong>
+            {% else %}
+            <strong>£ 0</strong>
+            {% endif %}
         </li>
     </ul>
 
