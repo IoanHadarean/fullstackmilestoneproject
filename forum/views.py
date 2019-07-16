@@ -53,6 +53,7 @@ class CreatePostView(LoginRequiredMixin, CreateView):
             text = form.cleaned_data.get('text')
             post = Post(author=author, title=title, text=text)
             post.save()
+            messages.success(self.request, "Your post has been added to your drafts but it has not been published yet")
             return redirect('post_draft_list', username=user.username)
 
 class PostUpdateView(LoginRequiredMixin, UpdateView):
