@@ -8,7 +8,7 @@ class Profile(models.Model):
     A model class defined for a profile,
     with a default image and a one to one relationship
     with the user. The save method is overwritten
-    and the image is resized.
+    so that the profile image is resized.
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
     image = models.ImageField(default='default.jpeg', upload_to='profile_pics')

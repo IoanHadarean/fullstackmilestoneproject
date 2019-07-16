@@ -2,6 +2,7 @@ from django.db import models
 from django.conf import settings
 from django.shortcuts import reverse
 from django_countries.fields import CountryField
+from PIL import Image
 
 CATEGORY_CHOICES = (
     ('DRESSES', 'Dresses'),
@@ -31,7 +32,10 @@ ADDRESS_CHOICES = (
 
 class Item(models.Model):
     """
-    Item class that contains the details of an item
+    Item class that contains the details of an item. Has an add_to_cart
+    and a remove_from_cart method for adding/removing products from
+    the cart. The save method is overwritten so that the product image
+    is resized.
     """
     title = models.CharField(max_length=100)
     price = models.FloatField()
@@ -53,6 +57,16 @@ class Item(models.Model):
         
     def get_remove_from_cart_url(self):
         return reverse("remove_from_cart", kwargs={'slug': self.slug})
+        
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        
+        img = Image.open(self.image.path)
+        
+        if img.height > 300 or img.width > 300:
+            output_size = (300, 300)
+            img.thumbnail(output_size)
+            img.save(self.image.path)
 
 class OrderItem(models.Model):
     """

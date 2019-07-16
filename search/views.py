@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.db.models import Q
 from forum.models import Post
 from django.contrib import messages
-from shoppingcart.models import Item, CATEGORY_CHOICES
+from shoppingcart.models import Item
 
 
 def search_posts(request):
