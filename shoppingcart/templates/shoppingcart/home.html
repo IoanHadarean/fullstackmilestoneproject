@@ -59,9 +59,9 @@
           </ul>
           <!-- Links -->
 
-          <form class="form-inline">
+          <form class="form-inline" action="{% url 'search_products' %}" method="GET">
             <div class="md-form my-0">
-              <input class="form-control mr-sm-2" type="text" placeholder="Search" aria-label="Search">
+              <input class="form-control mr-sm-2" type="text" name="items" placeholder="Search" aria-label="Search">
             </div>
           </form>
         </div>

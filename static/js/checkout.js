@@ -34,6 +34,7 @@ if (useDefaultBilling) {
 sameBillingAddress.addEventListener('change', function() {
     if (this.checked) {
         hideableBillingForm.style.display = 'none';
+        
     }
     else {
         hideableBillingForm.style.display = 'block';

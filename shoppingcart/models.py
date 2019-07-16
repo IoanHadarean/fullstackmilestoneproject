@@ -4,17 +4,17 @@ from django.shortcuts import reverse
 from django_countries.fields import CountryField
 
 CATEGORY_CHOICES = (
-    ('DR', 'Dresses'),
-    ('SH', 'Shoes'),
-    ('SU', 'Suits'),
-    ('VL', 'Veils'),
-    ('RN', 'Rings'),
-    ('FL', 'Flowers'),
-    ('HA', 'Hair Accessories'),
-    ('BP', 'Purses'),
-    ('NT', 'Neckties'),
-    ('SH', 'Shirts'),
-    ('BS', 'Belts'),
+    ('DRESSES', 'Dresses'),
+    ('SHOES', 'Shoes'),
+    ('SUITS', 'Suits'),
+    ('VEILS', 'Veils'),
+    ('RINGS', 'Rings'),
+    ('FLOWERS', 'Flowers'),
+    ('HAIR ACCESSORIES', 'Hair Accessories'),
+    ('PURSES', 'Purses'),
+    ('NECKTIES', 'Neckties'),
+    ('SHIRTS', 'Shirts'),
+    ('BELTS', 'Belts'),
 )
 
 LABEL_CHOICES = (
@@ -36,7 +36,7 @@ class Item(models.Model):
     title = models.CharField(max_length=100)
     price = models.FloatField()
     discount_price = models.FloatField(blank=True, null=True)
-    category = models.CharField(choices=CATEGORY_CHOICES, max_length=2)
+    category = models.CharField(choices=CATEGORY_CHOICES, max_length=20)
     label = models.CharField(choices=LABEL_CHOICES, max_length=1)
     slug = models.SlugField()
     description = models.TextField()
