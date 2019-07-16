@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
   <!-- Products -->
     <div class="container">
@@ -26,7 +27,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a class="nav-link" href="#">Dresses</a>
+              <a class="nav-link" href="{% url 'filter_by_dresses' %}">Dresses</a>
             </li>
             <li class="nav-item">
               <a class="nav-link" href="#">Shoes</a>
@@ -60,8 +61,9 @@
           <!-- Links -->
 
           <form class="form-inline" action="{% url 'search_products' %}" method="GET">
+            {% csrf_token %}
             <div class="md-form my-0">
-              <input class="form-control mr-sm-2" type="text" name="items" placeholder="Search" aria-label="Search">
+              <input class="form-control mr-sm-2" id = "search_box" type="text" name="item_search" placeholder="Search" aria-label="Search">
             </div>
           </form>
         </div>
@@ -173,4 +175,7 @@
     </nav>
     {% endif %}
     </div>
+{% endblock %}
+{% block custom_js %}
+<script type="text/javascript" src="{% static 'js/ajax_search.js' %}"></script>
 {% endblock %}

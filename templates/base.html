@@ -97,6 +97,9 @@
   <script src="{% static 'js/alerts.js' %}"></script>
   <!-- Medium Editor -->
   <script src="//cdn.jsdelivr.net/npm/medium-editor@latest/dist/js/medium-editor.min.js"></script>
+  <script>
+    var csrf_token  = '{{ csrf_token }}';
+  </script>
 
   <!-- Custom JavaScript block -->
   {% block custom_js %}
