@@ -90,6 +90,13 @@ class AddressAdmin(admin.ModelAdmin):
                      'appartment_address',
                      'zip_code'
                     ]
+admin.site.unregister(Item)
+admin.site.unregister(OrderItem)
+admin.site.unregister(Order)
+admin.site.unregister(Payment)
+admin.site.unregister(Coupon)
+admin.site.unregister(Refund)
+admin.site.unregister(Address)
 admin.site.register(Item)
 admin.site.register(OrderItem)
 admin.site.register(Order, OrderAdmin)
@@ -97,3 +104,5 @@ admin.site.register(Payment)
 admin.site.register(Coupon)
 admin.site.register(Refund)
 admin.site.register(Address, AddressAdmin)
+
+

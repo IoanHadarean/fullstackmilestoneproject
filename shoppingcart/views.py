@@ -87,7 +87,7 @@ class CheckoutView(View):
                         address_type='S',
                         default=True
                     )
-                    if adress_qs.exists():
+                    if address_qs.exists():
                         shipping_address = address_qs[0]
                         order.shipping_address = shipping_address
                         order.save()
@@ -128,14 +128,27 @@ class CheckoutView(View):
                 else use the billing address from the form fields.
                 """
                 use_default_billing = form.cleaned_data.get('use_default_billing')
-                if use_default_billing:
+                """
+                Check if the billing address is the same as the shipping address
+                """
+                same_billing_address = form.cleaned_data.get('same_billing_address')
+                if same_billing_address:
+                    billing_address = shipping_address
+                    billing_address.pk = None
+                    billing_address.save()
+                    billing_address.address_type = 'B'
+                    billing_address.save()
+                    order.billing_address = billing_address
+                    order.save()
+                    
+                elif use_default_billing:
                     print("Using the default billing address")
                     address_qs = Address.objects.filter(
                         user=self.request.user,
                         address_type='B',
                         default=True
                     )
-                    if adress_qs.exists():
+                    if address_qs.exists():
                         billing_address = address_qs[0]
                         order.billing_address = billing_address
                         order.save()

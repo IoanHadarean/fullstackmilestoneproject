@@ -94,7 +94,7 @@ class Order(models.Model):
     """
     user = models.ForeignKey(settings.AUTH_USER_MODEL, 
                              on_delete=models.CASCADE)
-    ref_code = models.CharField(max_length=20)
+    ref_code = models.CharField(max_length=20, blank=True, null=True)
     items = models.ManyToManyField(OrderItem)
     start_date = models.DateTimeField(auto_now_add=True)
     ordered_date = models.DateTimeField()
@@ -145,13 +145,16 @@ class Address(models.Model):
                              on_delete=models.CASCADE)
     street_address = models.CharField(max_length=100)
     appartment_address = models.CharField(max_length=100)
-    country = CountryField(multiple=True)
+    country = CountryField(multiple=False)
     zip_code = models.CharField(max_length=100)
     address_type = models.CharField(max_length=1, choices=ADDRESS_CHOICES)
     default = models.BooleanField(default=False)
     
     def __str__(self):
         return self.user.username
+        
+    class Meta:
+        verbose_name_plural = 'Addresses'
 
 
 class Payment(models.Model):
@@ -164,9 +167,6 @@ class Payment(models.Model):
     
     def _str_(self):
         return self.user.username
-        
-    class Meta:
-        verbose_name_plural = 'Addresses'
         
         
 class Coupon(models.Model):
