@@ -20,7 +20,7 @@ from django.conf.urls.static import static
 from shoppingcart import urls as cart_urls
 
 urlpatterns = [
-    path('', cart_urls.HomeView.as_view()),
+    path('', cart_urls.HomeView.as_view(), name='home'),
     path('admin/', admin.site.urls),
     path('forum/', include('forum.urls')),
     path('accounts/', include('accounts.urls')),

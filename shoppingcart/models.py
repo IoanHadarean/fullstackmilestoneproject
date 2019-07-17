@@ -13,7 +13,6 @@ CATEGORY_CHOICES = (
     ('FLOWERS', 'Flowers'),
     ('HAIR ACCESSORIES', 'Hair Accessories'),
     ('PURSES', 'Purses'),
-    ('NECKTIES', 'Neckties'),
     ('SHIRTS', 'Shirts'),
     ('BELTS', 'Belts'),
 )
