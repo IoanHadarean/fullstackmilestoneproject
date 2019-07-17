@@ -3,32 +3,40 @@ from django.db.models import Q
 from forum.models import Post
 from django.contrib import messages
 from shoppingcart.models import Item
+from django.core.paginator import Paginator
+from django.views.generic import ListView
 
 
-def search_posts(request):
+class SearchPosts(ListView):
     """
     Search posts by title, text, created_date and 'published_date_isnull=False'.
     Note: searching by author does not work because author is a
     foreign key.
     """
-    post_list = Post.objects.filter((Q(title__icontains=request.GET['posts']) | 
-                    Q(text__icontains=request.GET['posts']) |
-                    Q(created_date__icontains=request.GET['posts'])) & 
+    model = Post
+    paginate_by = 5
+    
+    def get_queryset(self):
+        return Post.objects.filter((Q(title__icontains=self.request.GET['posts']) | 
+                    Q(text__icontains=self.request.GET['posts']) |
+                    Q(created_date__icontains=self.request.GET['posts'])) & 
                     Q(published_date__isnull=False))
-    return render(request, 'forum/post_list.html', {'post_list': post_list})
     
     
-def search_drafts(request):
+class SearchDrafts(ListView):
     """
     Search drafts by title, text, created_date and 'published_date_isnull=True'.
     Note: searching by author does not work because author is a
     foreign key.
     """
-    post_list = Post.objects.filter((Q(title__icontains=request.GET['posts']) | 
-                    Q(text__icontains=request.GET['posts']) |
-                    Q(created_date__icontains=request.GET['posts'])) & 
+    model = Post
+    paginate_by = 1
+    
+    def get_queryset(self):
+        return Post.objects.filter((Q(title__icontains=self.request.GET['posts']) | 
+                    Q(text__icontains=self.request.GET['posts']) |
+                    Q(created_date__icontains=self.request.GET['posts'])) & 
                     Q(published_date__isnull=True))
-    return render(request, 'forum/post_list.html', {'post_list': post_list})
 
 
 def search_products(request):
