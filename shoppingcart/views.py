@@ -126,11 +126,9 @@ class CheckoutView(View):
                     else:
                         messages.info(self.request, "Please fill in the required shipping address fields")
                 """
-                Check if there is a default billing address. If it is, use the default one,
+                First case: check if the billing address is the same as the shipping address.
+                Second case: check if there is a default billing address. If it is, use the default one,
                 else use the billing address from the form fields.
-                """
-                """
-                Check if the billing address is the same as the shipping address
                 """
                 
                 if same_billing_address:
@@ -168,6 +166,7 @@ class CheckoutView(View):
                     else:
                         messages.info(self.request, "Please fill in the required shipping address fields")
                         return redirect('checkout')
+                
                 elif use_default_billing:
                     print("Using the default billing address")
                     address_qs = Address.objects.filter(
@@ -272,7 +271,6 @@ class PaymentView(View):
             order.ref_code = create_ref_code()
             order.save()
             
-            messages.success(self.request, "Your order was successful.")
             return redirect("/")
         except stripe.error.CardError as e:
             """Since it's a decline, stripe.error.CardError will be caught"""
@@ -313,7 +311,7 @@ class HomeView(ListView):
     View for home page with all the products
     """
     model = Item
-    paginate_by = 10
+    paginate_by = 8
     template_name = "shoppingcart/home.html"
     
     

@@ -1,6 +1,6 @@
 from django.urls import path, re_path, include
 from . import views
-from search import urls as urls_search
+from search import views as search_views
 
 urlpatterns = [
     path('', views.PostListView.as_view(), name='post_list'),
@@ -15,5 +15,6 @@ urlpatterns = [
     re_path(r'^comment/(?P<pk>\d+)/remove/$', views.comment_remove, name='comment_remove'),
     re_path(r'^post/(?P<pk>\d+)/publish/$', views.post_publish, name='post_publish'),
     path('like/', views.like_post, name='like_post'),
-    path('', include(urls_search)),
+    path('search_posts/', search_views.SearchPosts.as_view(), name='search_posts'),
+    path('search_drafts/', search_views.SearchDrafts.as_view(), name='search_drafts'),
 ]

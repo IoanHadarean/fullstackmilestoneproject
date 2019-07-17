@@ -1,4 +1,4 @@
-from django.urls import path
+from django.urls import path, include
 from .views import (
     ItemDetailView, 
     CheckoutView, 
@@ -11,6 +11,7 @@ from .views import (
     AddCouponView,
     RequestRefundView
 )
+from search import urls as search_urls
 
 urlpatterns = [
     path('product/<slug>/', ItemDetailView.as_view(), name='product'),
@@ -23,5 +24,6 @@ urlpatterns = [
     path('remove_single_item_from_cart/<slug>/', remove_single_item_from_cart, 
          name='remove_single_item_from_cart'),
     path('payment/<payment_option>/', PaymentView.as_view(), name='payment'),
-    path('request_refund/',RequestRefundView.as_view(), name='request_refund')
+    path('request_refund/',RequestRefundView.as_view(), name='request_refund'),
+    path('', include(search_urls))
 ]
