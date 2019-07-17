@@ -40,12 +40,12 @@
                         <a class="btn btn-primary float-right" href="/">Continue Shopping</a>
                     </td>
                 </tr>
-                {% endfor %} {% if object.coupon %}
+                {% endfor %} {% if object.coupon and object.items.all %}
                 <tr>
                     <td colspan="4"><b>Coupon</b></td>
                     <td><b>-£{{ object.coupon.amount }}</b></td>
                 </tr>
-                {% endif %} {% if object.get_total %} {% if object.get_total > 0 %}
+                {% endif %} {% if object.get_total > 0 %}
 
                 <tr>
                     <td colspan="4"><b>Order Total</b></td>
@@ -57,6 +57,7 @@
                     <td><b>£ 0</b></td>
                 </tr>
                 {% endif %}
+                {% if object.items.all %}
                 <tr>
                     <td colspan="5">
                         <a class="btn btn-warning float-right ml-2" href="/shoppingcart/checkout/">Proceed to checkout</a>

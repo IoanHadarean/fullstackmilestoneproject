@@ -481,8 +481,12 @@ class AddCouponView(View):
                     user=self.request.user, ordered=False)
                 order.coupon = get_coupon(self.request, code)
                 order.save()
-                messages.success(self.request, "Successfully added coupon")
-                return redirect("checkout")
+                if order.get_total() - order.coupon.amount > 0:
+                    messages.success(self.request, "Successfully added coupon")
+                    return redirect("checkout")
+                else:
+                    messages.warning(self.request, "You can not use this coupon for items with the price less than the value of the coupon")
+                    return redirect("checkout")
             except ObjectDoesNotExist:
                 messages.info(self.request, "You do not have an active order")
                 return redirect("checkout")
