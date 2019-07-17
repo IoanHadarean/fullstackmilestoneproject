@@ -58,6 +58,11 @@ class Item(models.Model):
     def get_remove_from_cart_url(self):
         return reverse("remove_from_cart", kwargs={'slug': self.slug})
         
+    def get_discount_price(self):
+        if self.discount_price:
+            total_price = self.price - self.discount_price
+        return total_price
+        
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
         
