@@ -194,7 +194,7 @@ class Coupon(models.Model):
     valid_from = models.DateTimeField(blank=True, null=True)
     valid_to = models.DateTimeField(blank=True, null=True)
     active = models.BooleanField(default=True)
-    numbers_of_usages_allowed = models.IntegerField(default=100)
+    number_of_usages_allowed = models.IntegerField(default=100)
     
     def __str__(self):
         return self.code
