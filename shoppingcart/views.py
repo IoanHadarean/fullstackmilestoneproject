@@ -469,21 +469,22 @@ class AddCouponView(View):
                 order = Order.objects.get(
                     user=self.request.user, ordered=False)
                 try:
-                    get_coupon = Coupon.objects.get(code=code, is_used=False)
+                    get_coupon = Coupon.objects.get(code__iexact=code, 
+                                                    valid_from__lte=now,
+                                                    valid_to_gte=now,
+                                                    active=True)
                     order.coupon = get_coupon
                     order.save()
                 except ObjectDoesNotExist:
-                    messages.info(self.request, "You have already used this coupon")
+                    messages.info(self.request, "This coupon was already used")
                     return redirect("checkout")
-                print(order.get_total())
-                if order.get_total() > 0 and order.coupon.is_used == False:
-                    order.coupon.is_used = True
+                if order.get_total() > 0 and order.coupon.active == True:
+                    order.coupon.active = False
                     order.save()
                     order.coupon.save()
                     messages.success(self.request, "Successfully added coupon")
                     return redirect("checkout")
                 else:
-                    print(order.get_total())
                     messages.warning(self.request, "You can not use this coupon for items with the price less than the value of the coupon")
                     return redirect("checkout")
             except ObjectDoesNotExist:

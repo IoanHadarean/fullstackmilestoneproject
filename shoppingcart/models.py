@@ -189,13 +189,26 @@ class Payment(models.Model):
         
 class Coupon(models.Model):
     """Coupon code for an order item"""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL, blank=True, null=True)
     code = models.CharField(max_length=15)
     amount = models.FloatField()
-    is_used = models.BooleanField(default=False)
+    valid_from = models.DateTimeField(blank=True, null=True)
+    valid_to = models.DateTimeField(blank=True, null=True)
+    active = models.BooleanField(default=True)
     
     def __str__(self):
         return self.code
-        
+   
+
+class UserCoupon(models.Model):
+    """Coupon code for each user"""
+    user = models.ForeignKey(settings.AUTH_USER_MODEL,
+        on_delete=models.SET_NULL, blank=True, null=True)
+    is_used = models.BooleanField(default=False)
+    coupon = models.ForeignKey(
+        'Coupon', on_delete=models.SET_NULL, blank=True, null=True)
+    
         
 class Refund(models.Model):
     """Refund details for an order"""
