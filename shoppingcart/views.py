@@ -1,5 +1,6 @@
 from django.conf import settings
 from django.contrib import messages
+from django.utils import timezone
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.exceptions import ObjectDoesNotExist
@@ -7,7 +8,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, View
 from django.utils import timezone
 from .forms import CheckoutForm, CouponForm, RefundForm
-from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund
+from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, UserCoupon
 
 import random
 import stripe
@@ -468,21 +469,33 @@ class AddCouponView(View):
                 code = form.cleaned_data.get('code')
                 order = Order.objects.get(
                     user=self.request.user, ordered=False)
+                now = timezone.now()
                 try:
                     get_coupon = Coupon.objects.get(code__iexact=code, 
                                                     valid_from__lte=now,
-                                                    valid_to_gte=now,
+                                                    valid_to__gte=now,
                                                     active=True)
+                    """Get or create a user coupon with the user from the request"""
+                    user_coupon = UserCoupon.objects.get_or_create(user=self.request.user)
                     order.coupon = get_coupon
                     order.save()
                 except ObjectDoesNotExist:
-                    messages.info(self.request, "This coupon was already used")
+                    messages.info(self.request, "This coupon is no longer active")
                     return redirect("checkout")
-                if order.get_total() > 0 and order.coupon.active == True:
-                    order.coupon.active = False
+                """Get the coupon corresponding to a certain user"""
+                user_coupon = UserCoupon.objects.get(user=self.request.user)
+                """
+                Check if the coupon total is not more than the value of the order
+                and if the user has not already used that coupon.
+                """
+                if order.get_total() > 0 and user_coupon.is_used == False:
+                    user_coupon.is_used = True
+                    user_coupon.save()
                     order.save()
-                    order.coupon.save()
                     messages.success(self.request, "Successfully added coupon")
+                    return redirect("checkout")
+                elif order.get_total() > 0 and user_coupon.is_used == True:
+                    messages.warning(self.request, "You have already used this coupon")
                     return redirect("checkout")
                 else:
                     messages.warning(self.request, "You can not use this coupon for items with the price less than the value of the coupon")
