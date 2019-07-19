@@ -191,6 +191,7 @@ class Coupon(models.Model):
     """Coupon code for an order item"""
     code = models.CharField(max_length=15)
     amount = models.FloatField()
+    is_used = models.BooleanField(default=False)
     
     def __str__(self):
         return self.code

@@ -271,6 +271,7 @@ class PaymentView(View):
             order.ref_code = create_ref_code()
             order.save()
             
+            messages.success(self.request, "Your order was successful!")
             return redirect("/")
         except stripe.error.CardError as e:
             """Since it's a decline, stripe.error.CardError will be caught"""
@@ -456,16 +457,6 @@ def remove_single_item_from_cart(request, slug):
     else:
         messages.info(request, "You do not have an active order.")
         return redirect("product", slug=slug)
-        
-        
-def get_coupon(request, code):
-    """Get the cupon code if it exists"""
-    try:
-        coupon = Coupon.objects.get(code=code)
-        return coupon
-    except ObjectDoesNotExist:
-        messages.info(request, "This coupon does not exist")
-        return redirect("checkout")
 
 
 class AddCouponView(View):
@@ -477,12 +468,22 @@ class AddCouponView(View):
                 code = form.cleaned_data.get('code')
                 order = Order.objects.get(
                     user=self.request.user, ordered=False)
-                order.coupon = get_coupon(self.request, code)
-                order.save()
-                if order.get_total() - order.coupon.amount > 0:
+                try:
+                    get_coupon = Coupon.objects.get(code=code, is_used=False)
+                    order.coupon = get_coupon
+                    order.save()
+                except ObjectDoesNotExist:
+                    messages.info(self.request, "You have already used this coupon")
+                    return redirect("checkout")
+                print(order.get_total())
+                if order.get_total() > 0 and order.coupon.is_used == False:
+                    order.coupon.is_used = True
+                    order.save()
+                    order.coupon.save()
                     messages.success(self.request, "Successfully added coupon")
                     return redirect("checkout")
                 else:
+                    print(order.get_total())
                     messages.warning(self.request, "You can not use this coupon for items with the price less than the value of the coupon")
                     return redirect("checkout")
             except ObjectDoesNotExist:
