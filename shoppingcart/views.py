@@ -484,22 +484,18 @@ class AddCouponView(View):
                     return redirect("checkout")
                 """Get the coupon corresponding to a certain user"""
                 user_coupon = UserCoupon.objects.get(user=self.request.user)
-                get_coupon = Coupon.objects.get(code__iexact=code, 
-                                                    valid_from__lte=now,
-                                                    valid_to__gte=now,
-                                                    active=True)
                 """
                 Check if the coupon total is not more than the value of the order
                 and if the user has not already used that coupon.
                 """
                 if order.get_total() > 0 and user_coupon.is_used == False:
                     user_coupon.is_used = True
-                    if get_coupon.number_of_usages_allowed > 0:
-                        get_coupon.number_of_usages_allowed -= 1
-                        get_coupon.save()
+                    if order.coupon.number_of_usages_allowed > 0:
+                        order.coupon.number_of_usages_allowed -= 1
+                        order.coupon.save()
                     else:
-                        get_coupon.active = False
-                        get_coupon.save()
+                        order.coupon.active = False
+                        order.coupon.save()
                     user_coupon.save()
                     order.save()
                     messages.success(self.request, "Successfully added coupon")

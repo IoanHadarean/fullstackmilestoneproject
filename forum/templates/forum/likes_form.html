@@ -1,0 +1,14 @@
+<!-- Likes count -->
+<p id= "total-likes">{{ total_likes }} Like{{ total_likes|pluralize }}</p>
+
+
+
+{% if post.author != request.user and request.user.is_authenticated %}
+<!-- Form for likes/dislikes -->
+<form action="{% url 'like_post' pk=post.pk %}" method="POST">
+    {% csrf_token %} 
+    {% if is_liked %}
+    <button type="submit" name="post_id" id = "like-post" value="{{ post.id }}" class="btn btn-danger">Dislike</button> {% else %}
+    <button type="submit" name="post_id" id = "like-post" value="{{ post.id }}" class="btn btn-primary">Like</button> {% endif %}
+</form>
+{% endif %}

@@ -4,12 +4,16 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.db.models import Q
+import json
+from django.template.loader import render_to_string
+from django.http import HttpResponse, JsonResponse
 from django.contrib import messages
+from django.views.decorators.http import require_POST
 from forum.forms import PostForm, CommentForm, PostEditForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import (ListView,CreateView, 
-                                  UpdateView, DeleteView)
+                                  UpdateView, RedirectView, DeleteView)
 
 
 class PostListView(ListView):
@@ -101,21 +105,50 @@ def post_detail(request, pk):
         'total_likes': post.total_likes(),
     }
     return render(request, 'forum/post_detail.html', context)
-    
-def like_post(request):
+  
+  
+class PostLikeToggle(RedirectView):
     """
     Like a specific post. If the like already exists 
     in the database, remove the like for that user.
     """
-    post = get_object_or_404(Post, id=request.POST.get('post_id'))
-    is_liked = False
-    if post.likes.filter(id=request.user.id).exists():
-        post.likes.remove(request.user)
-        is_liked = False
-    else:
-        post.likes.add(request.user)
-        is_liked = True
-    return HttpResponseRedirect(post.get_absolute_url())
+    def get_redirect_url(self, *args, **kwargs):
+        pk = self.kwargs.get("pk")
+        print(pk)
+        post = get_object_or_404(Post, pk=pk)
+        url = post.get_absolute_url()
+        user = self.request.user
+        if user.is_authenticated:
+            if user in post.likes.all():
+                post.likes.remove(user)
+            else:
+                post.likes.add(user)
+        return url
+        
+        
+# @login_required
+# def like_post(request):
+#     """
+#     Like a specific post. If the like already exists 
+#     in the database, remove the like for that user.
+#     """
+#     post = get_object_or_404(Post, id=request.POST.get('post_id'))
+#     is_liked = False
+#     if post.likes.filter(id=request.user.id).exists():
+#         post.likes.remove(request.user)
+#         is_liked = False
+#     else:
+#         post.likes.add(request.user)
+#         is_liked = True
+#     context = {
+#         'post': post,
+#         'is_liked': is_liked,
+#         'total_likes': post.total_likes(),
+#     }
+#         # return HttpResponseRedirect(post.get_absolute_url())
+#     if request.is_ajax():
+#         form = render_to_string(context, request, 'forum/likes_form.html')
+#         return JsonResponse({'form': form})
 
 @login_required
 def post_publish(request,pk):

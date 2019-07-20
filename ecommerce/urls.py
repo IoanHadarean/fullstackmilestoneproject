@@ -18,6 +18,7 @@ from django.urls import path, include
 from django.conf import settings
 from django.conf.urls.static import static
 from shoppingcart import urls as cart_urls
+from forum import views
 
 urlpatterns = [
     path('', cart_urls.HomeView.as_view(), name='home'),
@@ -25,7 +26,7 @@ urlpatterns = [
     path('forum/', include('forum.urls')),
     path('accounts/', include('accounts.urls')),
     path('reset/', include('accounts.urls_reset')),
-    path('shoppingcart/', include('shoppingcart.urls'))
+    path('shoppingcart/', include('shoppingcart.urls')),
 ]
 
 if settings.DEBUG:

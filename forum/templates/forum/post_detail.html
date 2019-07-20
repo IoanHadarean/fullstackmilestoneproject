@@ -1,4 +1,5 @@
 {% extends 'base.html' %}
+{% load static %}
 {% block content %}
     
     <!-- Details for a single post -->
@@ -15,22 +16,10 @@
     
     <p class="postcontent">{{post.text|striptags|safe|linebreaksbr}}</p>
     
-    <!-- Likes count -->
-    <p>{{ total_likes }} Like{{ total_likes|pluralize }}</p>
-
-    
-    
-    {% if post.author != request.user and request.user.is_authenticated %}
-    <!-- Form for likes/dislikes -->
-    <form action="{% url 'like_post' %}" method="POST">
-        {% csrf_token %}
-        {% if is_liked %}
-        <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-danger">Dislike</button>
-        {% else %}
-         <button type="submit" name="post_id" value="{{ post.id }}" class="btn btn-primary">Like</button>
-        {% endif %}
-    </form>
-    {% endif %}
+    <!-- Include likes-form-->
+    <div id="like-section">
+    {% include 'forum/likes_form.html' %}
+    </div>
     
     <!-- Buttons for editing and removing posts -->
     {% if user.is_authenticated %}
