@@ -44,15 +44,11 @@
     <p>Posted By: {{comment.author}}</p>
     <a class="btn btn-primary btn-reply" href="{% url 'add_reply_to_comment' pk=post.pk id=comment.id %}">Reply</a>
     {% endif %}
-     <div class = "replied-comments container mt-2">
         {% for reply in comment.replies.all %}
-        <blockquote class="blockquote"><
-        <p>{{ reply.created_date }}</p>
-        <p>{{ reply.text|safe|linebreaks}}</p>
-        <p>Posted By: {{ reply.author }}</p>
-        </blockquote>
+            <blockquote class="blockquote">
+            {{ reply.created_date}}{{reply.text|safe|linebreaks}}Posted By: {{reply.author|striptags|safe }}
+            </blockquote>
         {% endfor %}
-    </div>
     {% endif %} 
     {% empty %}
     <p>No Comments</p>
@@ -61,3 +57,6 @@
 {% endblock %}
 <!-- Include forum-box -->
 {% block forum %} {% include 'includes/forum-box.html' %} {% endblock %}
+{% block custom_js %}
+<script src="{% static 'js/post_detail.js' %}"></script>
+{% endblock %}

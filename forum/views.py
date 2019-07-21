@@ -190,12 +190,10 @@ def add_reply_to_comment(request, pk, id):
             author = request.POST.get('author')
             text = request.POST.get('text')
             reply_id = request.POST.get('comment_id')
-            print(reply_id)
             comment_qs = None
             if reply_id:
                 comment_qs = Comment.objects.get(id=reply_id)
             comment = Comment.objects.create(post = post, reply=comment_qs, author=author, text=text, approved_comment=True)
-            print(comment)
             comment.save()
             messages.success(request, "Your reply has been successfully added")
             return HttpResponseRedirect(post.get_absolute_url())

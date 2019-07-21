@@ -29,7 +29,12 @@
             <p>Written by <a class="mr-2" href="{% url 'user_posts' post.author.username %}">{{ post.author }}</a> on {{post.published_date|date:"D M Y"}}</p>
         </div>
         <a href="{% url 'post_detail' pk=post.pk %}">Comments: 
-        {{ post.approve_comments.count }}</a>
+        {% for comment in post.comments.all %}
+            {% if comment.approved_comment and not comment.reply %}
+                {{ comment.count_comments.count }}
+            {% endif %}
+        {% endfor %}
+        </a>
     </div>
     {% endfor %}
 
