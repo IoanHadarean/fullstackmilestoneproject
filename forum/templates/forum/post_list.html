@@ -18,6 +18,28 @@
             {% endif %}
         </div>
     </div>
+    {% if post_list.count == 1 %}
+    <p>{{ post_list.count }} post has been found</p>
+    {% else %}
+    <p>{{ post_list.count }} posts have been found</p>
+    {% endif %}
+    {% else %}
+    <div class="container">
+        <div class="display">
+            {% if 'drafts/' in request.path %}
+            <form action="{% url 'search_drafts' %}" method="GET">
+                <input type="text" class="col-md-8" name="posts">
+                <button class="btn btn-primary" type="submit">Search</button>
+            </form>
+            {% else %}
+            <form action="{% url 'search_posts' %}" method="GET">
+                <input type="text" class="col-md-8" name="posts">
+                <button class="btn btn-primary" type="submit">Search</button>
+            </form>
+            {% endif %}
+        </div>
+    </div>
+    <p>No posts have been found</p>
     {% endif %}
 
     <!-- Post list -->
