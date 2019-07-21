@@ -107,48 +107,53 @@ def post_detail(request, pk):
     return render(request, 'forum/post_detail.html', context)
   
   
-class PostLikeToggle(RedirectView):
-    """
-    Like a specific post. If the like already exists 
-    in the database, remove the like for that user.
-    """
-    def get_redirect_url(self, *args, **kwargs):
-        pk = self.kwargs.get("pk")
-        print(pk)
-        post = get_object_or_404(Post, pk=pk)
-        url = post.get_absolute_url()
-        user = self.request.user
-        if user.is_authenticated:
-            if user in post.likes.all():
-                post.likes.remove(user)
-            else:
-                post.likes.add(user)
-        return url
-        
-        
-# @login_required
-# def like_post(request):
+# class PostLikeToggle(RedirectView):
 #     """
 #     Like a specific post. If the like already exists 
 #     in the database, remove the like for that user.
 #     """
-#     post = get_object_or_404(Post, id=request.POST.get('post_id'))
-#     is_liked = False
-#     if post.likes.filter(id=request.user.id).exists():
-#         post.likes.remove(request.user)
-#         is_liked = False
-#     else:
-#         post.likes.add(request.user)
-#         is_liked = True
-#     context = {
-#         'post': post,
-#         'is_liked': is_liked,
-#         'total_likes': post.total_likes(),
-#     }
-#         # return HttpResponseRedirect(post.get_absolute_url())
-#     if request.is_ajax():
-#         form = render_to_string(context, request, 'forum/likes_form.html')
-#         return JsonResponse({'form': form})
+#     def get_redirect_url(self, *args, **kwargs):
+#         pk = self.kwargs.get("pk")
+#         print(pk)
+#         post = get_object_or_404(Post, pk=pk)
+#         url = post.get_absolute_url()
+#         user = self.request.user
+#         if user.is_authenticated:
+#             if user in post.likes.all():
+#                 post.likes.remove(user)
+#             else:
+#                 post.likes.add(user)
+#         return url
+        
+        
+
+def like_post(request, pk):
+    """
+    Like a specific post. If the like already exists 
+    in the database, remove the like for that user.
+    """
+    post = get_object_or_404(Post, pk=pk)
+    is_liked = False
+    if post.likes.filter(id=request.user.id).exists():
+        post.likes.remove(request.user)
+        is_liked = False
+    else:
+        post.likes.add(request.user)
+        is_liked = True
+    context = {
+        'post': post,
+        'is_liked': is_liked,
+        'total_likes': post.total_likes(),
+    }
+    # return HttpResponseRedirect(post.get_absolute_url())
+    if request.is_ajax():
+        print("yes")
+        form = render_to_string('forum/likes_form.html', context, request=request)
+        return JsonResponse({'form': form})
+    else:
+        print("No")
+        
+    return render(request, 'forum/post_detail.html', context)
 
 @login_required
 def post_publish(request,pk):
@@ -163,7 +168,7 @@ def add_comment_to_post(request,pk):
     """Allow adding a comment to a post"""
     post = get_object_or_404(Post,pk=pk)
     if request.method == "POST":
-        form = CommentForm(request.POST)
+        form = CommentForm(request.POST or None)
         if form.is_valid():
             comment = form.save(commit=False)
             comment.post = post
@@ -173,6 +178,32 @@ def add_comment_to_post(request,pk):
     else:
         form = CommentForm()
     return render(request, 'forum/comment_form.html', {'form':form})
+   
+@login_required
+def add_reply_to_comment(request, pk, id):
+    """Allow adding a reply to a post comment"""
+    comment = get_object_or_404(Comment, id=id)
+    post = get_object_or_404(Post, pk=pk)
+    if request.method == "POST":
+        form = CommentForm(request.POST or None)
+        if form.is_valid():
+            author = request.POST.get('author')
+            text = request.POST.get('text')
+            reply_id = request.POST.get('comment_id')
+            print(reply_id)
+            comment_qs = None
+            if reply_id:
+                comment_qs = Comment.objects.get(id=reply_id)
+            comment = Comment.objects.create(post = post, reply=comment_qs, author=author, text=text, approved_comment=True)
+            print(comment)
+            comment.save()
+            messages.success(request, "Your reply has been successfully added")
+            return HttpResponseRedirect(post.get_absolute_url())
+    else:
+        form = CommentForm()
+    return render(request, 'forum/reply_form.html', {'form':form, 'comment': comment})
+    
+   
     
 @login_required
 def comment_approve(request, pk):

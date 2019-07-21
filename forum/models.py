@@ -20,7 +20,7 @@ class Post(models.Model):
         return self.comments.filter(approved_comment=True)
     
     def get_absolute_url(self):
-        return reverse("post_detail", kwargs={'pk':self.pk})
+        return reverse("post_detail", kwargs={'pk': self.pk})
     
     def total_likes(self):
         return self.likes.count
@@ -32,6 +32,7 @@ class Post(models.Model):
 class Comment(models.Model):
     """A model class used for a single comment"""
     post = models.ForeignKey('forum.Post', related_name='comments', on_delete=models.CASCADE)
+    reply = models.ForeignKey("Comment", null=True, related_name='replies', on_delete=models.CASCADE)
     author = models.CharField(max_length=200)
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
@@ -46,3 +47,7 @@ class Comment(models.Model):
         
     def __str__(self):
         return self.text
+        
+        
+        
+        

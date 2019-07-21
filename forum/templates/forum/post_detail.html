@@ -1,66 +1,63 @@
-{% extends 'base.html' %}
-{% load static %}
-{% block content %}
-    
-    <!-- Details for a single post -->
-    <h1 class="posttitle">{{ post.title }}</h1>
-    {% if post.published_date %}
-        <div class="date postdate">
-            Written by <a class="mr-2" href="{% url 'user_posts' post.author.username %}">{{ post.author }}</a> on {{post.published_date|date:"D M Y"}}
-        </div>
-    {% else %}
-        {% if post.author == request.user %}
-            <a class="btn btn-default" href="{% url 'post_publish' pk=post.pk %}">Publish</a>
-        {% endif %}
-    {% endif %}
-    
-    <p class="postcontent">{{post.text|striptags|safe|linebreaksbr}}</p>
-    
-    <!-- Include likes-form-->
-    <div id="like-section">
+{% extends 'base.html' %} {% load static %} {% block content %}
+
+<!-- Details for a single post -->
+<h1 class="posttitle">{{ post.title }}</h1>
+{% if post.published_date %}
+<div class="date postdate">
+    Written by <a class="mr-2" href="{% url 'user_posts' post.author.username %}">{{ post.author }}</a> on {{post.published_date|date:"D M Y"}}
+</div>
+{% else %} {% if post.author == request.user %}
+<a class="btn btn-default" href="{% url 'post_publish' pk=post.pk %}">Publish</a> {% endif %} {% endif %}
+
+<p class="postcontent">{{post.text|striptags|safe|linebreaksbr}}</p>
+
+<!-- Include likes-form-->
+<div id="like-section">
     {% include 'forum/likes_form.html' %}
-    </div>
-    
-    <!-- Buttons for editing and removing posts -->
-    {% if user.is_authenticated %}
-        {% if post.author == request.user %}
-        <a class="btn btn-primary" href="{% url 'post_edit' pk=post.pk %}"><i class="fa fa-edit"></i></a>
-        <a class="btn btn-primary" href="{% url 'post_remove' pk=post.pk %}"><i class="fa fa-trash-alt"></i></a>
-        {% endif %}
+</div>
+
+<!-- Buttons for editing and removing posts -->
+{% if user.is_authenticated %} {% if post.author == request.user %}
+<a class="btn btn-primary" href="{% url 'post_edit' pk=post.pk %}"><i class="fa fa-edit"></i></a>
+<a class="btn btn-primary" href="{% url 'post_remove' pk=post.pk %}"><i class="fa fa-trash-alt"></i></a> {% endif %} {% endif %}
+
+<!-- Button for adding a comment -->
+<hr>
+<!-- Add comment button only if the post is published -->
+{% if post.published_date %}
+<a class="btn btn-primary btn-comment" href="{% url 'add_comment_to_post' pk=post.pk %}">Add Comment</a> {% endif %}
+
+<!-- Comments container with details of all comments -->
+<!-- If the comment is approved show the comment and the creation date -->
+<!-- If the comment is not approved add buttons for removing and approving the comment for the superuser-->
+<!-- If there are no comments add a paragraph with a text of 'No Comments' -->
+<div class="container">
+    {% for comment in post.comments.all %}
+    <br> {% if user.is_authenticated %} {% if not comment.approved_comment %} {% if user.is_superuser %}
+    <p>{{ comment.created_date }}</p>
+    <p>{{comment.text|safe|linebreaks}}</p>
+    <p>Posted By: {{comment.author}}</p>
+    <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}"><i class="fa fa-trash"></i></a>
+    <a class="btn btn-primary" href="{% url 'comment_approve' pk=comment.pk %}"><i class="fa fa-check"></i></a> {% endif %} {% endif %} {% if comment.approved_comment and not comment.reply %}
+    <p>{{ comment.created_date }}</p>
+    <p>{{comment.text|safe|linebreaks}}</p>
+    <p>Posted By: {{comment.author}}</p>
+    <a class="btn btn-primary btn-reply" href="{% url 'add_reply_to_comment' pk=post.pk id=comment.id %}">Reply</a>
     {% endif %}
-    
-    <!-- Button for adding a comment -->
-    <hr>
-    <!-- Add comment button only if the post is published -->
-    {% if post.published_date %}
-    <a class="btn btn-primary btn-comment" href="{% url 'add_comment_to_post' pk=post.pk %}">Add Comment</a>
-    {% endif %}
-    
-    <!-- Comments container with details of all comments -->
-    <!-- If the comment is approved show the comment and the creation date -->
-    <!-- If the comment is not approved add buttons for removing and approving the comment for the superuser-->
-    <!-- If there are no comments add a paragraph with a text of 'No Comments' -->
-    <div class="container">
-        {% for comment in post.comments.all %}
-        <br>
-            {% if user.is_authenticated %}
-                {% if not comment.approved_comment %}
-                    {% if user.is_superuser %}
-                        <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}"><i class="fa fa-trash"></i></a>
-                        <a class="btn btn-primary" href="{% url 'comment_approve' pk=comment.pk %}"><i class="fa fa-check"></i></a>
-                    {% endif %}
-                {% endif %}
-                
-                {% if comment.approved_comment %}
-                    <p>{{ comment.created_date }}</p>
-                    <p>{{comment.text|safe|linebreaks}}</p>
-                    <p>Posted By: {{comment.author}}</p>
-                {% endif %}
-            {% endif %}
-            {% empty %}
-            <p>No Comments</p>
+     <div class = "replied-comments container mt-2">
+        {% for reply in comment.replies.all %}
+        <blockquote class="blockquote"><
+        <p>{{ reply.created_date }}</p>
+        <p>{{ reply.text|safe|linebreaks}}</p>
+        <p>Posted By: {{ reply.author }}</p>
+        </blockquote>
         {% endfor %}
     </div>
+    {% endif %} 
+    {% empty %}
+    <p>No Comments</p>
+    {% endfor %}
+</div>
 {% endblock %}
 <!-- Include forum-box -->
 {% block forum %} {% include 'includes/forum-box.html' %} {% endblock %}

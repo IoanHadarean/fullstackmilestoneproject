@@ -1,0 +1,23 @@
+{% extends 'base.html' %}
+{% block content %}
+    
+    <!-- Form for adding a new reply -->
+    <h1>New Reply</h1>
+    <form class="post-form" method="POST">
+        {% csrf_token %}
+        <input type = "hidden" name="comment_id" value={{ comment.id }}>
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Post Reply</button>
+    </form>
+{% endblock %}
+
+{% block custom_js %}
+      <script>var editor = new MediumEditor('.editable', {
+         placeholder: {
+             text: "Add Your Comment Here"
+         }
+     });</script>
+{% endblock %}
+
+<!-- Include forum-box -->
+{% block forum %} {% include 'includes/forum-box.html' %} {% endblock %}
