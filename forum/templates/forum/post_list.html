@@ -9,7 +9,7 @@
             <form action="{% url 'search_drafts' %}" method="GET">
                 <input type="text" class="col-md-8" name="posts">
                 <button class="btn btn-primary" type="submit">Search</button>
-            </form>
+            </form
             {% else %}
             <form action="{% url 'search_posts' %}" method="GET">
                 <input type="text" class="col-md-8" name="posts">
@@ -17,12 +17,20 @@
             </form>
             {% endif %}
         </div>
+        {% if 'drafts/' in request.path %}
+        {% if post_list.count == 1 %}
+            <p>{{ post_list.count }} draft has been found</p>
+        {% else %}
+            <p>{{ post_list.count }} drafts have been found</p>
+        {% endif %}
+        {% else %}
+         {% if post_list.count == 1 %}
+            <p>{{ post_list.count }} post has been found</p>
+        {% else %}
+            <p>{{ post_list.count }} posts have been found</p>
+        {% endif %}   
+        {% endif %}
     </div>
-    {% if post_list.count == 1 %}
-    <p>{{ post_list.count }} post has been found</p>
-    {% else %}
-    <p>{{ post_list.count }} posts have been found</p>
-    {% endif %}
     {% else %}
     <div class="container">
         <div class="display">
@@ -39,7 +47,11 @@
             {% endif %}
         </div>
     </div>
+    {% if 'drafts/' in request.path %}
+    <p>No drafts have been found</p>
+    {% else %}
     <p>No posts have been found</p>
+    {% endif %}
     {% endif %}
 
     <!-- Post list -->

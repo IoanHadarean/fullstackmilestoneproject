@@ -46,8 +46,13 @@
     {% endif %}
         {% for reply in comment.replies.all %}
             <blockquote class="blockquote">
-            {{ reply.created_date}}{{reply.text|safe|linebreaks}}Posted By: {{reply.author|striptags|safe }}
+            {{ reply.created_date}}
+            <br>
+            {{reply.text|safe|linebreaks|striptags}}
+            <br>
+            Posted By: {{ reply.author|striptags }}
             </blockquote>
+            <br>
         {% endfor %}
     {% endif %} 
     {% empty %}
