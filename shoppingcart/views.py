@@ -7,8 +7,9 @@ from django.core.exceptions import ObjectDoesNotExist
 from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, DetailView, View
 from django.utils import timezone
-from .forms import CheckoutForm, CouponForm, RefundForm
-from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, UserCoupon
+from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm
+from accounts.models import Profile
+from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, UserCoupon, CustomerProfile
 
 import random
 import stripe
@@ -235,10 +236,10 @@ class PaymentView(View):
                 'order': order,
                 'DISPLAY_COUPON_FORM': False
             }
-            customerprofile = self.request.user.customerprofile
+            customerprofile = Profile.objects.get(user=self.request.user)
             if customerprofile.one_click_purchasing:
                 """Fetch the users card list"""
-                cards = stripe.Customer.list_source(
+                cards = stripe.Customer.list_sources(
                     customerprofile.stripe_customer_id,
                     limit=3,
                     object='card'
@@ -257,104 +258,110 @@ class PaymentView(View):
     def post(self, *args, **kwargs):
         """ Get the stripe token and create a charge for a user order"""
         order = Order.objects.get(user=self.request.user, ordered=False)
-        token = self.request.POST.get('stripeToken')
-        save = form.cleaned_data.get('save')
-        use_default = form.cleaned_data.get('use_default')
+        form = PaymentForm(self.request.POST)
+        customerprofile = Profile.objects.get(user=self.request.user)
         
-        """Allow fetching cards from stripe"""
-        if save:
-            """
-            If there is not a customer id associated on the 
-            customer profile, create the stripe customer and save it, 
-            else create a source for the customer
-            """
-            if not customerprofile.stripe.customer_id:
-                customer = stripe.Customer.create(
-                    email=self.request.user.email,
-                    source=token
-                )
-                customerprofile.customer_id = customer['id']
-                customerprofile.one_click_purchasing =True
-                customerprofile.save()
-            else:
-                stripe.Customer.create_source(
-                    customerprofile.stripe.customer_id,
-                    source=token
-                )
+        if form.is_valid():
+            token = form.cleaned_data.get('stripeToken')
+            save = form.cleaned_data.get('save')
+            use_default = form.cleaned_data.get('use_default')
+        
+            """Allow fetching cards from stripe"""
+            if save:
+                """
+                If there is not a customer id associated on the 
+                customer profile, create the stripe customer and save it, 
+                else create a source for the customer
+                """
+                if customerprofile.stripe_customer_id != '' and customerprofile.stripe_customer_id is not None:
+                    customer = stripe.Customer.retrieve(
+                        customerprofile.stripe_customer_id
+                    )
+                    customer.sources.create(source=token)
+                else:
+                    customer = stripe.Customer.create(
+                        email=self.request.user.email
+                    )
+                    customer.sources.create(source=token)
+                    customerprofile.stripe_customer_id = customer['id']
+                    customerprofile.one_click_purchasing = True
+                    customerprofile.save()
 
-        amount = int(order.get_total() * 100)
+            amount = int(order.get_total() * 100)
         
-        try:
-            """If the customer uses a default card pass the
-            customer to the charge, else pass the source"""
-            if use_default:
-                charge = stripe.Charge.create(
-                    amount=amount, 
-                    currency="gbp",
-                    customer=customerprofile.stripe_customer_id
-                )
-            else:
-                charge = stripe.Charge.create(
-                    amount=amount, 
-                    currency="gbp",
-                    source=token
-                )
-            
-            """Create the payment"""
-            payment = Payment()
-            payment.stripe_charge_id = charge['id']
-            payment.user = self.request.user
-            payment.amount = order.get_total()
-            payment.save()
-            
-            """Assign the payment to the order"""
-            
-            order_items = order.items.all()
-            order_items.update(ordered=True)
-            for item in order_items:
-                item.save()
+            try:
+                """If the customer uses a default card pass the
+                customer to the charge, else pass the source"""
+                if use_default or save:
+                    charge = stripe.Charge.create(
+                        amount=amount, 
+                        currency="gbp",
+                        customer=customerprofile.stripe_customer_id
+                    )
+                else:
+                    charge = stripe.Charge.create(
+                        amount=amount, 
+                        currency="gbp",
+                        source=token
+                    )
                 
-            order.ordered = True
-            order.payment = payment
-            """Assign the reference code"""
-            order.ref_code = create_ref_code()
-            order.save()
+                """Create the payment"""
+                payment = Payment()
+                payment.stripe_charge_id = charge['id']
+                payment.user = self.request.user
+                payment.amount = order.get_total()
+                payment.save()
             
-            messages.success(self.request, "Your order was successful!")
-            return redirect("/")
-        except stripe.error.CardError as e:
-            """Since it's a decline, stripe.error.CardError will be caught"""
-            body = e.json_body
-            err  = body.get('error', {})
-            messages.warning(self.request, f"{err.get('message')}")
-            return redirect("/")
-        except stripe.error.RateLimitError as e:
-          """Too many requests made to the API too quickly"""
-          messages.warning(self.request, "Rate Limit Error")
-          return redirect("/")
-        except stripe.error.InvalidRequestError as e:
-          """Invalid parameters were supplied to Stripe's API"""
-          messages.warning(self.request, "Invalid parameters")
-          return redirect("/")
-        except stripe.error.AuthenticationError as e:
-          """Authentication with Stripe's API failed
-          (maybe you changed API keys recently)"""
-          messages.warning(self.request, "Not authenticated")
-          return redirect("/")
-        except stripe.error.APIConnectionError as e:
-          """Network communication with Stripe failed"""
-          messages.warning(self.request, "Network error")
-          return redirect("/")
-        except stripe.error.StripeError as e:
-          """Display a very generic error to the user, and maybe send
-          yourself an email"""
-          messages.warning(self.request, "Something went wrong.You were not charged.Please try again.")
-          return redirect("/")
-        except Exception as e:
-          """Send an email to the user"""
-          messages.warning(self.request, "A serious error occured. We have been notified.")
-          return redirect("/")
-
+                """Assign the payment to the order"""
+                
+                order_items = order.items.all()
+                order_items.update(ordered=True)
+                for item in order_items:
+                    item.save()
+                    
+                order.ordered = True
+                order.payment = payment
+                """Assign the reference code"""
+                order.ref_code = create_ref_code()
+                order.save()
+                
+                messages.success(self.request, "Your order was successful!")
+                return redirect("/")
+            except stripe.error.CardError as e:
+                """Since it's a decline, stripe.error.CardError will be caught"""
+                body = e.json_body
+                err  = body.get('error', {})
+                messages.warning(self.request, f"{err.get('message')}")
+                return redirect("/")
+            except stripe.error.RateLimitError as e:
+              """Too many requests made to the API too quickly"""
+              messages.warning(self.request, "Rate Limit Error")
+              return redirect("/")
+            except stripe.error.InvalidRequestError as e:
+              """Invalid parameters were supplied to Stripe's API"""
+              messages.warning(self.request, "Invalid parameters")
+              return redirect("/")
+            except stripe.error.AuthenticationError as e:
+              """Authentication with Stripe's API failed
+              (maybe you changed API keys recently)"""
+              messages.warning(self.request, "Not authenticated")
+              return redirect("/")
+            except stripe.error.APIConnectionError as e:
+              """Network communication with Stripe failed"""
+              messages.warning(self.request, "Network error")
+              return redirect("/")
+            except stripe.error.StripeError as e:
+              """Display a very generic error to the user, and maybe send
+              yourself an email"""
+              messages.warning(self.request, "Something went wrong.You were not charged.Please try again.")
+              return redirect("/")
+            except Exception as e:
+              """Send an email to the user"""
+              messages.warning(self.request, "A serious error occured. We have been notified.")
+              return redirect("/")
+              
+        messages.warning(self.request, "Invalid data received")
+        return redirect("/payment/stripe/")
 
 class HomeView(ListView):
     """

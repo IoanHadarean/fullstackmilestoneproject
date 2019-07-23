@@ -64,6 +64,20 @@ class RefundForm(forms.Form):
     }))
     email = forms.EmailField()
     
+
+class PaymentForm(forms.Form):
+    """
+    Payment form with the stripe token and
+    save and use_default fields for credit card
+    """
+    stripeToken = forms.CharField(required=False)
+    save = forms.BooleanField(required=False)
+    use_default = forms.BooleanField(required=False)
+    
+    
+    
+    
+    
     
     
     
