@@ -235,22 +235,70 @@ class PaymentView(View):
                 'order': order,
                 'DISPLAY_COUPON_FORM': False
             }
+            customerprofile = self.request.user.customerprofile
+            if customerprofile.one_click_purchasing:
+                """Fetch the users card list"""
+                cards = stripe.Customer.list_source(
+                    customerprofile.stripe_customer_id,
+                    limit=3,
+                    object='card'
+                )
+                card_list = cards['data']
+                if len(card_list) > 0:
+                    """Update the context with the default credit card"""
+                    context.update({
+                        'card': card_list[0]
+                    })
             return render(self.request, "shoppingcart/payment.html", context)
         else:
             messages.warning(self.request, "You did not add a billing address")
             return redirect("checkout")
+            
     def post(self, *args, **kwargs):
         """ Get the stripe token and create a charge for a user order"""
         order = Order.objects.get(user=self.request.user, ordered=False)
         token = self.request.POST.get('stripeToken')
+        save = form.cleaned_data.get('save')
+        use_default = form.cleaned_data.get('use_default')
+        
+        """Allow fetching cards from stripe"""
+        if save:
+            """
+            If there is not a customer id associated on the 
+            customer profile, create the stripe customer and save it, 
+            else create a source for the customer
+            """
+            if not customerprofile.stripe.customer_id:
+                customer = stripe.Customer.create(
+                    email=self.request.user.email,
+                    source=token
+                )
+                customerprofile.customer_id = customer['id']
+                customerprofile.one_click_purchasing =True
+                customerprofile.save()
+            else:
+                stripe.Customer.create_source(
+                    customerprofile.stripe.customer_id,
+                    source=token
+                )
+
         amount = int(order.get_total() * 100)
         
         try:
-            charge = stripe.Charge.create(
-                amount=amount, 
-                currency="gbp",
-                source=token
-            )
+            """If the customer uses a default card pass the
+            customer to the charge, else pass the source"""
+            if use_default:
+                charge = stripe.Charge.create(
+                    amount=amount, 
+                    currency="gbp",
+                    customer=customerprofile.stripe_customer_id
+                )
+            else:
+                charge = stripe.Charge.create(
+                    amount=amount, 
+                    currency="gbp",
+                    source=token
+                )
             
             """Create the payment"""
             payment = Payment()
