@@ -29,6 +29,18 @@ ADDRESS_CHOICES = (
 )
 
 
+class CustomerProfile(models.Model):
+    """A customer profile that is used to store the user information
+    and the stripe customer id"""
+    user =  models.OneToOneField(
+        settings.AUTH_USER_MODEL, on_delete=models.CASCADE)
+    stripe_customer_id = models.CharField(max_length=50, blank=True, null=True)
+    one_click_purchasing = models.BooleanField()
+    
+    def __str__(self):
+        return self.user.username
+
+
 class Item(models.Model):
     """
     Item class that contains the details of an item. Has an add_to_cart
@@ -223,5 +235,7 @@ class Refund(models.Model):
  
  
  
+ 
+
         
         

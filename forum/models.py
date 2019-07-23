@@ -45,7 +45,7 @@ class Comment(models.Model):
     def get_absolute_url(self):
         return reverse('post_list')
         
-    def count_comments(self):
+    def comments_excluding_replies(self):
         return Comment.objects.filter(reply=None)
         
     def __str__(self):

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from shoppingcart.models import Item, OrderItem, Order, Payment, Coupon, Refund, Address, UserCoupon 
+from .models import Item, OrderItem, Order, Payment, Coupon, Refund, Address, UserCoupon, CustomerProfile
 
 
 """Change the order from refund requested to refund granted"""
@@ -105,5 +105,6 @@ admin.site.register(Coupon)
 admin.site.register(Refund)
 admin.site.register(UserCoupon)
 admin.site.register(Address, AddressAdmin)
+admin.site.register(CustomerProfile)
 
 

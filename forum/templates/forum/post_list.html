@@ -65,7 +65,7 @@
         <a href="{% url 'post_detail' pk=post.pk %}">Comments: 
         {% for comment in post.comments.all %}
             {% if comment.approved_comment and not comment.reply %}
-                {{ comment.count_comments.count }}
+                {{ comment.comments_excluding_replies.count }}
             {% endif %}
         {% endfor %}
         </a>
