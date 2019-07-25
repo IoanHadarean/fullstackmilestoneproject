@@ -92,11 +92,10 @@
             </a>
             <h5>
               <strong>
-                    <a href="{{ item.get_absolute_url }}" class="dark-grey-text">{{ item.title }}
+                    <a href="{{ item.get_absolute_url }}" class="dark-grey-text">{{ item.title|title }}
                     </a>
                   </strong>
             </h5>
-
             <h4 class="font-weight-bold blue-text">
               {% if item.discount_price %}
               <span class="mr-1">
