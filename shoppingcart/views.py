@@ -9,7 +9,7 @@ from django.views.generic import ListView, DetailView, View
 from django.utils import timezone
 from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm
 from accounts.models import Profile
-from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, UserCoupon, CustomerProfile
+from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, UserCoupon
 
 import random
 import stripe
