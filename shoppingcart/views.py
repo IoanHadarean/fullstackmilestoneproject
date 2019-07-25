@@ -168,7 +168,6 @@ class CheckoutView(View):
                     else:
                         messages.info(self.request, "Please fill in the required shipping address fields")
                         return redirect('checkout')
-                
                 elif use_default_billing:
                     print("Using the default billing address")
                     address_qs = Address.objects.filter(

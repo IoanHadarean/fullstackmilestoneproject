@@ -30,7 +30,7 @@ if (useDefaultBilling) {
     });
 }
 
-// Hide billing form  if billing address is the same as shipping address is checked, else show it
+// Hide billing form if billing address is the same as shipping address is checked, else show it
 sameBillingAddress.addEventListener('change', function() {
     if (this.checked) {
         hideableBillingForm.style.display = 'none';

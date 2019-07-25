@@ -30,7 +30,7 @@ class SearchDrafts(ListView):
     foreign key.
     """
     model = Post
-    paginate_by = 1
+    paginate_by = 5
     
     def get_queryset(self):
         return Post.objects.filter((Q(title__icontains=self.request.GET['posts']) | 
@@ -44,12 +44,11 @@ def search_products(request):
     Search products by title, price, discount_price, 
     category and description.
     """
-    search_text = request.GET['item_search']
+    search_text = request.GET.get('item_search', '')
     item_list = Item.objects.filter(Q(title__icontains=search_text) |
                         Q(price__iexact=search_text) |
                         Q(discount_price__iexact=search_text) |
-                        Q(category__icontains=search_text) |
-                        Q(description__icontains=search_text))
+                        Q(category__icontains=search_text))
                      
     """Add pagination for search"""   
     paginator = Paginator(item_list, 8)
@@ -65,6 +64,7 @@ def filter_by_dresses(request):
     
     """Add pagination for filter"""
     paginator = Paginator(item_list, 1)
+    print(paginator.num_pages)
     page = request.GET.get('page')
     object_list = paginator.get_page(page)
     context = {
