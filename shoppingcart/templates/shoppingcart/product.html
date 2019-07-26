@@ -3,7 +3,6 @@
 
 
   <!--Product details-->
-
     <div class="container dark-grey-text mt-5">
       
       <!--Grid row-->
@@ -11,7 +10,7 @@
         
         <!--Grid column-->
         <div class="col-md-6 mb-4">
-          <img src="{{ object.image.url }}" class="img-fluid" alt="product-image">
+          <img src="{{ item.image.url }}" class="img-fluid" alt="product-image">
         </div>
 
         <!--Grid column-->
@@ -22,29 +21,29 @@
 
             <div class="mb-3">
               <a href="{% url 'filter_by_dresses' %}">
-                <span class="badge badge-pill {{ item.get_label_display }}-color">{{ object.get_category_display }}</span>
+                <span class="badge badge-pill {{ item.get_label_display }}-color">{{ item.get_category_display }}</span>
               </a>
             </div>
 
             <p class="lead">
-              {% if object.discount_price %}
+              {% if item.discount_price %}
                 <span class="mr-1">
-                  <del>£{{ object.price|floatformat }}</del>
+                  <del>£{{ item.price|floatformat }}</del>
                 </span>
-                <span>£{{ object.get_discount_price|floatformat }}</span>
+                <span>£{{ item.get_discount_price|floatformat }}</span>
               {% else %}
-                <span>£{{ object.price|floatformat }}</span>
+                <span>£{{ item.price|floatformat }}</span>
               {% endif %}
             </p>
 
             <p class="lead font-weight-bold">Description</p>
 
-            <p>{{ object.description|linebreaks }}</p>
+            <p>{{ item.description|linebreaks }}</p>
 
-            <a href="{{ object.get_add_to_cart_url }}" class="btn btn-primary btn-md my-0 p">Add to cart
+            <a href="{{ item.get_add_to_cart_url }}" class="btn btn-primary btn-md my-0 p">Add to cart
                 <i class="fas fa-shopping-cart ml-1"></i>
             </a>
-            <a href="{{ object.get_remove_from_cart_url }}" class="btn btn-danger btn-md my-0 p">Remove from cart
+            <a href="{{ item.get_remove_from_cart_url }}" class="btn btn-danger btn-md my-0 p">Remove from cart
             </a>
           </div>
         </div>
@@ -54,10 +53,9 @@
 
       <!--Grid row-->
       <div class="row d-flex justify-content-center wow fadeIn">
-
         <!--Grid column-->
         <div class="col-md-6 text-center">
-          <h4 class="my-4 h4">Liked these? You'll love these!</h4>
+          <h4 class="my-4 h4">Liked these? You'll also love these!</h4>
           <p> </p>
         </div>
       </div>
@@ -65,18 +63,42 @@
 
       <!--Grid row-->
       <div class="row wow fadeIn">
-        <!--Grid column-->
-        <div class="col-lg-4 col-md-12 mb-4">
-          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/11.jpg" class="img-fluid" alt="">
+        {% for item in random_category_items %}
+      <div class="col-lg-3 col-md-6 mb-4">
+
+        <!--Card-->
+        <div class="card">
+
+          <!--Card image-->
+            <img src="{{ item.image.url }}" class="card-img-top" alt="product-image">
+            <a href="{{ item.get_absolute_url }}">
+              <div class="mask rgba-white-slight"></div>
+            </a>
+
+          <!--Card content-->
+          <div class="card-body text-center">
+            <!--Category & Title-->
+            <a href="{% url 'filter_by_tags' item.category %}" class="grey-text">
+              <h5 class="badge badge-pill {{ item.get_label_display }}-color">{{ item.get_category_display }}</h5>
+            </a>
+            <h5>
+              <strong>
+                    <a href="{{ item.get_absolute_url }}" class="dark-grey-text">{{ item.title|title }}
+                    </a>
+                  </strong>
+            </h5>
+            <h4 class="font-weight-bold blue-text">
+              {% if item.discount_price %}
+              <span class="mr-1">
+                  <del>£{{ item.price|floatformat }}</del>
+                </span>
+              <span>£{{ item.get_discount_price|floatformat }}</span> {% else %}
+              <span>£{{ item.price|floatformat }}</span> {% endif %}
+          </div>
         </div>
-        <!--Grid column-->
-        <div class="col-lg-4 col-md-6 mb-4">
-          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/12.jpg" class="img-fluid" alt="">
-        </div>
-        <!--Grid column-->
-        <div class="col-lg-4 col-md-6 mb-4">
-          <img src="https://mdbootstrap.com/img/Photos/Horizontal/E-commerce/Products/13.jpg" class="img-fluid" alt="">
-        </div>
+
+      </div>
+      {% endfor %}
       </div>
     </div>
 {% endblock %}

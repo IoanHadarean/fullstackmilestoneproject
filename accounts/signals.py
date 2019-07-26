@@ -11,6 +11,8 @@ which is received by the create_profile function.
 If the user was created, make a profile object
 with the instance of the user that was created.
 """
+
+
 @receiver(post_save, sender=User)
 def create_profile(sender, instance, created, **kwargs):
     if created:
@@ -19,10 +21,11 @@ def create_profile(sender, instance, created, **kwargs):
 """
 Save the profile for each new user.
 """
+
+
 @receiver(post_save, sender=User)
 def save_profile(sender, instance, **kwargs):
     try:
         instance.profile.save()
     except ObjectDoesNotExist:
         Profile.objects.create(user=instance)
-   

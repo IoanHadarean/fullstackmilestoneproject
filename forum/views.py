@@ -12,7 +12,7 @@ from django.views.decorators.http import require_POST
 from forum.forms import PostForm, CommentForm, PostEditForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.views.generic import (ListView,CreateView, 
+from django.views.generic import (ListView, CreateView,
                                   UpdateView, RedirectView, DeleteView)
 
 
@@ -20,20 +20,21 @@ class PostListView(ListView):
     """A class that defines the view for all the posts"""
     model = Post
     paginate_by = 5
-    
+
     def get_queryset(self):
         return Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
-        
+
+
 class UserPostListView(ListView):
     """A class that defines the view for a specific user's posts"""
     model = Post
     paginate_by = 5
-    
+
     def get_queryset(self):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
         return Post.objects.filter(author=user).order_by('-published_date')
- 
- 
+
+
 class CreatePostView(LoginRequiredMixin, CreateView):
     """
     Create a post and redirect to the details for
@@ -47,7 +48,7 @@ class CreatePostView(LoginRequiredMixin, CreateView):
             'form': form
         }
         return render(self.request, "forum/post_form.html", context)
-        
+
     def post(self, *args, **kwargs):
         user = self.request.user
         form = PostForm(user, self.request.POST or None)
@@ -60,6 +61,7 @@ class CreatePostView(LoginRequiredMixin, CreateView):
             messages.success(self.request, "Your post has been added to your drafts but it has not been published yet")
             return redirect('post_draft_list', username=user.username)
 
+
 class PostUpdateView(LoginRequiredMixin, UpdateView):
     """
     Update a single post and redirect to the details for
@@ -69,31 +71,34 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
     redirect_field_name = 'post_detail.html'
     form_class = PostEditForm
     model = Post
-    
+
+
 class PostDeleteView(LoginRequiredMixin, DeleteView):
     """Delete a post and redirect to all posts"""
     model = Post
     success_url = reverse_lazy('post_list')
-    
+
+
 class DraftListView(ListView):
     """Draft view for a post"""
     login_url = 'accounts/login/'
     redirect_field_name = 'post_list.html'
     model = Post
     paginate_by = 5
-    
+
     def get_queryset(self):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
         return Post.objects.filter(Q(author=user) & Q(published_date__isnull=True)).order_by('created_date')
-        
-        
-        
+
+
 #######################################
 #######################################
 
+
 def post_detail(request, pk):
     """
-    Details of a single post. The is_liked boolean filter is passed into the template.
+    Details of a single post. The is_liked boolean filter
+    is passed into the template.
     """
     post = get_object_or_404(Post, pk=pk)
     is_liked = False
@@ -105,31 +110,11 @@ def post_detail(request, pk):
         'total_likes': post.total_likes(),
     }
     return render(request, 'forum/post_detail.html', context)
-  
-  
-# class PostLikeToggle(RedirectView):
-#     """
-#     Like a specific post. If the like already exists 
-#     in the database, remove the like for that user.
-#     """
-#     def get_redirect_url(self, *args, **kwargs):
-#         pk = self.kwargs.get("pk")
-#         print(pk)
-#         post = get_object_or_404(Post, pk=pk)
-#         url = post.get_absolute_url()
-#         user = self.request.user
-#         if user.is_authenticated:
-#             if user in post.likes.all():
-#                 post.likes.remove(user)
-#             else:
-#                 post.likes.add(user)
-#         return url
-        
-        
+
 
 def like_post(request, pk):
     """
-    Like a specific post. If the like already exists 
+    Like a specific post. If the like already exists
     in the database, remove the like for that user.
     """
     post = get_object_or_404(Post, pk=pk)
@@ -145,28 +130,27 @@ def like_post(request, pk):
         'is_liked': is_liked,
         'total_likes': post.total_likes(),
     }
-    # return HttpResponseRedirect(post.get_absolute_url())
     if request.is_ajax():
-        print("yes")
-        form = render_to_string('forum/likes_form.html', context, request=request)
+        form = render_to_string('forum/likes_form.html',
+                                context, request=request)
         return JsonResponse({'form': form})
     else:
-        print("No")
-        
-    return render(request, 'forum/post_detail.html', context)
+        return render(request, 'forum/post_detail.html', context)
+
 
 @login_required
-def post_publish(request,pk):
+def post_publish(request, pk):
     """Allow publishing a post"""
-    post = get_object_or_404(Post,pk=pk)
+    post = get_object_or_404(Post, pk=pk)
     post.publish()
     messages.success(request, "Your post has been published successfully.")
     return redirect('post_list')
 
+
 @login_required
-def add_comment_to_post(request,pk):
+def add_comment_to_post(request, pk):
     """Allow adding a comment to a post"""
-    post = get_object_or_404(Post,pk=pk)
+    post = get_object_or_404(Post, pk=pk)
     if request.method == "POST":
         form = CommentForm(request.POST or None)
         if form.is_valid():
@@ -174,11 +158,12 @@ def add_comment_to_post(request,pk):
             comment.post = post
             comment.save()
             messages.success(request, "Your comment is pending approval...")
-            return redirect('post_detail',pk=post.pk)
+            return redirect('post_detail', pk=post.pk)
     else:
         form = CommentForm()
-    return render(request, 'forum/comment_form.html', {'form':form})
-   
+    return render(request, 'forum/comment_form.html', {'form': form})
+
+
 @login_required
 def add_reply_to_comment(request, pk, id):
     """Allow adding a reply to a post comment"""
@@ -193,29 +178,32 @@ def add_reply_to_comment(request, pk, id):
             comment_qs = None
             if reply_id:
                 comment_qs = Comment.objects.get(id=reply_id)
-            comment = Comment.objects.create(post = post, reply=comment_qs, author=author, text=text, approved_comment=True)
+            comment = Comment.objects.create(post=post, reply=comment_qs,
+                                             author=author, text=text,
+                                             approved_comment=True)
             comment.save()
             messages.success(request, "Your reply has been successfully added")
             return HttpResponseRedirect(post.get_absolute_url())
     else:
         form = CommentForm()
-    return render(request, 'forum/reply_form.html', {'form':form, 'comment': comment})
-    
-   
-    
+    return render(request, 'forum/reply_form.html',
+                  {'form': form, 'comment': comment})
+
+
 @login_required
 def comment_approve(request, pk):
     """Approve a post comment"""
-    comment = get_object_or_404(Comment,pk=pk)
+    comment = get_object_or_404(Comment, pk=pk)
     comment.approve()
     messages.success(request, "You have successfully approved the comment.")
-    return redirect('post_detail',pk=comment.post.pk)
-    
+    return redirect('post_detail', pk=comment.post.pk)
+
+
 @login_required
-def comment_remove(request,pk):
+def comment_remove(request, pk):
     """Delete a post comment"""
-    comment = get_object_or_404(Comment,pk=pk)
+    comment = get_object_or_404(Comment, pk=pk)
     post_pk = comment.post.pk
     comment.delete()
     messages.success(request, "You have successfully removed the comment.")
-    return redirect('post_detail',pk=post_pk)
+    return redirect('post_detail', pk=post_pk)

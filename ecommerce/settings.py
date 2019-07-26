@@ -85,7 +85,7 @@ WSGI_APPLICATION = 'ecommerce.wsgi.application'
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
 if "DATABASE_URL" in os.environ:
-    DATABASES = {'default': dj_database_url.parse(os.environ.get('DATABASE_URL')) }
+    DATABASES = {'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))}
 else:
     print("Database URL not found. Using SQLite instead")
     DATABASES = {
@@ -151,13 +151,8 @@ MEDIAFILES_LOCATION = 'media'
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
 EMAIL_BACKEND = 'sgbackend.SendGridBackend'
-SENDGRID_API_KEY =  os.environ.get("SENDGRID_API_KEY")
+SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY")
 
-# EMAIL_USE_TLS = True
-# EMAIL_HOST = 'smtp.sendgrid.net'
-# EMAIL_HOST_USER = 'apikey'
-# EMAIL_HOST_PASSWORD = ''
-# EMAIL_PORT = 587
 
 STRIPE_SECRET_KEY = os.environ.get("STRIPE_SECRET_KEY")
 

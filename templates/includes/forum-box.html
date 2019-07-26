@@ -1,4 +1,3 @@
-{% if user.is_authenticated %}
 <div class="centerstage col-md-6">
     <div class="content-section">
         <h3>Check out the latest posts!</h3>
@@ -10,12 +9,13 @@
                 <li class="list-group-item list-group-item-light">
                     <a href="{% url 'post_new' %}">Add New Post</a>
                 </li>
+                {% if user.is_authenticated %}
                 <li class="list-group-item list-group-item-light">
                     <a href="{% url 'post_draft_list' user.username %}">Drafts</a>
                 </li>
+                {% endif %}
             </ul>
         </p>
     </div>
 </div>
-{% endif %}
  

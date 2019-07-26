@@ -397,13 +397,13 @@ def item_detail(request, slug):
     View for a single product
     """
     item = get_object_or_404(Item, slug=slug)
-    """Get random 4 items with the same category as the detail view item"""
-    category_items = Item.objects.filter(category=item.category).exclude(title=item.title).values_list('id', flat=True)
-    random_items_id_list = random.sample(list(category_items), min(len(category_items), 4))
-    random_category_items = Item.objects.filter(id__in=random_items_id_list)
+    category_items = Item.objects.filter(Q(category__iexact=item.category)).exclude(title=item.title)
+    random_items_id_list = random.sample(category_items, min(len(category_items), 4))
+    qs = Item.o
+    print(category_items)
     context = {
         'item': item,
-        'random_category_items': random_category_items
+        'category_items': category_items
     }
     return render(request, 'shoppingcart/product.html', context)
 

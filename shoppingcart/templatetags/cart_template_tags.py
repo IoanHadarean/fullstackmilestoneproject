@@ -6,6 +6,8 @@ register = template.Library()
 
 """Get the cart item count for each user if
 user is authenticated, else return 0"""
+
+
 @register.filter
 def cart_item_count(user):
     if user.is_authenticated:
