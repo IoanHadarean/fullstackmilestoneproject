@@ -18,40 +18,40 @@
 
       <!-- Links -->
       <ul class="navbar-nav mr-auto">
-        <li class="nav-item active">
-          <a class="nav-link" href="{% url 'home' %}">All
+        <li class="nav-item">
+          <a class="nav-link nav-filter" href="{% url 'home' %}">All
                 <span class="sr-only">(current)</span>
               </a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'filter_by_dresses' %}">Dresses</a>
+          <a class="nav-link nav-filter" href="{% url 'filter_by_dresses' %}">Dresses</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'filter_by_shoes' %}">Shoes</a>
+          <a class="nav-link nav-filter" href="{% url 'filter_by_shoes' %}">Shoes</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'filter_by_suits' %}">Suits</a>
+          <a class="nav-link nav-filter" href="{% url 'filter_by_suits' %}">Suits</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'filter_by_veils' %}">Veils</a>
+          <a class="nav-link nav-filter" href="{% url 'filter_by_veils' %}">Veils</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'filter_by_rings' %}">Rings</a>
+          <a class="nav-link nav-filter" href="{% url 'filter_by_rings' %}">Rings</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'filter_by_flowers' %}">Flowers</a>
+          <a class="nav-link nav-filter" href="{% url 'filter_by_flowers' %}">Flowers</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'filter_by_hair_accessories' %}">Hair Accessories</a>
+          <a class="nav-link nav-filter" href="{% url 'filter_by_hair_accessories' %}">Hair Accessories</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'filter_by_purses' %}">Purses</a>
+          <a class="nav-link nav-filter" href="{% url 'filter_by_purses' %}">Purses</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'filter_by_shirts' %}">Shirts</a>
+          <a class="nav-link nav-filter" href="{% url 'filter_by_shirts' %}">Shirts</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link" href="{% url 'filter_by_belts' %}">Belts</a>
+          <a class="nav-link nav-filter" href="{% url 'filter_by_belts' %}">Belts</a>
         </li>
       </ul>
 
@@ -212,5 +212,5 @@
   {% endif %}
 </div>
 {% endblock %} {% block custom_js %}
-<script type="text/javascript" src="{% static 'js/ajax_search.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/home.js' %}"></script>
 {% endblock %}
