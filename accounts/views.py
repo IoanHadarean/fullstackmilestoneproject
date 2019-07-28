@@ -1,5 +1,6 @@
 from django.shortcuts import render, redirect, reverse, HttpResponseRedirect
 from django.contrib import auth, messages
+from django.core.mail import send_mail
 from django.contrib.auth.models import User
 from django.contrib.auth.decorators import login_required
 from accounts.forms import UserLoginForm, UserRegistrationForm, UserUpdateForm, ProfileUpdateForm
@@ -71,11 +72,21 @@ def registration(request):
 
             if user:
                 auth.login(user=user, request=request)
-                messages.success(request, "You have successfully registered!")
+                messages.success(request, "You have successfully registered! We have sent you a confirmation email!")
+                """Send registration confirmation email"""
+                send_mail(
+                    'Wedding planner',
+                    """
+                    Thank you for registering to our website!
+                    Feel free to explore our range of products!
+                    Your username is : {}""".format(request.user.username),
+                    'weddingplanner@email.com',
+                    [request.user.email],
+                    fail_silently=False,
+                    )
                 return redirect(reverse('index'))
             else:
                 messages.error(request, 'Unable to register your account at this time!')
-
     else:
         registration_form = UserRegistrationForm()
 

@@ -1,4 +1,5 @@
 from django.conf import settings
+from django.core.mail import send_mail
 from django.contrib import messages
 from django.utils import timezone
 from django.contrib.auth.decorators import login_required
@@ -326,7 +327,17 @@ class PaymentView(View):
                 order.ref_code = create_ref_code()
                 order.save()
 
-                messages.success(self.request, "Your order was successful!")
+                messages.success(self.request, "Your order was successful! We have sent you a confirmation email")
+                send_mail(
+                    'Wedding Planner order',
+                    """
+                    Your order was successful! 
+                    Thank you for shopping with us!
+                    Your order reference code is: {}""".format(order.ref_code),
+                    'weddingplanner@email.com',
+                    [self.request.user.email],
+                    fail_silently=False,
+                    )
                 return redirect("/")
             except stripe.error.CardError as e:
                 """Since it's a decline, stripe.error.CardError will be caught"""
@@ -354,13 +365,34 @@ class PaymentView(View):
             except stripe.error.StripeError as e:
                 """Display a very generic error to the user, and maybe send
                 yourself an email"""
+                send_mail(
+                    'Stripe error',
+                    """
+                    A stripe error has occured.
+                    Please take action!
+                    """,
+                    'weddingplanner@email.com',
+                    ['admin@example.com'],
+                    fail_silently=False,
+                    )
                 messages.warning(self.request, "Something went wrong.You were not charged.Please try again.")
                 return redirect("/")
             except Exception as e:
                 """Send an email to the user"""
                 messages.warning(self.request, "A serious error occured. We have been notified.")
+                send_mail(
+                    'Wedding Planner order',
+                    """
+                    Your order was unsuccessful!
+                    We are sorry that you had to go through this!
+                    If you were charged, please do not hesitate
+                    to ask for a refund or to contact us!
+                    Your order reference code is: {}""".format(order.ref_code),
+                    'weddingplanner@email.com',
+                    [self.request.user.email],
+                    fail_silently=False,
+                    )
                 return redirect("/")
-
         messages.warning(self.request, "Invalid data received")
         return redirect("/payment/stripe/")
 
