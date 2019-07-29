@@ -19,8 +19,11 @@ class PostForm(forms.ModelForm):
         fields = ('author', 'title', 'text')
 
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'textinputclass'}),
-            'text': forms.Textarea(attrs={'class': 'editable medium-editor-textarea'})
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'text': forms.Textarea(attrs={
+                'class': 'form-control md-textarea',
+                'rows': 5
+            })
         }
 
     def __init__(self, user, *args, **kwargs):
@@ -41,8 +44,11 @@ class PostEditForm(forms.ModelForm):
         fields = ('author', 'title', 'text')
 
         widgets = {
-            'title': forms.TextInput(attrs={'class': 'textinputclass'}),
-            'text': forms.Textarea(attrs={'class': 'editable medium-editor-textarea'})
+            'title': forms.TextInput(attrs={'class': 'form-control'}),
+            'text': forms.Textarea(attrs={
+                'class': 'form-control md-textarea',
+                'rows': 5
+            })
         }
 
 
@@ -58,6 +64,9 @@ class CommentForm(forms.ModelForm):
         fields = ('author', 'text')
 
         widgets = {
-            'author': forms.TextInput(attrs={'class': 'textinputclass'}),
-            'text': forms.Textarea(attrs={'class': 'editable medium-editor-textarea'})
+            'author': forms.TextInput(attrs={'class': 'form-control'}),
+            'text': forms.Textarea(attrs={
+                'class': 'form-control md-textarea',
+                'rows': 5
+            })
         }

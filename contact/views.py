@@ -28,6 +28,7 @@ class ContactView(CreateView):
             enquiry.email = email
             enquiry.subject = subject
             enquiry.message = message
+            enquiry.save()
             messages.success(self.request, "Your enquiry was submitted successfully! Please check your email for confirmation!")
             
             """Send confirmation email"""

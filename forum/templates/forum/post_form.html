@@ -10,13 +10,6 @@
     </form>
 {% endblock %}
 
-{% block custom_js %}
-     <script>var editor = new MediumEditor('.editable', {
-         placeholder: {
-             text: "Add Your Post Here"
-         }
-     });</script>
-{% endblock %}
 <!-- Include forum-box -->
 {% block forum %}
     {% include 'includes/forum-box.html' %}
