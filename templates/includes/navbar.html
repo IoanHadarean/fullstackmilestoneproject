@@ -36,6 +36,9 @@
           <a class="nav-link waves-effect" href="{% url 'post_list' %}"><i class="fa fa-comments"></i>Forum</a>
         </li>
         <li class="nav-item">
+          <a class="nav-link waves-effect" href="{% url 'contact' %}"><i class="fa fa-pencil"></i>Contact us</a>
+        </li>
+        <li class="nav-item">
           <a href="{% url 'order_summary' %}" class="nav-link waves-effect">
               <span class="badge red z-depth-1 mr-1">
                 {% if request.user|cart_item_count == None %}
@@ -57,6 +60,9 @@
         </li>
         <li class="nav-item">
           <a class="nav-link waves-effect" href="{% url 'registration' %}"><i class="fa fa-user-plus"></i> Register</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link waves-effect" href="#"><i class="fa fa-pencil"></i>Contact us</a>
         </li>
         {% endif %}
       </ul>

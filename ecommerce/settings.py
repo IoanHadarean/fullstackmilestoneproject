@@ -47,6 +47,7 @@ INSTALLED_APPS = [
     'shoppingcart',
     'accounts.apps.AccountsConfig',
     'django_countries',
+    'contact',
 ]
 
 MIDDLEWARE = [

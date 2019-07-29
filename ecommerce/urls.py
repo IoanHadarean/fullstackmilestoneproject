@@ -28,6 +28,7 @@ urlpatterns = [
     path('accounts/', include('accounts.urls')),
     path('reset/', include('accounts.urls_reset')),
     path('shoppingcart/', include('shoppingcart.urls')),
+    path('contact/', include('contact.urls')),
 ]
 
 if settings.DEBUG:
