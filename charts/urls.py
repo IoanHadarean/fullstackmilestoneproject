@@ -2,5 +2,5 @@ from django.urls import path
 from .views import get_data
 
 urlpatterns = [
-    path('', get_data, name='charts-data' )
+    path('', get_data, name='chart-data')
 ]

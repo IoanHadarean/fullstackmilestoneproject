@@ -29,6 +29,7 @@ urlpatterns = [
     path('reset/', include('accounts.urls_reset')),
     path('shoppingcart/', include('shoppingcart.urls')),
     path('contact/', include('contact.urls')),
+    path('charts/data/', include('charts.urls'))
 ]
 
 if settings.DEBUG:

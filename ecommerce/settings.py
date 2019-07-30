@@ -48,7 +48,7 @@ INSTALLED_APPS = [
     'accounts.apps.AccountsConfig',
     'django_countries',
     'contact',
-    'rest_framework',
+    'charts',
 ]
 
 MIDDLEWARE = [
