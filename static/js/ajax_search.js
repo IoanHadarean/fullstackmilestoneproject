@@ -31,12 +31,18 @@ function getItemCount() {
     xhr.onload = function() {
         if (this.readyState == 4 && this.status == 200) {
             let results = JSON.parse(xhr.responseText);
+            console.log(results);
             if (searchResults) {
                 searchResults.innerHTML = '';
             }
             for (var i = 0; i < results.length; i++) {
+                let title =  Object.keys(results[i]);
+                let slug = Object.values(results[i]);
                 let li = document.createElement('li');
-                li.appendChild(document.createTextNode(results[i]));
+                let linkTag = document.createElement('a');
+                linkTag.href = "/shoppingcart/product/" + slug;
+                li.appendChild(linkTag);
+                linkTag.appendChild(document.createTextNode(title));
                 searchResults.appendChild(li);
             }
         }

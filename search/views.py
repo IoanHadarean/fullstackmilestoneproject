@@ -74,16 +74,19 @@ def search_results(request, search_text):
                                     Q(price__iexact=search_text) |
                                     Q(discount_price__iexact=search_text) |
                                     Q(category__icontains=search_text))
-        item_titles = []
+        items = []
         for item in item_list:
-            if item.title not in item_titles:
-                item_titles.append(item.title)
+            dict_item = {}
+            if item.title not in dict_item.keys():
+                dict_item[item.title] = item.slug
+            items.append(dict_item)
+        
+        print(items)
         
         if item_list.count() >= 7:
-            random_items = random.sample(item_titles, 7)
+            random_items = random.sample(items, 7)
         else:
-            random_items = random.sample(item_titles, item_list.count())
-        count_items = item_list.count()
+            random_items = random.sample(items, item_list.count())
         return JsonResponse(random_items, safe=False)
     
 
