@@ -5,6 +5,8 @@ from django.contrib import messages
 from shoppingcart.models import Item
 from django.core.paginator import Paginator
 from django.views.generic import ListView
+from django.http import JsonResponse
+import random
 
 
 class SearchPosts(ListView):
@@ -44,7 +46,10 @@ def search_products(request):
     Search products by title, price, discount_price,
     category and description.
     """
-    search_text = request.GET.get('item_search', '')
+    if request.method == "POST":
+        search_text = request.POST.get('item_search')
+    else:
+        search_text = ''
     item_list = Item.objects.filter(Q(title__icontains=search_text) |
                                     Q(price__iexact=search_text) |
                                     Q(discount_price__iexact=search_text) |
@@ -54,9 +59,35 @@ def search_products(request):
     paginator = Paginator(item_list, 8)
     page = request.GET.get('page')
     object_list = paginator.get_page(page)
+    
+    context = {
+        'search_text': search_text,
+        'object_list': object_list
+    }
 
-    return render(request, 'shoppingcart/home.html', {'object_list': object_list})
+    return render(request, 'shoppingcart/home.html', context)
 
+
+def search_results(request, search_text):
+    if request.method == "POST":
+        item_list = Item.objects.filter(Q(title__icontains=search_text) |
+                                    Q(price__iexact=search_text) |
+                                    Q(discount_price__iexact=search_text) |
+                                    Q(category__icontains=search_text))
+        item_titles = []
+        for item in item_list:
+            if item.title not in item_titles:
+                item_titles.append(item.title)
+        
+        if item_list.count() >= 5:
+            random_items = random.sample(item_titles, 5)
+            print(random_items)
+        else:
+            random_items = random.sample(item_titles, item_list.count())
+            print(random_items)
+        count_items = item_list.count()
+        return JsonResponse(random_items, safe=False)
+    
 
 def filter_by_dresses(request):
     """Filter products by category 'dresses'"""
@@ -64,7 +95,6 @@ def filter_by_dresses(request):
 
     """Add pagination for filter"""
     paginator = Paginator(item_list, 8)
-    print(paginator.num_pages)
     page = request.GET.get('page')
     object_list = paginator.get_page(page)
     context = {

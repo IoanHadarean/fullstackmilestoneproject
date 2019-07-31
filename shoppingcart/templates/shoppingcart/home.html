@@ -55,14 +55,18 @@
         </li>
       </ul>
 
-      <form class="form-inline" action="{% url 'search_products' %}" method="GET">
+      <form class="form-inline" action="{% url 'search_products' %}" method="POST">
         {% csrf_token %}
         <div class="md-form my-0">
-          <input class="form-control mr-sm-2" id="search_box" type="text" name="item_search" placeholder="What are you looking for?" aria-label="Search">
+          <input class="form-control mr-sm-2" id="search_box" value="{{ search_text }}" type="text" name="item_search" placeholder="What are you looking for?" aria-label="Search">
         </div>
       </form>
     </div>
   </nav>
+  
+  <ul id="search-results">
+        
+  </ul>
 
 
   <!--Section: Products v.3-->
@@ -213,4 +217,5 @@
 </div>
 {% endblock %} {% block custom_js %}
 <script type="text/javascript" src="{% static 'js/home.js' %}"></script>
+<script type="text/javascript" src="{% static 'js/ajax_search.js' %}"></script>
 {% endblock %}

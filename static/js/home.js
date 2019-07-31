@@ -6,7 +6,6 @@
 // location path add the 'active' class to the link
 (function() {
     var current = location.pathname;
-    console.log(current);
     var navLinks = document.getElementsByClassName('nav-filter');
     for (var i = 0; i < navLinks.length; i++) {
         if (navLinks[i].getAttribute('href').indexOf(current) !== -1 && current != '/') {
