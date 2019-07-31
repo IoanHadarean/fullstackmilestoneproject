@@ -1,4 +1,8 @@
-{% extends 'base.html' %} {% load static %} {% block content %}
+{% extends 'base.html' %} {% load static %}
+{% block custom_css %}
+<link rel="stylesheet" href="{% static 'css/home.css' %}" type="text/css" />
+{% endblock %}
+{% block content %}
 <!-- Products -->
 <div class="container">
 
@@ -9,12 +13,12 @@
     <span class="navbar-brand">Categories:</span>
 
     <!-- Collapse button -->
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#basicExampleNav" aria-controls="basicExampleNav" aria-expanded="false" aria-label="Toggle navigation">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#productsNav" aria-controls="productsNav" aria-expanded="false" aria-label="Toggle navigation">
           <span class="navbar-toggler-icon"></span>
         </button>
 
     <!-- Collapsible content -->
-    <div class="collapse navbar-collapse" id="basicExampleNav">
+    <div class="collapse navbar-collapse" id="productsNav">
 
       <!-- Links -->
       <ul class="navbar-nav mr-auto">
@@ -64,9 +68,9 @@
     </div>
   </nav>
   
-  <ul id="search-results">
-        
-  </ul>
+  <div id="search-typeahead" class="mb-5">
+    <ul id="search-results"></ul>
+  </div>
 
 
   <!--Section: Products v.3-->
