@@ -30,9 +30,15 @@ function getItemCount() {
     console.log(searchText);
     xhr.onload = function() {
         if (this.readyState == 4 && this.status == 200) {
-            let results = xhr.responseText;
-            console.log(results);
-            searchResults.innerHTML = results;
+            let results = JSON.parse(xhr.responseText);
+            if (searchResults) {
+                searchResults.innerHTML = '';
+            }
+            for (var i = 0; i < results.length; i++) {
+                let li = document.createElement('li');
+                li.appendChild(document.createTextNode(results[i]));
+                searchResults.appendChild(li);
+            }
         }
         xhr.onerror = function() {
             console.log('Request error...');

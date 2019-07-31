@@ -79,12 +79,10 @@ def search_results(request, search_text):
             if item.title not in item_titles:
                 item_titles.append(item.title)
         
-        if item_list.count() >= 5:
-            random_items = random.sample(item_titles, 5)
-            print(random_items)
+        if item_list.count() >= 7:
+            random_items = random.sample(item_titles, 7)
         else:
             random_items = random.sample(item_titles, item_list.count())
-            print(random_items)
         count_items = item_list.count()
         return JsonResponse(random_items, safe=False)
     
