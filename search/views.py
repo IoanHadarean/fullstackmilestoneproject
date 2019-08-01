@@ -71,23 +71,22 @@ def search_products(request):
 def search_results(request, search_text):
     if request.method == "POST":
         item_list = Item.objects.filter(Q(title__icontains=search_text) |
-                                    Q(price__iexact=search_text) |
-                                    Q(discount_price__iexact=search_text) |
-                                    Q(category__icontains=search_text))
+                                        Q(price__iexact=search_text) |
+                                        Q(discount_price__iexact=search_text) |
+                                        Q(category__icontains=search_text))
+        if item_list.count() >= 7:
+            item_list = item_list[:7]
+        else:
+            item_list = item_list[:item_list.count()]
+            
         items = []
         for item in item_list:
             dict_item = {}
             if item.title not in dict_item.keys():
                 dict_item[item.title] = item.slug
             items.append(dict_item)
-        
-        print(items)
-        
-        if item_list.count() >= 7:
-            random_items = random.sample(items, 7)
-        else:
-            random_items = random.sample(items, item_list.count())
-        return JsonResponse(random_items, safe=False)
+
+        return JsonResponse(items, safe=False)
     
 
 def filter_by_dresses(request):
