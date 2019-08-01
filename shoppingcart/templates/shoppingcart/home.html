@@ -69,7 +69,17 @@
   </nav>
   
   <div id="search-typeahead" class="mb-5">
-    <ul id="search-results"></ul>
+    <ul id="search-results">
+      {% if 'search_products' in request.path %}
+        {% if item_list_count > 0 and item_list_count != 1 %}
+          <li>{{ item_list_count }} products have been found</li>
+        {% elif item_list_count > 0 and item_list_count == 1  %}
+          <li>{{ item_list_count }} product has been found</li>
+        {% else %}
+          <li>No products have been found</li>
+        {% endif %}
+      {% endif %}
+    </ul>
   </div>
 
 

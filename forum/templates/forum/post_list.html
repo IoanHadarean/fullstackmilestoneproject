@@ -17,13 +17,13 @@
             </form>
             {% endif %}
         </div>
-        {% if 'drafts/' in request.path %}
+        {% if 'search_drafts/' in request.path %}
         {% if post_list.count == 1 %}
             <p>{{ post_list.count }} draft has been found</p>
         {% else %}
             <p>{{ post_list.count }} drafts have been found</p>
         {% endif %}
-        {% else %}
+        {% elif 'search_posts/' in request.path %}
          {% if post_list.count == 1 %}
             <p>{{ post_list.count }} post has been found</p>
         {% else %}
@@ -47,9 +47,9 @@
             {% endif %}
         </div>
     </div>
-    {% if 'drafts/' in request.path %}
+    {% if 'search_drafts/' in request.path %}
     <p>No drafts have been found</p>
-    {% else %}
+    {% elif 'search_posts/' in request.path %}
     <p>No posts have been found</p>
     {% endif %}
     {% endif %}

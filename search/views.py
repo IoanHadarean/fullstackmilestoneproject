@@ -54,6 +54,7 @@ def search_products(request):
                                     Q(price__iexact=search_text) |
                                     Q(discount_price__iexact=search_text) |
                                     Q(category__icontains=search_text))
+    item_list_count = item_list.count()
 
     """Add pagination for search"""
     paginator = Paginator(item_list, 8)
@@ -62,13 +63,14 @@ def search_products(request):
     
     context = {
         'search_text': search_text,
-        'object_list': object_list
+        'object_list': object_list,
+        'item_list_count': item_list_count
     }
 
     return render(request, 'shoppingcart/home.html', context)
 
 
-def search_results(request, search_text):
+def products_results(request, search_text):
     if request.method == "POST":
         item_list = Item.objects.filter(Q(title__icontains=search_text) |
                                         Q(price__iexact=search_text) |
