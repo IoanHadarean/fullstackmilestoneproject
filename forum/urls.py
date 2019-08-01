@@ -33,6 +33,8 @@ urlpatterns = [
          name='posts_results'),
     path('search_drafts/', search_views.search_drafts,
          name='search_drafts'),
+    path('drafts_results/<search_text>/', search_views.drafts_results,
+         name='drafts_results'),
     re_path(r'^post/(?P<pk>\d+)/like/$', views.like_post,
             name='like_post'),
 ]

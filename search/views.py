@@ -94,6 +94,31 @@ def search_drafts(request):
     return render(request, 'forum/post_list.html', context)
 
 
+def drafts_results(request, search_text):
+    if request.method == "POST":
+        draft_list = Post.objects.filter((Q(title__icontains=search_text) |
+                                         Q(text__icontains=search_text) |
+                                         Q(created_date__icontains=search_text)) &
+                                         Q(published_date__isnull=True))
+        if draft_list.count() >= 7:
+            draft_list = draft_list[:7]
+        else:
+            draft_list = draft_list[:draft_list.count()]
+        
+        print(request.user.username)
+        drafts = []
+        for draft in draft_list:
+            print(draft.author)
+            dict_item = {}
+            if draft.title not in dict_item.keys():
+                dict_item[draft.title] = draft.pk
+            if draft.author.username == request.user.username:
+                drafts.append(dict_item)
+        
+        print(drafts)
+        return JsonResponse(drafts, safe=False)
+
+
 def search_products(request):
     """
     Search products by title, price, discount_price,

@@ -14,7 +14,13 @@
                 {% csrf_token %}
                 <input type="text" id="search_drafts" class="col-md-8" name="drafts">
                 <button id="btn-search" class="btn btn-primary" type="submit">Search</button>
-            </form 
+            </form>
+            
+            <div id="search-typeahead" class="mb-5 col-md-8">
+                <ul id="search-results-drafts">
+
+                </ul>
+            </div>
             {% else %} 
             <form class="custom-height-form" action="{% url 'search_posts' %}" method="POST">
             {% csrf_token %}
@@ -48,18 +54,26 @@
                 <input type="text" id="search_drafts" class="col-md-8" name="drafts">
                 <button id="btn-search" class="btn btn-primary" type="submit">Search</button>
             </form>
+            
+            <div id="search-typeahead" class="mb-5 col-md-8">
+                <ul id="search-results-drafts">
+
+                </ul>
+            </div>
             {% else %}
             <form class="custom-height-form" action="{% url 'search_posts' %}" method="POST">
                 {% csrf_token %}
                 <input type="text" id="search_posts" class="col-md-8" name="posts">
                 <button id="btn-search" class="btn btn-primary" type="submit">Search</button>
             </form>
-            {% endif %}
-        <div id="search-typeahead" class="display mb-5">
-            <ul class="col-md-8" id="search-results-posts">
+            
+            <div id="search-typeahead" class="mb-5 col-md-8">
+                <ul id="search-results-posts">
 
-            </ul>
-        </div>
+                </ul>
+            </div>
+            {% endif %}
+
         </div>
     </div>
     {% if 'search_drafts/' in request.path %}
