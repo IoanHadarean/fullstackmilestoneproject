@@ -41,6 +41,27 @@ def search_posts(request):
     return render(request, 'forum/post_list.html', context)
 
 
+def posts_results(request, search_text):
+    if request.method == "POST":
+        post_list = Post.objects.filter((Q(title__icontains=search_text) |
+                                         Q(text__icontains=search_text) |
+                                         Q(created_date__icontains=search_text)) &
+                                         Q(published_date__isnull=False))
+        if post_list.count() >= 7:
+            post_list = post_list[:7]
+        else:
+            post_list = post_list[:post_list.count()]
+            
+        posts = []
+        for post in post_list:
+            dict_item = {}
+            if post.title not in dict_item.keys():
+                dict_item[post.title] = post.pk
+            posts.append(dict_item)
+
+        return JsonResponse(posts, safe=False)
+
+
 def search_drafts(request):
     """
     Search drafts by title, text, created_date and 'published_date_isnull=True'.

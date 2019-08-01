@@ -1,0 +1,29 @@
+#search-results-products {
+    padding-left: 0;
+}
+
+#search-results-posts {
+    padding-left: 0;
+}
+
+#search-typeahead {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+#btn-search {
+    height: 36px;
+    line-height: 5px;
+    margin: 0;
+    margin-top: -1px;
+    
+}
+
+#search_drafts,
+#search_posts {
+    height: 35px;
+}
+
+.custom-height-form {
+    height: 35px;
+}

@@ -1,10 +1,10 @@
 // Get HTML elements
 let searchInput = document.getElementById('search_box');
-let searchResults = document.getElementById('search-results');
+let searchResults = document.getElementById('search-results-products');
 let navbar = document.getElementsByClassName('navbar-dark')[0];
 
 // Add event listeners
-searchInput.addEventListener('keyup', getSearchResults);
+searchInput.addEventListener('keyup', getProductResults);
 
 // Function for retrieving the csrftoken cookie
 function getCookie(cname) {
@@ -23,10 +23,8 @@ function getCookie(cname) {
     return "";
 }
 
-// Assign the csrftoken to a variable so it can be used in the AJAX
-var csrftoken = getCookie('csrftoken');
 
-function getSearchResults() {
+function getProductResults() {
     let xhr = new XMLHttpRequest();
     var searchRequest = null;
     // Abort old pending requests
@@ -66,23 +64,28 @@ function getSearchResults() {
                         let linkTag = document.createElement('a');
                         linkTag.href = "/shoppingcart/product/" + slug;
                         linkTag.style.color = 'black';
+                        linkTag.style.display = 'block';
 
 
                         // Add mouse enter and mouse out event listeners for li and link
                         li.addEventListener('mouseenter', function() {
                             li.style.backgroundColor = '#929fba';
+                            linkTag.style.color = 'white';
                         });
 
                         li.addEventListener('mouseout', function() {
                             li.style.backgroundColor = 'white';
+                            linkTag.style.color = 'black';
                         });
 
                         linkTag.addEventListener('mouseenter', function() {
                             li.style.backgroundColor = '#929fba';
+                            linkTag.style.color = 'white';
                         });
 
                         linkTag.addEventListener('mouseout', function() {
                             li.style.backgroundColor = 'white';
+                            linkTag.style.color = 'black';
                         });
 
                         // Append title as text node to link
@@ -99,7 +102,7 @@ function getSearchResults() {
                     li.style.paddingTop = '8px';
                     li.style.paddingBottom = '8px';
                     li.style.paddingLeft = '10px';
-                    li.innerHTML = 'No products have been found';
+                    li.innerHTML = searchText;
 
                     // Add mouse enter and mouse out event listeners for li
                     li.addEventListener('mouseenter', function() {
@@ -123,6 +126,8 @@ function getSearchResults() {
         console.log('Request error...');
     };
     xhr.open("POST", "/shoppingcart/products_results/" + searchText + "/", true);
+    // Assign the csrftoken to a variable so it can be used in the AJAX
+    let csrftoken = getCookie('csrftoken');
     xhr.setRequestHeader('X-CSRFToken', csrftoken);
     xhr.send();
 }

@@ -29,6 +29,8 @@ urlpatterns = [
             name='post_publish'),
     path('search_posts/', search_views.search_posts,
          name='search_posts'),
+    path('posts_results/<search_text>/', search_views.posts_results,
+         name='posts_results'),
     path('search_drafts/', search_views.search_drafts,
          name='search_drafts'),
     re_path(r'^post/(?P<pk>\d+)/like/$', views.like_post,

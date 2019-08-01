@@ -1,6 +1,6 @@
 {% extends 'base.html' %} {% load static %}
 {% block custom_css %}
-<link rel="stylesheet" href="{% static 'css/home.css' %}" type="text/css" />
+<link rel="stylesheet" href="{% static 'css/custom.css' %}" type="text/css" />
 {% endblock %}
 {% block content %}
 <!-- Products -->
@@ -69,7 +69,7 @@
   </nav>
   
   <div id="search-typeahead" class="mb-5">
-    <ul id="search-results">
+    <ul id="search-results-products">
       {% if 'search_products' in request.path %}
         {% if item_list_count > 0 and item_list_count != 1 %}
           <li>{{ item_list_count }} products have been found</li>

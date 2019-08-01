@@ -1,10 +1,11 @@
 // Get HTML elements
-let searchInput = document.getElementById('search_box');
-let searchResults = document.getElementById('search-results');
-let navbar = document.getElementsByClassName('navbar-dark')[0];
+let searchInputPosts = document.getElementById('search_posts');
+let searchInputDrafts = document.getElementById('search_drafts');
+let searchResults = document.getElementById('search-results-posts');
 
 // Add event listeners
-searchInput.addEventListener('keyup', getSearchResults);
+searchInputPosts.addEventListener('keyup', getPostsResults);
+searchInputDrafts.addEventListener('keyup', getDraftsResults);
 
 // Function for retrieving the csrftoken cookie
 function getCookie(cname) {
@@ -23,17 +24,15 @@ function getCookie(cname) {
     return "";
 }
 
-// Assign the csrftoken to a variable so it can be used in the AJAX
-var csrftoken = getCookie('csrftoken');
 
-function getSearchResults() {
+function getPostsResults() {
     let xhr = new XMLHttpRequest();
     var searchRequest = null;
     // Abort old pending requests
     if (searchRequest) {
         searchRequest.abort();
     }
-    let searchText = searchInput.value;
+    let searchText = searchInputPosts.value;
     searchResults.innerHTML = '';
     if (searchText) {
         xhr.onload = function() {
@@ -43,8 +42,7 @@ function getSearchResults() {
                     searchResults.innerHTML = '';
                 }
 
-
-                // Modify the search ul background Color to white
+                // Modify the search ul background color to white
                 searchResults.style.backgroundColor = 'white';
 
                 // Loop through the list of dictionaries
@@ -53,36 +51,42 @@ function getSearchResults() {
 
                         // Get title and slug from list of dictionaries
                         let title = Object.keys(results[i]);
-                        let slug = Object.values(results[i]);
+                        let pk = Object.values(results[i]);
 
                         // Create the li element
                         let li = document.createElement('li');
-                        li.style.paddingTop = '8px';
-                        li.style.paddingBottom = '8px';
+                        li.style.paddingTop = '5px';
+                        li.style.paddingBottom = '5px';
+                        li.style.height = '35px';
                         li.style.paddingLeft = '10px';
-                        li.setAttribute('id', slug);
+                        li.setAttribute('id', pk);
 
                         // Create link for search result product
                         let linkTag = document.createElement('a');
-                        linkTag.href = "/shoppingcart/product/" + slug;
+                        linkTag.href = "/forum/post/" + pk;
                         linkTag.style.color = 'black';
+                        linkTag.style.display = 'block';
 
 
                         // Add mouse enter and mouse out event listeners for li and link
                         li.addEventListener('mouseenter', function() {
-                            li.style.backgroundColor = '#929fba';
+                            li.style.backgroundColor = '#4285f4';
+                            linkTag.style.color = 'white';
                         });
 
                         li.addEventListener('mouseout', function() {
                             li.style.backgroundColor = 'white';
+                            linkTag.style.color = 'black';
                         });
 
                         linkTag.addEventListener('mouseenter', function() {
-                            li.style.backgroundColor = '#929fba';
+                            li.style.backgroundColor = '#4285f4';
+                            linkTag.style.color = 'white';
                         });
 
                         linkTag.addEventListener('mouseout', function() {
                             li.style.backgroundColor = 'white';
+                            linkTag.style.color = 'black';
                         });
 
                         // Append title as text node to link
@@ -96,14 +100,15 @@ function getSearchResults() {
                 else {
                     // Create the li element
                     let li = document.createElement('li');
-                    li.style.paddingTop = '8px';
-                    li.style.paddingBottom = '8px';
+                    li.style.paddingTop = '5px';
+                    li.style.paddingBottom = '5px';
                     li.style.paddingLeft = '10px';
-                    li.innerHTML = 'No products have been found';
+                    li.style.height = '35px';
+                    li.innerHTML = searchText;
 
                     // Add mouse enter and mouse out event listeners for li
                     li.addEventListener('mouseenter', function() {
-                        li.style.backgroundColor = '#929fba';
+                        li.style.backgroundColor = '#4285f4';
                     });
 
                     li.addEventListener('mouseout', function() {
@@ -115,14 +120,15 @@ function getSearchResults() {
                 }
 
                 // Remove navbar margin bottom bootstrap class
-                navbar.classList.remove('mb-5');
             }
         };
     }
     xhr.onerror = function() {
         console.log('Request error...');
     };
-    xhr.open("POST", "/shoppingcart/products_results/" + searchText + "/", true);
+    xhr.open("POST", "/forum/posts_results/" + searchText + "/", true);
+    // Assign the csrftoken to a variable so it can be used in the AJAX
+    let csrftoken = getCookie('csrftoken');
     xhr.setRequestHeader('X-CSRFToken', csrftoken);
     xhr.send();
 }
