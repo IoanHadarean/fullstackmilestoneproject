@@ -6,28 +6,30 @@
     <div class="container">
         <div class="display">
             {% if 'drafts/' in request.path %}
-            <form action="{% url 'search_drafts' %}" method="GET">
-                <input type="text" class="col-md-8" name="posts">
+            <form action="{% url 'search_drafts' %}" method="POST">
+                {% csrf_token %}
+                <input type="text" id = "search_drafts" class="col-md-8" name="drafts">
                 <button class="btn btn-primary" type="submit">Search</button>
             </form
             {% else %}
-            <form action="{% url 'search_posts' %}" method="GET">
+            <form action="{% url 'search_posts' %}" method="POST">
+                {% csrf_token %}
                 <input type="text" class="col-md-8" name="posts">
                 <button class="btn btn-primary" type="submit">Search</button>
             </form>
             {% endif %}
         </div>
         {% if 'search_drafts/' in request.path %}
-        {% if post_list.count == 1 %}
-            <p>{{ post_list.count }} draft has been found</p>
+        {% if draft_list_count == 1 %}
+            <p>{{ draft_list_count }} draft has been found</p>
         {% else %}
-            <p>{{ post_list.count }} drafts have been found</p>
+            <p>{{ draft_list_count }} drafts have been found</p>
         {% endif %}
         {% elif 'search_posts/' in request.path %}
-         {% if post_list.count == 1 %}
-            <p>{{ post_list.count }} post has been found</p>
+         {% if post_list_count == 1 %}
+            <p>{{ post_list_count }} post has been found</p>
         {% else %}
-            <p>{{ post_list.count }} posts have been found</p>
+            <p>{{ post_list_count }} posts have been found</p>
         {% endif %}   
         {% endif %}
     </div>
@@ -35,12 +37,14 @@
     <div class="container">
         <div class="display">
             {% if 'drafts/' in request.path %}
-            <form action="{% url 'search_drafts' %}" method="GET">
-                <input type="text" class="col-md-8" name="posts">
+            <form action="{% url 'search_drafts' %}" method="POST">
+                {% csrf_token %}
+                <input type="text" id = "search_drafts" class="col-md-8" name="drafts">
                 <button class="btn btn-primary" type="submit">Search</button>
             </form>
             {% else %}
-            <form action="{% url 'search_posts' %}" method="GET">
+            <form action="{% url 'search_posts' %}" method="POST">
+                {% csrf_token %}
                 <input type="text" class="col-md-8" name="posts">
                 <button class="btn btn-primary" type="submit">Search</button>
             </form>
@@ -62,12 +66,17 @@
         <div class="date">
             <p>Written by <a class="mr-2" href="{% url 'user_posts' post.author.username %}">{{ post.author }}</a> on {{post.published_date|date:"D M Y"}}</p>
         </div>
-        <a href="{% url 'post_detail' pk=post.pk %}">Comments: 
+        <a href="{% url 'post_detail' pk=post.pk %}">Comments:
+        {% if post.comments.count > 0 %}
         {% for comment in post.comments.all %}
             {% if comment.approved_comment and not comment.reply %}
                 {{ comment.comments_excluding_replies.count }}
             {% endif %}
+            
         {% endfor %}
+        {% else %}
+        0
+        {% endif %}
         </a>
     </div>
     {% endfor %}

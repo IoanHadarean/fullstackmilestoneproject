@@ -9,7 +9,7 @@ from django.http import JsonResponse
 import random
 
 
-def search_posts(request):
+def search_posts(request, search_text):
     """
     Search posts by title, text, created_date and 'published_date_isnull=False'.
     Note: searching by author does not work because author is a
@@ -20,57 +20,34 @@ def search_posts(request):
     else:
         search_text = ''
         
-    post_list = Post.objects.filter((Q(title__icontains=search_text) |
-                                      Q(text__icontains=search_text) |
-                                      Q(created_date__icontains=search_text)) &
+    posts_list = Post.objects.filter((Q(title__icontains=self.request.GET['posts']) |
+                                      Q(text__icontains=self.request.GET['posts']) |
+                                      Q(created_date__icontains=self.request.GET['posts'])) &
                                       Q(published_date__isnull=False))
-                                      
-    post_list_count = post_list.count()
-    
-    """Add pagination for searching posts"""
-    paginator = Paginator(post_list, 8)
-    page = request.GET.get('page')
-    post_list = paginator.get_page(page)
-    
-    context = {
-        'search_text': search_text,
-        'post_list': post_list,
-        'post_list_count': post_list_count
-    }
+    model = Post
+    paginate_by = 5
 
-    return render(request, 'forum/post_list.html', context)
+    def get_queryset(self):
+        return Post.objects.filter((Q(title__icontains=self.request.GET['posts']) |
+                                    Q(text__icontains=self.request.GET['posts']) |
+                                    Q(created_date__icontains=self.request.GET['posts'])) &
+                                   Q(published_date__isnull=False))
 
 
-def search_drafts(request):
+class SearchDrafts(ListView):
     """
     Search drafts by title, text, created_date and 'published_date_isnull=True'.
     Note: searching by author does not work because author is a
     foreign key.
     """
-    if request.method == "POST":
-        search_text = request.POST.get('drafts')
-    else:
-        search_text = ''
-        
-    draft_list = Post.objects.filter((Q(title__icontains=search_text) |
-                                     Q(text__icontains=search_text) |
-                                     Q(created_date__icontains=search_text)) &
-                                     Q(published_date__isnull=True))
-                                     
-    draft_list_count = draft_list.count()
-    
-    """Add pagination for searching drafts"""
-    paginator = Paginator(draft_list, 8)
-    page = request.GET.get('page')
-    post_list = paginator.get_page(page)
-    
-    context = {
-        'search_text': search_text,
-        'post_list': post_list,
-        'draft_list_count': draft_list_count
-    }
+    model = Post
+    paginate_by = 5
 
-    return render(request, 'forum/post_list.html', context)
+    def get_queryset(self):
+        return Post.objects.filter((Q(title__icontains=self.request.GET['drafts']) |
+                                    Q(text__icontains=self.request.GET['drafts']) |
+                                    Q(created_date__icontains=self.request.GET['drafts'])) &
+                                    Q(published_date__isnull=True))
 
 
 def search_products(request):
