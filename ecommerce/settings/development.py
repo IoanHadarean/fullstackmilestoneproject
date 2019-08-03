@@ -12,7 +12,5 @@ DATABASES = {
         }
     }
     
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-    
 SENDGRID_API_KEY = ''
 STRIPE_SECRET_KEY = ''
