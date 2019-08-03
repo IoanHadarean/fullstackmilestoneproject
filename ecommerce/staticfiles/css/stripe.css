@@ -1,0 +1,93 @@
+/* ----------------------------- Custom Stripe form css ----------------------- */
+
+#stripeBtnLabel {
+  font-family: "Helvetica Neue", Helvetica, sans-serif;
+  font-size: 1rem;
+  font-variant: normal;
+  padding: 0;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: antialiased;
+  font-weight: 500;
+  display: block;
+}
+#stripeBtn {
+  border: none;
+  outline: none;
+  text-decoration: none;
+  color: #fff;
+  background: #32325d;
+  white-space: nowrap;
+  display: inline-block;
+  height: 2.5rem;
+  line-height: 2.5rem;
+  box-shadow: 0 0.25rem 0.375rem rgba(50, 50, 93, .11), 0 0.0625rem 0.1875rem rgba(0, 0, 0, .08);
+  border-radius: 0.25rem;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  letter-spacing: 0.025rem;
+  -webkit-transition: all 150ms ease;
+  -moz-transition: all 150ms ease;
+  -o-transition: all 150ms ease;
+  transition: all 150ms ease;
+  width: 100%;
+}
+
+button:hover {
+  transform: translateY(-0.0625rem);
+  box-shadow: 0 0.4375rem 0.875rem rgba(50, 50, 93, .10), 0 0.1875rem 0.375rem rgba(0, 0, 0, .08);
+  background-color: #43458b;
+}
+
+.stripe-form {
+  padding: 0.3125rem 1.875rem;
+}
+
+#card-errors {
+  height: 1.25rem;
+  padding: 0.25rem 0;
+  color: #fa755a;
+}
+.stripe-form-row {
+  width: 100%;
+  float: left;
+  margin-top: 0.3125rem;
+  margin-bottom: 0.3125rem;
+}
+
+.current-card-form {
+  display: none;
+}
+
+/* ------------------------------------------- Stripe CSS from documentation -------------------------*/
+/**
+ * The CSS shown here will not be introduced in the Quickstart guide, but shows
+ * how you can use CSS to style your Element's container.
+ */
+.StripeElement {
+  box-sizing: border-box;
+
+  height: 2.5rem;
+
+  padding: 0.625rem 0.75rem;
+
+  border: 0.0625rem solid transparent;
+  border-radius: 0.25rem;
+  background-color: white;
+
+  box-shadow: 0 0.0625rem 0.1875rem 0 #e6ebf1;
+  -webkit-transition: box-shadow 150ms ease;
+  transition: box-shadow 150ms ease;
+}
+
+.StripeElement--focus {
+  box-shadow: 0 0.0625rem 0.1875rem 0 #cfd7df;
+}
+
+.StripeElement--invalid {
+  border-color: #fa755a;
+}
+
+.StripeElement--webkit-autofill {
+  background-color: #fefde5 !important;
+}
