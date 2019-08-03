@@ -1,6 +1,5 @@
 from .base import *
 
-import env
 import dj_database_url
 
 DEBUG = os.environ.get('DEBUG', cast=bool)
