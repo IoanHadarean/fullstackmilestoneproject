@@ -8,7 +8,7 @@ from accounts.forms import UserLoginForm, UserRegistrationForm, UserUpdateForm, 
 
 def index(request):
     """Return the index.html file"""
-    return render(request, 'index.html')
+    return render(request, 'accounts/index.html')
 
 
 @login_required
@@ -50,7 +50,7 @@ def login(request):
         login_form = UserLoginForm()
 
     args = {'login_form': login_form, 'next': request.GET.get('next', '')}
-    return render(request, 'login.html', args)
+    return render(request, 'accounts/login.html', args)
 
 
 def registration(request):
@@ -91,7 +91,7 @@ def registration(request):
         registration_form = UserRegistrationForm()
 
     args = {'registration_form': registration_form}
-    return render(request, 'registration.html', args)
+    return render(request, 'accounts/registration.html', args)
 
 
 @login_required
@@ -120,4 +120,4 @@ def profile(request):
         'user_form': user_form,
         'profile_form': profile_form
     }
-    return render(request, 'profile.html', context)
+    return render(request, 'accounts/profile.html', context)
