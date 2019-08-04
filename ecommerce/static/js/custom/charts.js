@@ -1,15 +1,20 @@
 function getChartsData() {
-    fetch('/charts/data/', {
-            method: 'GET',
-        })
-        .then(res => res.json())
-        .then(data => {
-            console.log(data);
-        })
-        .catch(err => console.log(err));
+    let xhr = new XMLHttpRequest();
+    xhr.onload = function() {
+        if (this.readyState == 4 && this.status == 200) {
+            let results = JSON.parse(xhr.responseText);
+            console.log(results);
+        }
+    };
+    xhr.onerror = function() {
+        console.log('Request error...');
+    };
+    xhr.open("GET", "/charts/data", true);
+    xhr.send();
 }
 
 getChartsData();
+
 
 
 var ctx = document.getElementById('myChart').getContext('2d');
