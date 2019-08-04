@@ -65,7 +65,7 @@ class Item(models.Model):
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
 
-        img = Image.open(self.image.name)
+        img = Image.open(self.image)
 
         if img.height > 300 or img.width > 300:
             output_size = (300, 300)
