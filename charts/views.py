@@ -98,6 +98,7 @@ def last_3_days_orders():
     
     return orders_last_3_days
 
+
 def last_3_months_orders():
     
     monthly_orders, orders_last_3_months_total, sales_last_3_months_total = month_orders()
@@ -134,17 +135,89 @@ def last_3_months_orders():
     return orders_last_3_months
         
         
+def last_3_days_sales():
+
+    daily_orders, orders_last_3_days_total, sales_last_3_days_total = day_orders()
+
+    days = []
+    for order in daily_orders:
+        if list(order.keys())[0] not in days:
+            days.append(list(order.keys())[0])
+            
+    first_day = {}
+    second_day = {}
+    third_day = {}
+    sales_first_day = 0
+    sales_second_day = 0
+    sales_third_day = 0
+    for order in orders:
+        if days[0] == order.ordered_date.date().strftime("%A"):
+            sales_first_day += order.get_total()
+            first_day.update({days[0]: sales_first_day})
+        elif days[1] == order.ordered_date.date().strftime("%A"):
+            sales_second_day += order.get_total()
+            second_day.update({days[1]: sales_second_day})
+        elif days[2] == order.ordered_date.date().strftime("%A"):
+            sales_third_day += order.get_total()
+            third_day.update({days[2]: sales_third_day})
+            
+    sales_last_3_days = []
+    sales_last_3_days.append(first_day)
+    sales_last_3_days.append(second_day)
+    sales_last_3_days.append(third_day)
+    sales_last_3_days.append({'Total': sales_last_3_days_total})
+    
+    return sales_last_3_days
+        
+        
+def last_3_months_sales():
+    
+    monthly_orders, orders_last_3_months_total, sales_last_3_months_total = month_orders()
+    
+    months = []
+    for order in monthly_orders:
+        if list(order.keys())[0] not in months:
+            months.append(list(order.keys())[0])
+            
+    first_month = {}
+    second_month = {}
+    third_month = {}
+    sales_first_month = 0
+    sales_second_month = 0
+    sales_third_month = 0
+    
+    for order in orders:
+        if months[0] == order.ordered_date.date().strftime("%B"):
+            sales_first_month += order.get_total()
+            first_month.update({months[0]: sales_first_month})
+        elif months[1] == order.ordered_date.date().strftime("%B"):
+            sales_second_month += order.get_total()
+            second_month.update({months[1]: sales_second_month})
+        elif months[2] == order.ordered_date.date().strftime("%B"):
+            sales_third_month += order.get_total()
+            third_month.update({months[2]: sales_third_month})
+            
+    sales_last_3_months = []
+    sales_last_3_months.append(first_month)
+    sales_last_3_months.append(second_month)
+    sales_last_3_months.append(third_month)
+    sales_last_3_months.append({'Total': sales_last_3_months_total})
+    
+    return sales_last_3_months
+    
+    
 def get_data(request, *args, **kwargs):
     
     orders_last_3_days = last_3_days_orders()
     orders_last_3_months = last_3_months_orders()
-    print(orders_last_3_days)
+    sales_last_3_days = last_3_days_sales()
+    sales_last_3_months = last_3_months_sales()
     
     data = {
         'orders_last_3_days': orders_last_3_days,
         'orders_last_3_months': orders_last_3_months,
-        'sales_last_3_days': [],
-        'sales_last_3_months': [],
+        'sales_last_3_days': sales_last_3_days,
+        'sales_last_3_months': sales_last_3_months,
     }
     
     return JsonResponse(data)
