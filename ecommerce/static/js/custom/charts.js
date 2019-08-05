@@ -25,6 +25,18 @@ function constructCharts(data) {
     
     // Iterate through the data and get the keys and values
     Object.keys(data).forEach(function(key) {
+            
+            var dataLabels = [];
+            var dataValues = [];
+            for (var i = 0; i < data[key].length; i++) {
+                console.log(data[key][i]);
+                var dataLabel = Object.keys(data[key][i]).toString();
+                var dataValue = Object.values(data[key][i]).toString();
+                dataLabels.push(dataLabel);
+                dataValues.push(dataValue);
+            }
+            
+            console.log(dataLabels);
         
             // Split the text at "_"
             let keySplit = key.split("_");
@@ -45,10 +57,10 @@ function constructCharts(data) {
             var chart = new Chart(ctx, {
                 type: 'line',
                 data: {
-                    labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
+                    labels: dataLabels,
                     datasets: [{
                         label: capitalizedText,
-                        data: [12, 19, 3, 5, 2, 3],
+                        data: dataValues,
                         backgroundColor: [
                             'rgba(255, 99, 132, 0.2)',
                             'rgba(54, 162, 235, 0.2)',

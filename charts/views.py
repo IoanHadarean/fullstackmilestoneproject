@@ -161,6 +161,13 @@ def last_3_days_sales():
             sales_third_day += order.get_total()
             third_day.update({days[2]: sales_third_day})
             
+    if first_day == {}:
+        first_day.update({days[0]: 0})
+    if second_day == {}:
+        second_day.update({days[1]: 0})
+    if third_day == {}:
+        third_day.update({days[2]: 0})
+            
     sales_last_3_days = []
     sales_last_3_days.append(first_day)
     sales_last_3_days.append(second_day)
@@ -196,6 +203,13 @@ def last_3_months_sales():
         elif months[2] == order.ordered_date.date().strftime("%B"):
             sales_third_month += order.get_total()
             third_month.update({months[2]: sales_third_month})
+            
+    if first_month == {}:
+        first_month.update({months[0]: 0})
+    if second_month == {}:
+        second_month.update({months[1]: 0})
+    if third_month == {}:
+        third_month.update({months[2]: 0})
             
     sales_last_3_months = []
     sales_last_3_months.append(first_month)
