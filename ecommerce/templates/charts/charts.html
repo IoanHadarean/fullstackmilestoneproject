@@ -1,7 +1,7 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-<h1 class="text-center mt-3 mb-3">Charts</h1>
+<h1 class="text-center mt-3 mb-3">Orders and sales</h1>
 <div class="row">
     <div class="col-sm-12 col-md-6 col-lg-6 mt-5" url-endpoint = "{% url 'chart-data' %}">
         <canvas id="orders_last_3_days" width="200" height="200"></canvas>

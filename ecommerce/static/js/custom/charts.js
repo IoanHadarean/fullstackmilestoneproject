@@ -1,3 +1,6 @@
+/* global Chart */
+
+// AJAX request for getting the charts data from the endpoint
 function getChartsData() {
     let xhr = new XMLHttpRequest();
     xhr.onload = function() {
@@ -17,7 +20,10 @@ function getChartsData() {
 getChartsData();
 
 
+// Construct the charts with the data received from the AJAX request
 function constructCharts(data) {
+    
+    // Iterate through the data and get the keys and values
     Object.keys(data).forEach(function(key) {
         
             // Split the text at "_"
@@ -36,7 +42,7 @@ function constructCharts(data) {
             let capitalizedText = capitalizedFirstWord + ' ' + textSection;
             
             var ctx = document.getElementById(key).getContext('2d');
-            var myChart = new Chart(ctx, {
+            var chart = new Chart(ctx, {
                 type: 'line',
                 data: {
                     labels: ['Red', 'Blue', 'Yellow', 'Green', 'Purple', 'Orange'],
