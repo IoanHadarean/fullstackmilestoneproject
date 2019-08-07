@@ -35,7 +35,7 @@ def day_orders():
                     daily_orders.append({date_time.strftime("%A") : 0})
 
                     
-    return daily_orders, orders_last_3_days_total, sales_last_3_days_total
+    return daily_orders, last_3_days, orders_last_3_days_total, sales_last_3_days_total
     
 
 def month_orders():
@@ -61,17 +61,16 @@ def month_orders():
                 else:
                     monthly_orders.append({date_time.strftime("%B"): orders_per_month})
                     
-    return monthly_orders, orders_last_3_months_total, sales_last_3_months_total
+    return monthly_orders, last_3_months_datetime, orders_last_3_months_total, sales_last_3_months_total
     
 
 def last_3_days_orders():
     
-    daily_orders, orders_last_3_days_total, sales_last_3_days_total = day_orders()
+    daily_orders, last_3_days, orders_last_3_days_total, sales_last_3_days_total = day_orders()
 
     days = []
-    for order in daily_orders:
-        if list(order.keys())[0] not in days:
-            days.append(list(order.keys())[0])
+    for date in last_3_days:
+        days.append(date.strftime("%A"))
             
     first_day = {}
     second_day = {}
@@ -90,6 +89,13 @@ def last_3_days_orders():
             orders_third_day += order[days[2]]
             third_day.update({days[2]: orders_third_day})
             
+    if first_day == {}:
+        first_day.update({days[0]: 0})
+    if second_day == {}:
+        second_day.update({days[1]: 0})
+    if third_day == {}:
+        third_day.update({days[2]: 0})
+            
     orders_last_3_days = []
     orders_last_3_days.append(first_day)
     orders_last_3_days.append(second_day)
@@ -101,12 +107,11 @@ def last_3_days_orders():
 
 def last_3_months_orders():
     
-    monthly_orders, orders_last_3_months_total, sales_last_3_months_total = month_orders()
+    monthly_orders, last_3_months_datetime, orders_last_3_months_total, sales_last_3_months_total = month_orders()
     
     months = []
-    for order in monthly_orders:
-        if list(order.keys())[0] not in months:
-            months.append(list(order.keys())[0])
+    for date in last_3_months_datetime:
+        months.append(date.strftime("%B"))
             
     first_month = {}
     second_month = {}
@@ -126,6 +131,13 @@ def last_3_months_orders():
             orders_third_month += order[months[2]]
             third_month.update({months[2]: orders_third_month})
             
+    if first_month == {}:
+        first_month.update({months[0]: 0})
+    if second_month == {}:
+        second_month.update({months[1]: 0})
+    if third_month == {}:
+        third_month.update({months[2]: 0})
+            
     orders_last_3_months = []
     orders_last_3_months.append(first_month)
     orders_last_3_months.append(second_month)
@@ -137,12 +149,11 @@ def last_3_months_orders():
         
 def last_3_days_sales():
 
-    daily_orders, orders_last_3_days_total, sales_last_3_days_total = day_orders()
+    daily_orders, last_3_days, orders_last_3_days_total, sales_last_3_days_total = day_orders()
 
     days = []
-    for order in daily_orders:
-        if list(order.keys())[0] not in days:
-            days.append(list(order.keys())[0])
+    for date in last_3_days:
+        days.append(date.strftime("%A"))
             
     first_day = {}
     second_day = {}
@@ -179,12 +190,11 @@ def last_3_days_sales():
         
 def last_3_months_sales():
     
-    monthly_orders, orders_last_3_months_total, sales_last_3_months_total = month_orders()
+    monthly_orders, last_3_months_datetime, orders_last_3_months_total, sales_last_3_months_total = month_orders()
     
     months = []
-    for order in monthly_orders:
-        if list(order.keys())[0] not in months:
-            months.append(list(order.keys())[0])
+    for date in last_3_months_datetime:
+        months.append(date.strftime("%B"))
             
     first_month = {}
     second_month = {}
