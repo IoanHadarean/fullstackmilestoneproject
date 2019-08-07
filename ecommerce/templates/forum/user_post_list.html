@@ -18,7 +18,10 @@
     <!-- Post list -->
     {% for post in post_list %}
     <div class="post">
-        <img class="rounded-circle" src="{{ post.author.profile.image.url }}">
+        {% if post.author.profile.image %}
+        <img class="rounded-circle" src="{{ post.author.profile.image.url }}" alt="profile-image">
+        {% else %}
+        <img class="rounded-circle" src="{% static 'img/avatar.png' %}" width = "70" height = "70" alt="profile-image">
         <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
         <div class="date">
             <p>Written by <a class="mr-2" href="{% url 'user_posts' post.author.username %}">{{ post.author }}</a> on {{post.published_date|date:"D M Y"}}</p>

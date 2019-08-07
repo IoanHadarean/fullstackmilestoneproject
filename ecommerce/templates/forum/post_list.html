@@ -6,7 +6,7 @@
 <div class="centerstage">
 
     <!-- Search through posts if there are any-->
-    {% if post_list %}
+    {% if post_list.count > 0 %}
     <div class="container">
         <div class="display">
             {% if 'drafts/' in request.path %}
@@ -45,37 +45,6 @@
         <p>{{ post_list_count }} posts have been found</p>
         {% endif %} {% endif %}
     </div>
-    {% else %}
-    <div class="container">
-        <div class="display">
-            {% if 'drafts/' in request.path %}
-            <form class="custom-height-form" action="{% url 'search_drafts' %}" method="POST">
-                {% csrf_token %}
-                <input type="text" id="search_drafts" class="col-md-8" name="drafts">
-                <button id="btn-search" class="btn btn-primary" type="submit">Search</button>
-            </form>
-            
-            <div id="search-typeahead" class="mb-5 col-md-8">
-                <ul id="search-results-drafts">
-
-                </ul>
-            </div>
-            {% else %}
-            <form class="custom-height-form" action="{% url 'search_posts' %}" method="POST">
-                {% csrf_token %}
-                <input type="text" id="search_posts" class="col-md-8" name="posts">
-                <button id="btn-search" class="btn btn-primary" type="submit">Search</button>
-            </form>
-            
-            <div id="search-typeahead" class="mb-5 col-md-8">
-                <ul id="search-results-posts">
-
-                </ul>
-            </div>
-            {% endif %}
-
-        </div>
-    </div>
     {% if 'search_drafts/' in request.path %}
     <p>No drafts have been found</p>
     {% elif 'search_posts/' in request.path %}
@@ -85,10 +54,16 @@
     <!-- Post list -->
     {% for post in post_list %}
     <div class="post">
-        <img class="rounded-circle" src="{{ post.author.profile.image.url }}">
+        {% if post.author.profile.image %}
+        <img class="rounded-circle" src="{{ post.author.profile.image.url }}" alt="profile-image">
+        {% else %}
+        <img class="rounded-circle" src="{% static 'img/avatar.png' %}" width="70" height="70" alt="profile-image">
+        {% endif %}
         <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
         <div class="date">
+            {% if 'drafts/' not in request.path %}
             <p>Written by <a class="mr-2" href="{% url 'user_posts' post.author.username %}">{{ post.author }}</a> on {{post.published_date|date:"D M Y"}}</p>
+            {% endif %}
         </div>
         <a href="{% url 'post_detail' pk=post.pk %}">Comments:
         {% if post.comments.count > 0 %}

@@ -35,7 +35,6 @@ function constructCharts(data) {
             dataValues.push(dataValue);
         }
 
-
         // Split the text at "_"
         let keySplit = key.split("_");
 

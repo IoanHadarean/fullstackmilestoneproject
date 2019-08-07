@@ -14,11 +14,6 @@ class Profile(models.Model):
     image = models.ImageField(default=None, upload_to='profile_pics')
     stripe_customer_id = models.CharField(max_length=50, blank=True, null=True)
     one_click_purchasing = models.BooleanField(default=False)
-    
-    @property
-    def image_url(self):
-        if self.image and hasattr(self.image, 'url'):
-            return self.image.url
 
     def __str__(self):
         return f'{self.user.username} Profile'

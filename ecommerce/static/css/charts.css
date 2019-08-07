@@ -12,11 +12,11 @@
 }
 
 .loader > img {
-    width: 100px;
+    width: 150px;
 }
 
 .loader.hidden {
-    animation: fadeOut 1s;
+    animation: fadeOut 3s;
     animation-fill-mode: forwards;
 }
 
