@@ -1,12 +1,18 @@
 /* global Chart */
 
+// Get HTML elements
+let loaderDiv = document.getElementsByTagName('div')[3];
+let header = document.getElementsByTagName('h1')[0];
+
 // AJAX request for getting the charts data from the endpoint
 function getChartsData() {
+    loaderDiv.style.display = 'flex';
     let xhr = new XMLHttpRequest();
     xhr.onload = function() {
         if (this.readyState == 4 && this.status == 200) {
             let results = JSON.parse(xhr.responseText);
-            console.log(results);
+            loaderDiv.style.display = 'none';
+            header.style.display = 'block';
             constructCharts(results);
         }
     };
@@ -170,8 +176,3 @@ function constructCharts(data) {
         }
     });
 }
-
-window.addEventListener('load', function() {
-    const loader = document.querySelector('.loader');
-    loader.classList.add('hidden');
-});
