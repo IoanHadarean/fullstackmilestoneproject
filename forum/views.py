@@ -4,11 +4,10 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.db.models import Q
-import json
 from django.template.loader import render_to_string
-from django.http import HttpResponse, JsonResponse
+import json
+from django.http import JsonResponse
 from django.contrib import messages
-from django.views.decorators.http import require_POST
 from forum.forms import PostForm, CommentForm, PostEditForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
@@ -114,29 +113,37 @@ def post_detail(request, pk):
 
 def like_post(request, pk):
     """
+    Like a specific post if the user id from the request
+    does not exist in the post likes. Return count of
+    total likes as a JsonResponse.
+    """
+    post = get_object_or_404(Post, pk=pk)
+    if not post.likes.filter(id=request.user.id).exists():
+        post.likes.add(request.user)
+        post.likes_total += 1
+        post.save()
+    context = {
+        'total_likes': post.likes_total,
+    }
+    return JsonResponse(context, safe=False)
+
+
+def dislike_post(request, pk):
+    """
     Like a specific post. If the like already exists
     in the database, remove the like for that user.
     """
     post = get_object_or_404(Post, pk=pk)
-    is_liked = False
     if post.likes.filter(id=request.user.id).exists():
         post.likes.remove(request.user)
-        is_liked = False
-    else:
-        post.likes.add(request.user)
-        is_liked = True
+        post.save()
+        if post.likes_total != 0:
+            post.likes_total -= 1
+            post.save()
     context = {
-        'post': post,
-        'is_liked': is_liked,
-        'total_likes': post.total_likes(),
+        'total_likes': post.likes_total,
     }
-    if request.is_ajax():
-        form = render_to_string('forum/likes_form.html',
-                                context, request=request)
-        return JsonResponse({'form': form})
-    else:
-        return render(request, 'forum/post_detail.html', context)
-
+    return JsonResponse(context, safe=False)
 
 @login_required
 def post_publish(request, pk):

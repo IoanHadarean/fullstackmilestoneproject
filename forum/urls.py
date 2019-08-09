@@ -37,4 +37,6 @@ urlpatterns = [
          name='drafts_results'),
     re_path(r'^post/(?P<pk>\d+)/like/$', views.like_post,
             name='like_post'),
+    re_path(r'^post/(?P<pk>\d+)/dislike/$', views.dislike_post,
+            name='dislike_post'),
 ]

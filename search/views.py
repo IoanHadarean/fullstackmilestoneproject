@@ -105,7 +105,6 @@ def drafts_results(request, search_text):
         else:
             draft_list = draft_list[:draft_list.count()]
         
-        print(request.user.username)
         drafts = []
         for draft in draft_list:
             print(draft.author)
@@ -115,7 +114,6 @@ def drafts_results(request, search_text):
             if draft.author.username == request.user.username:
                 drafts.append(dict_item)
         
-        print(drafts)
         return JsonResponse(drafts, safe=False)
 
 
