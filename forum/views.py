@@ -100,12 +100,8 @@ def post_detail(request, pk):
     is passed into the template.
     """
     post = get_object_or_404(Post, pk=pk)
-    is_liked = False
-    if post.likes.filter(id=request.user.id).exists():
-        is_liked = True
     context = {
         'post': post,
-        'is_liked': is_liked,
         'total_likes': post.total_likes(),
     }
     return render(request, 'forum/post_detail.html', context)

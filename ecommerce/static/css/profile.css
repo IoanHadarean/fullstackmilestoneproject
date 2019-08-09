@@ -3,7 +3,6 @@
 .account-img {
   height: 7.8125rem;
   width: 7.8125rem;
-  margin-right: 1.25rem;
   margin-bottom: 1rem;
 }
 
@@ -12,13 +11,34 @@
 }
 
 .img-profile {
-  margin-left: 40%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.media {
+  display: block;
 }
 
 .media-body {
-  margin-top: 9.375rem;
-  margin-left: -60%;
   max-width: 100%;
   text-align: center;
 }
+
+/* ---------------------------------------------------Media Queries -------------------------- */
+
+@media (min-width: 991px) {
+  .content-section {
+    max-width: 900px;
+    margin: auto;
+  }
+}
+
+@media (min-width: 768px) {
+  .content-section {
+        margin-top: 50px;
+  }
+}
+
+
 

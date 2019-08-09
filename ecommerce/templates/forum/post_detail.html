@@ -1,4 +1,5 @@
-{% extends 'base.html' %} {% load static %} {% block content %}
+{% extends 'base.html' %} {% load static %} 
+{% block content %}
 
 <!-- Details for a single post -->
 <h1 class="posttitle">{{ post.title }}</h1>
@@ -12,7 +13,7 @@
 <p class="postcontent">{{post.text|striptags|safe|linebreaksbr}}</p>
 
 <!-- Include likes-form-->
-<div id="like-section">
+<div id="like-comment-section">
     {% include 'forum/likes_form.html' %}
 </div>
 
