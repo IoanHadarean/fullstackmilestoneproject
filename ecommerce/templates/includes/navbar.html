@@ -25,6 +25,15 @@
 
       <!-- Right -->
       <ul class="navbar-nav nav-flex-icons">
+        <li class="nav-item">
+          <a class="nav-link waves-effect" href="{% url 'post_list' %}"><i class="fa fa-comments"></i>Forum</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link waves-effect" href="{% url 'contact' %}"><i class="fas fa-envelope"></i>Contact us</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link waves-effect" href="{% url 'request_refund' %}"><i class="fas fa-money-bill-alt"></i>Request Refund</a>
+        </li>
         {% if request.user.is_authenticated %}
         <li class="nav-item">
           <a class="nav-link waves-effect" href="{% url 'profile' %}"><i class="fa fa-user"></i>Profile</a>
@@ -33,13 +42,7 @@
           <a class="nav-link waves-effect" href="{% url 'logout' %}"><i class="fa fa-sign-out-alt"></i>Logout</a>
         </li>
         <li class="nav-item">
-          <a class="nav-link waves-effect" href="{% url 'post_list' %}"><i class="fa fa-comments"></i>Forum</a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link waves-effect" href="{% url 'charts' %}"><i class="fas fa-chart-line"></i>Charts</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link waves-effect" href="{% url 'contact' %}"><i class="fas fa-envelope"></i>Contact us</a>
         </li>
         <li class="nav-item">
           <a href="{% url 'order_summary' %}" class="nav-link waves-effect">
@@ -56,16 +59,10 @@
         </li>
         {% else %}
         <li class="nav-item">
-          <a class="nav-link waves-effect" href="{% url 'post_list' %}"><i class="fa fa-comments"></i>Forum</a>
-        </li>
-        <li class="nav-item">
           <a class="nav-link waves-effect" href="{% url 'login' %}"><i class="fa fa-sign-in-alt"></i>Login</a>
         </li>
         <li class="nav-item">
           <a class="nav-link waves-effect" href="{% url 'registration' %}"><i class="fa fa-user-plus"></i> Register</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link waves-effect" href="{% url 'contact' %}"><i class="fas fa-envelope"></i>Contact us</a>
         </li>
         {% endif %}
       </ul>

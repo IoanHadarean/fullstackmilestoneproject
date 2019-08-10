@@ -11,7 +11,7 @@ class Profile(models.Model):
     so that the profile image is resized.
     """
     user = models.OneToOneField(User, on_delete=models.CASCADE)
-    image = models.ImageField(default=None, upload_to='profile_pics')
+    image = models.ImageField(default=None)
     stripe_customer_id = models.CharField(max_length=50, blank=True, null=True)
     one_click_purchasing = models.BooleanField(default=False)
 
@@ -23,7 +23,6 @@ class Profile(models.Model):
         
         if self.image and hasattr(self.image, 'url'):
             img = Image.open(self.image)
-            print(img)
 
             if img.height > 300 or img.width > 300:
                 output_size = (300, 300)

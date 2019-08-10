@@ -9,17 +9,17 @@
 </div>
 
 <h1 class="text-center mt-3 mb-3 no-display-header">Orders and sales</h1>
-<div class="row">
-    <div class="col-sm-12 col-md-6 col-lg-6 mt-5" url-endpoint = "{% url 'chart-data' %}">
+<div class="row charts-container">
+    <div class="col-sm-12 col-md-6 col-lg-5 mt-5" url-endpoint = "{% url 'chart-data' %}">
         <canvas id="orders_last_3_days" width="200" height="200"></canvas>
     </div>
-    <div class="col-sm-12 col-md-6 col-lg-6 mt-5" url-endpoint = "{% url 'chart-data' %}">
+    <div class="col-sm-12 col-md-6 col-lg-5 mt-5" url-endpoint = "{% url 'chart-data' %}">
         <canvas id="orders_last_3_months" width="200" height="200"></canvas>
     </div>
-    <div class="col-sm-12 col-md-6 col-lg-6 mt-5" url-endpoint = "{% url 'chart-data' %}">
+    <div class="col-sm-12 col-md-6 col-lg-5 mt-5" url-endpoint = "{% url 'chart-data' %}">
          <canvas id="sales_last_3_days" width="200" height="200"></canvas>
     </div>
-    <div class="col-sm-12 col-md-6 col-lg-6 mt-5" url-endpoint = "{% url 'chart-data' %}">
+    <div class="col-sm-12 col-md-6 col-lg-5 mt-5" url-endpoint = "{% url 'chart-data' %}">
          <canvas id="sales_last_3_months" width="200" height="200"></canvas>
     </div>
 </div>
