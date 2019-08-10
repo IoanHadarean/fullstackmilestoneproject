@@ -132,6 +132,7 @@ class Order(models.Model):
     received = models.BooleanField(default=False)
     refund_requested = models.BooleanField(default=False)
     refund_granted = models.BooleanField(default=False)
+    amount = models.IntegerField(default=0)
 
     """
     Phases of an order:
@@ -150,10 +151,12 @@ class Order(models.Model):
 
     def get_total(self):
         total = 0
+        user_coupon = UserCoupon.objects.get(user=self.user, coupon=self.coupon)
         for order_item in self.items.all():
             total += order_item.get_final_price()
-        if self.coupon:
+        if self.coupon and user_coupon.is_used == False:
             total -= self.coupon.amount
+        self.amount = total
         return total
 
 

@@ -25,7 +25,7 @@ def day_orders():
     for order in orders:
         if order.ordered_date.date() in last_3_days:
             orders_last_3_days_total += 1
-            sales_last_3_days_total += order.get_total()
+            sales_last_3_days_total += order.amount
             for date_time in last_3_days:
                 orders_per_day = 0
                 if order.ordered_date.date() == date_time:
@@ -52,7 +52,7 @@ def month_orders():
     for order in orders:
         if order.ordered_date.date().month in last_3_months:
             orders_last_3_months_total += 1
-            sales_last_3_months_total += order.get_total()
+            sales_last_3_months_total += order.amount
             for date_time in last_3_months_datetime:
                 orders_per_month = 0
                 if order.ordered_date.date().month == date_time.month:
@@ -163,13 +163,13 @@ def last_3_days_sales():
     sales_third_day = 0
     for order in orders:
         if days[0] == order.ordered_date.date().strftime("%A"):
-            sales_first_day += order.get_total()
+            sales_first_day += order.amount
             first_day.update({days[0]: sales_first_day})
         elif days[1] == order.ordered_date.date().strftime("%A"):
-            sales_second_day += order.get_total()
+            sales_second_day += order.amount
             second_day.update({days[1]: sales_second_day})
         elif days[2] == order.ordered_date.date().strftime("%A"):
-            sales_third_day += order.get_total()
+            sales_third_day += order.amount
             third_day.update({days[2]: sales_third_day})
             
     if first_day == {}:
@@ -205,13 +205,13 @@ def last_3_months_sales():
     
     for order in orders:
         if months[0] == order.ordered_date.date().strftime("%B"):
-            sales_first_month += order.get_total()
+            sales_first_month += order.amount
             first_month.update({months[0]: sales_first_month})
         elif months[1] == order.ordered_date.date().strftime("%B"):
-            sales_second_month += order.get_total()
+            sales_second_month += order.amount
             second_month.update({months[1]: sales_second_month})
         elif months[2] == order.ordered_date.date().strftime("%B"):
-            sales_third_month += order.get_total()
+            sales_third_month += order.amount
             third_month.update({months[2]: sales_third_month})
             
     if first_month == {}:

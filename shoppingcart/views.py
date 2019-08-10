@@ -575,14 +575,15 @@ class AddCouponView(View):
                                                     valid_to__gte=now,
                                                     active=True)
                     """Get or create a user coupon with the user from the request"""
-                    user_coupon = UserCoupon.objects.get_or_create(user=self.request.user)
-                    order.coupon = get_coupon
+                    user_coupon = UserCoupon.objects.get_or_create(user=self.request.user, coupon=get_coupon)
+                    if user_coupon[0].is_used == False:
+                        order.coupon = get_coupon
                     order.save()
                 except ObjectDoesNotExist:
                     messages.info(self.request, "This coupon is no longer active")
                     return redirect("checkout")
                 """Get the coupon corresponding to a certain user"""
-                user_coupon = UserCoupon.objects.get(user=self.request.user)
+                user_coupon = UserCoupon.objects.get(user=self.request.user, coupon=get_coupon)
                 """
                 Check if the coupon total is not more than the value of the order
                 and if the user has not already used that coupon.
