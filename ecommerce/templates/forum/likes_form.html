@@ -12,6 +12,6 @@
         <button type="submit"  id = "dislike-post" class="btn btn-danger">Dislike</button>
     </a>
 </form>
-{% else %}
+{% elif not request.user.is_authenticated %}
 <p>You need to be logged in to like/dislike a post.</p>
 {% endif %}

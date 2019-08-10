@@ -10,7 +10,7 @@ class Post(models.Model):
     title = models.CharField(max_length=200)
     text = models.TextField()
     likes = models.ManyToManyField(User, related_name='post_likes', blank=True)
-    likes_total = models.IntegerField()
+    likes_total = models.IntegerField(default=0)
     created_date = models.DateTimeField(default=timezone.now)
     published_date = models.DateTimeField(blank=True, null=True)
 

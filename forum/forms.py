@@ -29,6 +29,7 @@ class PostForm(forms.ModelForm):
     def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['author'].queryset = User.objects.filter(username=user.username)
+        self.fields['author'].empty_label = None
 
 
 class PostEditForm(forms.ModelForm):
@@ -44,12 +45,22 @@ class PostEditForm(forms.ModelForm):
         fields = ('author', 'title', 'text')
 
         widgets = {
+            'author': forms.Select,
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'text': forms.Textarea(attrs={
                 'class': 'form-control md-textarea',
                 'rows': 5
             })
         }
+        
+    def __init__(self, user, post, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['author'].queryset = User.objects.filter(username=user.username)
+        self.fields['title'].initial = post.title
+        self.fields['text'].initial = post.text
+        self.fields['author'].empty_label = None
+        self.fields['author'].initial = user.username
+        
 
 
 class CommentForm(forms.ModelForm):

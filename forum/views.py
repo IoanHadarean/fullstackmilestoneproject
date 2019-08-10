@@ -66,10 +66,30 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
     Update a single post and redirect to the details for
     that post. The user needs to be logged in to update a post.
     """
-    login_url = 'accounts/login/'
-    redirect_field_name = 'post_detail.html'
-    form_class = PostEditForm
-    model = Post
+    def get(self, *args, **kwargs):
+        user = self.request.user
+        post = Post.objects.get(pk=self.kwargs['pk'])
+        form = PostEditForm(user, post)
+        form.author = user
+        context = {
+            'form': form
+        }
+        return render(self.request, "forum/post_edit_form.html", context)
+        
+    def post(self, *args, **kwargs):
+        user = self.request.user
+        post = Post.objects.get(pk=self.kwargs['pk'])
+        form = PostEditForm(user, post, self.request.POST or None)
+        if form.is_valid():
+            author = form.cleaned_data.get('author')
+            title = form.cleaned_data.get('title')
+            text = form.cleaned_data.get('text')
+            post.author = author
+            post.title = title
+            post.text = text
+            post.save()
+            messages.success(self.request, "You have successfully edited the post")
+            return redirect('post_detail', pk=post.pk)
 
 
 class PostDeleteView(LoginRequiredMixin, DeleteView):

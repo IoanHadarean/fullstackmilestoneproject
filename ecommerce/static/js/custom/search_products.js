@@ -2,6 +2,7 @@
 let searchInput = document.getElementById('search_box');
 let searchResults = document.getElementById('search-results-products');
 let navbar = document.getElementsByClassName('navbar-dark')[0];
+let searchTypeAhead = document.getElementById('search-typeahead');
 
 // Add event listeners
 searchInput.addEventListener('keyup', getProductResults);
@@ -65,6 +66,11 @@ function getProductResults() {
                         linkTag.href = "/shoppingcart/product/" + slug;
                         linkTag.style.color = 'black';
                         linkTag.style.display = 'block';
+                        
+                        // Change the border of search typeahead
+                        searchTypeAhead.style.border = '1px grey solid';
+                        searchTypeAhead.style.borderTop = '0';
+
 
 
                         // Add mouse enter and mouse out event listeners for li and link
@@ -103,6 +109,11 @@ function getProductResults() {
                     li.style.paddingBottom = '8px';
                     li.style.paddingLeft = '10px';
                     li.innerHTML = searchText;
+                    
+                    // Change the border of search typeahead
+                    searchTypeAhead.style.border = '1px grey solid';
+                    searchTypeAhead.style.borderTop = '0';
+
 
                     // Add mouse enter and mouse out event listeners for li
                     li.addEventListener('mouseenter', function() {
