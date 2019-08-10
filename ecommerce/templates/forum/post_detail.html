@@ -1,4 +1,7 @@
-{% extends 'base.html' %} {% load static %} 
+{% extends 'base.html' %} {% load static %}
+{% block custom_title %}
+<title>{{ post.title }}</title>
+{% endblock %}
 {% block content %}
 
 <!-- Details for a single post -->

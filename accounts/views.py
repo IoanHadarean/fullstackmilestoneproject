@@ -6,17 +6,12 @@ from django.contrib.auth.decorators import login_required
 from accounts.forms import UserLoginForm, UserRegistrationForm, UserUpdateForm, ProfileUpdateForm
 
 
-def index(request):
-    """Return the index.html file"""
-    return render(request, 'accounts/index.html')
-
-
 @login_required
 def logout(request):
     """Log the user out"""
     auth.logout(request)
     messages.success(request, "You have successfully been logged out!")
-    return redirect(reverse('index'))
+    return redirect(reverse('login'))
 
 
 def login(request):
@@ -27,7 +22,7 @@ def login(request):
     next.
     """
     if request.user.is_authenticated:
-        return redirect(reverse('index'))
+        return redirect(reverse('home'))
     if request.method == "POST":
         login_form = UserLoginForm(request.POST)
 
@@ -59,7 +54,7 @@ def registration(request):
     is valid else return an error message.
     """
     if request.user.is_authenticated:
-        return redirect(reverse('index'))
+        return redirect(reverse('home'))
 
     if request.method == "POST":
         registration_form = UserRegistrationForm(request.POST)
@@ -84,7 +79,7 @@ def registration(request):
                     [request.user.email],
                     fail_silently=False,
                     )
-                return redirect(reverse('index'))
+                return redirect(reverse('profile'))
             else:
                 messages.error(request, 'Unable to register your account at this time!')
     else:

@@ -11,6 +11,7 @@
   font-weight: 500;
   display: block;
 }
+
 #stripeBtn {
   border: none;
   outline: none;
@@ -77,6 +78,8 @@ button:hover {
 
   box-shadow: 0 0.0625rem 0.1875rem 0 #e6ebf1;
   -webkit-transition: box-shadow 150ms ease;
+  -moz-transition: box-shadow 150ms ease;
+  -o-transition: box-shadow 150ms ease;
   transition: box-shadow 150ms ease;
 }
 
