@@ -15,11 +15,11 @@
             {% if 'drafts/' in request.path %}
             <form class="custom-height-form" action="{% url 'search_drafts' %}" method="POST">
                 {% csrf_token %}
-                <input type="text" id="search_drafts" class="col-md-8" name="drafts">
+                <input type="text" id="search_drafts" class="col-md-8 col-sm-8 col-7 col-lg-8" name="drafts">
                 <button id="btn-search" class="btn btn-primary" type="submit">Search</button>
             </form>
             
-            <div id="search-typeahead" class="mb-5 col-md-8">
+            <div id="search-typeahead" class="mb-5 col-7 col-lg-8 col-sm-8 col-md-8">
                 <ul id="search-results-drafts">
 
                 </ul>
@@ -27,11 +27,11 @@
             {% else %} 
             <form class="custom-height-form" action="{% url 'search_posts' %}" method="POST">
             {% csrf_token %}
-            <input type="text" id="search_posts" class="col-md-8" name="posts">
+            <input type="text" id="search_posts" class="col-md-8 col-sm-8 col-7 col-lg-8" name="posts">
             <button id="btn-search" class="btn btn-primary" type="submit">Search</button>
             </form>
 
-            <div id="search-typeahead" class="mb-5 col-md-8">
+            <div id="search-typeahead" class="mb-5 col-7 col-lg-8 col-sm-8 col-md-8">
                 <ul id="search-results-posts">
 
                 </ul>

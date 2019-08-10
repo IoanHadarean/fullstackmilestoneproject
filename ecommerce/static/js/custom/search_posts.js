@@ -3,6 +3,7 @@ let searchInputPosts = document.getElementById('search_posts');
 let searchInputDrafts = document.getElementById('search_drafts');
 let searchResultsPosts = document.getElementById('search-results-posts');
 let searchResultsDrafts = document.getElementById('search-results-drafts');
+let searchTypeAhead = document.getElementById('search-typeahead');
 
 // Add event listeners
 if (searchInputPosts) {
@@ -38,6 +39,7 @@ function getPostsResults() {
     }
     let searchText = searchInputPosts.value;
     searchResultsPosts.innerHTML = '';
+    searchTypeAhead.style.border = 'none';
     if (searchText) {
         xhr.onload = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -70,6 +72,10 @@ function getPostsResults() {
                         linkTag.href = "/forum/post/" + pk;
                         linkTag.style.color = 'black';
                         linkTag.style.display = 'block';
+                        
+                        // Change the border of search typeahead
+                        searchTypeAhead.style.border = '1px grey solid';
+                        searchTypeAhead.style.borderTop = '0';
 
 
                         // Add mouse enter and mouse out event listeners for li and link
@@ -109,6 +115,10 @@ function getPostsResults() {
                     li.style.paddingLeft = '10px';
                     li.style.height = '35px';
                     li.innerHTML = searchText;
+                    
+                    // Change the border of search typeahead
+                    searchTypeAhead.style.border = '1px grey solid';
+                    searchTypeAhead.style.borderTop = '0';
 
                     // Add mouse enter and mouse out event listeners for li
                     li.addEventListener('mouseenter', function() {
@@ -122,8 +132,6 @@ function getPostsResults() {
                     // Append li to search results
                     searchResultsPosts.appendChild(li);
                 }
-
-                // Remove navbar margin bottom bootstrap class
             }
         };
     }
