@@ -164,9 +164,13 @@ class Order(models.Model):
         total = 0
         for order_item in self.items.all():
             total += order_item.get_final_price()
-        if self.coupon and self.user_coupon and total - self.coupon.amount > 0 and self.user_coupon.is_used == True:
+            self.amount = total
+            self.save()
+        if self.coupon and self.user_coupon and total - self.coupon.amount > 0:
             total -= self.coupon.amount
-        self.amount = total
+            self.amount = total
+            self.save()
+        print(total)
         return total
         
     """

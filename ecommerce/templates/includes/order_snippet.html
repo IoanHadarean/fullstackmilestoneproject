@@ -29,10 +29,10 @@
         {% endif %}
         <li class="list-group-item d-flex justify-content-between">
             <span>Total (GBP)</span>
-             {% if order.get_total >= 0 %}
+             {% if order.get_total_with_coupon > 0 %}
             <strong>£{{ order.get_total }}</strong>
             {% else %}
-            <strong>{{ order.amount }}</strong>
+            <strong>£{{ order.amount }}</strong>
             {% endif %}
         </li>
     </ul>

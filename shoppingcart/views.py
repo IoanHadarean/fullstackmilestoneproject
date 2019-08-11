@@ -574,24 +574,39 @@ class AddCouponView(View):
                                                     valid_from__lte=now,
                                                     valid_to__gte=now,
                                                     active=True)
-                    """Get or create a user coupon with the user from the request"""
-                    user_coupon = UserCoupon.objects.get_or_create(user=self.request.user, coupon=get_coupon)
-                    if user_coupon[0].is_used == False:
-                        order.coupon = get_coupon
-                        order.user_coupon = user_coupon[0]
-                    order.save()
+                    """
+                    Get or create a user coupon with the user from the request
+                    if the order does not have a coupon yet. Assign the coupon to the
+                    order and the user coupon specific to the user that made the order.
+                    If the order already has a coupon try to get the coupon from the user
+                    coupons and if it does not exist notify the user that he can not use 
+                    more than one coupon for an order.
+                    """
+                    if order.used_coupon == False:
+                        user_coupon = UserCoupon.objects.get_or_create(user=self.request.user, coupon=get_coupon)
+                        if user_coupon[0].is_used == False:
+                            order.coupon = get_coupon
+                            order.user_coupon = user_coupon[0]
+                        order.save()
+                    else:
+                        try:
+                            """Get the coupon corresponding to a certain user"""
+                            user_coupon = UserCoupon.objects.get(user=self.request.user, coupon=get_coupon)
+                        except ObjectDoesNotExist:
+                            messages.warning(self.request, "You can not use more than one coupon for an order")
+                            return redirect("checkout")
                 except ObjectDoesNotExist:
                     messages.info(self.request, "This coupon does not exist or is no longer active")
                     return redirect("checkout")
-                """Get the coupon corresponding to a certain user"""
-                user_coupon = UserCoupon.objects.get(user=self.request.user, coupon=get_coupon)
                 """
+                Check if no other coupon has been used for that order and if there is a
+                user coupon.
                 Check if the coupon total is not more than the value of the order
                 and if the user has not already used that coupon.
                 """
-                if order.used_coupon == False:
-                    if order.get_total() >= 0 and user_coupon.is_used is False and get_coupon.amount < order.get_total():
-                        user_coupon.is_used = True
+                if user_coupon and order.used_coupon == False:
+                    if order.get_total_with_coupon() > 0 and user_coupon[0].is_used is False:
+                        user_coupon[0].is_used = True
                         order.used_coupon = True
                         if order.coupon.number_of_usages_allowed > 0:
                             order.coupon.number_of_usages_allowed -= 1
@@ -599,17 +614,17 @@ class AddCouponView(View):
                         else:
                             order.coupon.active = False
                             order.coupon.save()
-                        user_coupon.save()
+                        user_coupon[0].save()
                         order.save()
                         messages.success(self.request, "Successfully added coupon")
                         return redirect("checkout")
-                    elif order.get_total() >= 0 and user_coupon.is_used is True and get_coupon.amount < order.get_total():
+                    elif order.get_total_with_coupon() > 0 and user_coupon[0].is_used is True:
                         messages.warning(self.request, "You have already used this coupon")
                         return redirect("checkout")
-                    elif get_coupon.amount >= order.get_total():
+                    elif order.get_total_with_coupon() <= 0:
                         messages.warning(self.request, "You can not use this coupon for items with the price less than or equal to the value of the coupon")
                         return redirect("checkout")
-                else:
+                elif user_coupon and order.used_coupon == True:
                     messages.warning(self.request, "You can not use more than one coupon for an order")
                     return redirect("checkout")
             except ObjectDoesNotExist:
