@@ -40,7 +40,7 @@
                         <a class="btn btn-primary float-right" href="/">Continue Shopping</a>
                     </td>
                 </tr>
-                {% endfor %} {% if object.coupon and object.items.all %}
+                {% endfor %} {% if object.coupon and object.get_total_with_coupon > 0 and object.items.all %}
                 <tr>
                     <td colspan="4"><b>Coupon</b></td>
                     <td><b>-£{{ object.coupon.amount }}</b></td>

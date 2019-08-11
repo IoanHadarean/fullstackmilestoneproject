@@ -128,11 +128,13 @@ class Order(models.Model):
         'Payment', on_delete=models.SET_NULL, blank=True, null=True)
     coupon = models.ForeignKey(
         'Coupon', on_delete=models.SET_NULL, blank=True, null=True)
+    user_coupon = models.ForeignKey(
+        'UserCoupon', on_delete=models.SET_NULL, blank=True, null=True)
     being_delivered = models.BooleanField(default=False)
     received = models.BooleanField(default=False)
     refund_requested = models.BooleanField(default=False)
     refund_granted = models.BooleanField(default=False)
-    amount = models.IntegerField(default=0)
+    amount = models.IntegerField(blank=True, null=True)
 
     """
     Phases of an order:
@@ -148,17 +150,39 @@ class Order(models.Model):
 
     def __str__(self):
         return self.user.username
-
+    
+    """
+    Get the total for all the items in the cart
+    and only decrease the total if there is an user
+    coupon that has not been used. The difference between
+    the total of the items in the cart and the coupon amount
+    should also be greater than 0.
+    """
+    
     def get_total(self):
         total = 0
-        user_coupon = UserCoupon.objects.get(user=self.user, coupon=self.coupon)
         for order_item in self.items.all():
             total += order_item.get_final_price()
-        if self.coupon and user_coupon.is_used == False:
+        if self.coupon and self.user_coupon and total - self.coupon.amount > 0 and self.user_coupon.is_used == True:
             total -= self.coupon.amount
         self.amount = total
         return total
-
+        
+    """
+    Get the total for all the items in the cart.
+    If there is a coupon get the total
+    regardless if the coupon was used or not
+    or if the difference between the total of the items 
+    in the cart and the coupon amount is less than 0.
+    """
+    
+    def get_total_with_coupon(self):
+        total_with_coupon = 0
+        for order_item in self.items.all():
+            total_with_coupon += order_item.get_final_price()
+        if self.coupon:
+            total_with_coupon -= self.coupon.amount
+        return total_with_coupon
 
 class Address(models.Model):
     """Address details for a user"""
