@@ -92,6 +92,10 @@ ul {
   margin-bottom: 1.25rem;
 }
 
+/* ------------------------------------------------ Reset Password --------------------------- */
+.margin-top-plus {
+  margin-top: 50px;
+}
 
 /* -------------------------------------------------Profile--------------------------- */
 
@@ -302,8 +306,30 @@ ul {
   }
 }
 
+@media (min-width: 991px) and (max-width: 1200px) {
+  .resize-font {
+    font-size: 12px;
+  }
+  
+  .navbar-brand {
+    font-size: 14px;
+  }
+}
+
 @media (min-width: 1921px) and (max-width: 4000px) {
   .content-section {
     max-width: 1200px;
+  }
+}
+
+@media (max-height: 1080px) {
+  main {
+    min-height: 70vh;
+  }
+}
+
+@media (min-height: 1081px) {
+  main {
+    min-height: 85vh;
   }
 }

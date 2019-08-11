@@ -67,7 +67,7 @@ function getProductResults() {
                         linkTag.href = "/shoppingcart/product/" + slug;
                         linkTag.style.color = 'black';
                         linkTag.style.display = 'block';
-                        
+
                         // Change the border of search typeahead
                         searchTypeAhead.style.border = '1px grey solid';
                         searchTypeAhead.style.borderTop = '0';
@@ -108,7 +108,7 @@ function getProductResults() {
                     li.style.paddingBottom = '8px';
                     li.style.paddingLeft = '10px';
                     li.innerHTML = searchText;
-                    
+
                     // Change the border of search typeahead
                     searchTypeAhead.style.border = '1px grey solid';
                     searchTypeAhead.style.borderTop = '0';
