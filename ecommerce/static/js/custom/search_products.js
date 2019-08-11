@@ -1,8 +1,9 @@
 // Get HTML elements
-let searchInput = document.getElementById('search_box');
-let searchResults = document.getElementById('search-results-products');
-let navbar = document.getElementsByClassName('navbar-dark')[0];
-let searchTypeAhead = document.getElementById('search-typeahead');
+var searchInput = document.getElementById('search_box');
+var searchResults = document.getElementById('search-results-products');
+var navbar = document.getElementsByClassName('navbar-dark')[0];
+var searchTypeAhead = document.getElementById('search-typeahead');
+
 
 // Add event listeners
 searchInput.addEventListener('keyup', getProductResults);
@@ -24,7 +25,6 @@ function getCookie(cname) {
     return "";
 }
 
-
 function getProductResults() {
     let xhr = new XMLHttpRequest();
     var searchRequest = null;
@@ -32,20 +32,35 @@ function getProductResults() {
     if (searchRequest) {
         searchRequest.abort();
     }
+    
+    // Get the search text from the search input
     let searchText = searchInput.value;
+    
+    // Clear the search results
     searchResults.innerHTML = '';
+    
+    
+    // Remove search typeahead border after results are cleared
     searchTypeAhead.style.border = 'none';
+    
     if (searchText) {
         xhr.onload = function() {
             if (this.readyState == 4 && this.status == 200) {
                 let results = JSON.parse(xhr.responseText);
+                
+                // Clear the search results
                 if (searchResults) {
                     searchResults.innerHTML = '';
                 }
 
+                // Colors
+                var white = '#ffffff';
+                var black = '#000000';
+                var rockBlue = '#929fba';
+
 
                 // Modify the search ul background Color to white
-                searchResults.style.backgroundColor = 'white';
+                searchResults.style.backgroundColor = white;
 
                 // Loop through the list of dictionaries
                 if (results.length > 0) {
@@ -65,7 +80,7 @@ function getProductResults() {
                         // Create link for search result product
                         let linkTag = document.createElement('a');
                         linkTag.href = "/shoppingcart/product/" + slug;
-                        linkTag.style.color = 'black';
+                        linkTag.style.color = black;
                         linkTag.style.display = 'block';
 
                         // Change the border of search typeahead
@@ -74,25 +89,25 @@ function getProductResults() {
 
                         // Add mouse enter and mouse out event listeners for li and link
                         li.addEventListener('mouseenter', function() {
-                            li.style.backgroundColor = '#929fba';
+                            li.style.backgroundColor = rockBlue;
                             linkTag.style.color = 'white';
                         });
 
                         li.addEventListener('mouseout', function() {
-                            li.style.backgroundColor = 'white';
-                            linkTag.style.color = 'black';
+                            li.style.backgroundColor = white;
+                            linkTag.style.color = black;
                         });
 
                         linkTag.addEventListener('mouseenter', function() {
-                            li.style.backgroundColor = '#929fba';
-                            linkTag.style.color = 'white';
+                            li.style.backgroundColor = rockBlue;
+                            linkTag.style.color = white;
                         });
 
                         linkTag.addEventListener('mouseout', function() {
-                            li.style.backgroundColor = 'white';
-                            linkTag.style.color = 'black';
+                            li.style.backgroundColor = white;
+                            linkTag.style.color = black;
                         });
-
+                        
                         // Append title as text node to link
                         linkTag.appendChild(document.createTextNode(title));
 
@@ -116,11 +131,11 @@ function getProductResults() {
 
                     // Add mouse enter and mouse out event listeners for li
                     li.addEventListener('mouseenter', function() {
-                        li.style.backgroundColor = '#929fba';
+                        li.style.backgroundColor = rockBlue;
                     });
 
                     li.addEventListener('mouseout', function() {
-                        li.style.backgroundColor = 'white';
+                        li.style.backgroundColor = white;
                     });
 
                     // Append li to search results

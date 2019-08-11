@@ -1,9 +1,14 @@
 // Get HTML elements
-let searchInputPosts = document.getElementById('search_posts');
-let searchInputDrafts = document.getElementById('search_drafts');
-let searchResultsPosts = document.getElementById('search-results-posts');
-let searchResultsDrafts = document.getElementById('search-results-drafts');
-let searchTypeAhead = document.getElementById('search-typeahead');
+var searchInputPosts = document.getElementById('search_posts');
+var searchInputDrafts = document.getElementById('search_drafts');
+var searchResultsPosts = document.getElementById('search-results-posts');
+var searchResultsDrafts = document.getElementById('search-results-drafts');
+var searchTypeAhead = document.getElementById('search-typeahead');
+
+// Colors
+var white = '#ffffff';
+var royalBlue = '#4285f4';
+var black = '#000000';
 
 // Add event listeners
 if (searchInputPosts) {
@@ -37,19 +42,28 @@ function getPostsResults() {
     if (searchRequest) {
         searchRequest.abort();
     }
+
+    // Get the search text from the search input
     let searchText = searchInputPosts.value;
+
+    // Clear the search results
     searchResultsPosts.innerHTML = '';
+
+    // Remove search typeahead border after results are cleared
     searchTypeAhead.style.border = 'none';
+    
     if (searchText) {
         xhr.onload = function() {
             if (this.readyState == 4 && this.status == 200) {
                 let results = JSON.parse(xhr.responseText);
+
+                // Clear the search results
                 if (searchResultsPosts) {
                     searchResultsPosts.innerHTML = '';
                 }
 
                 // Modify the search ul background color to white
-                searchResultsPosts.style.backgroundColor = 'white';
+                searchResultsPosts.style.backgroundColor = white;
 
                 // Loop through the list of dictionaries
                 if (results.length > 0) {
@@ -70,7 +84,7 @@ function getPostsResults() {
                         // Create link for search result product
                         let linkTag = document.createElement('a');
                         linkTag.href = "/forum/post/" + pk;
-                        linkTag.style.color = 'black';
+                        linkTag.style.color = black;
                         linkTag.style.display = 'block';
 
                         // Change the border of search typeahead
@@ -80,23 +94,23 @@ function getPostsResults() {
 
                         // Add mouse enter and mouse out event listeners for li and link
                         li.addEventListener('mouseenter', function() {
-                            li.style.backgroundColor = '#4285f4';
-                            linkTag.style.color = 'white';
+                            li.style.backgroundColor = royalBlue;
+                            linkTag.style.color = white;
                         });
 
                         li.addEventListener('mouseout', function() {
-                            li.style.backgroundColor = 'white';
-                            linkTag.style.color = 'black';
+                            li.style.backgroundColor = white;
+                            linkTag.style.color = black;
                         });
 
                         linkTag.addEventListener('mouseenter', function() {
-                            li.style.backgroundColor = '#4285f4';
-                            linkTag.style.color = 'white';
+                            li.style.backgroundColor = royalBlue;
+                            linkTag.style.color = white;
                         });
 
                         linkTag.addEventListener('mouseout', function() {
-                            li.style.backgroundColor = 'white';
-                            linkTag.style.color = 'black';
+                            li.style.backgroundColor = white;
+                            linkTag.style.color = black;
                         });
 
                         // Append title as text node to link
@@ -122,11 +136,11 @@ function getPostsResults() {
 
                     // Add mouse enter and mouse out event listeners for li
                     li.addEventListener('mouseenter', function() {
-                        li.style.backgroundColor = '#4285f4';
+                        li.style.backgroundColor = royalBlue;
                     });
 
                     li.addEventListener('mouseout', function() {
-                        li.style.backgroundColor = 'white';
+                        li.style.backgroundColor = white;
                     });
 
                     // Append li to search results
@@ -152,18 +166,28 @@ function getDraftsResults() {
     if (searchRequest) {
         searchRequest.abort();
     }
+
+    // Get the search text from the search input
     let searchText = searchInputDrafts.value;
+
+    // Clear the search results
     searchResultsDrafts.innerHTML = '';
+
+    // Remove search typeahead border after results are cleared
+    searchTypeAhead.style.border = 'none';
+
     if (searchText) {
         xhr.onload = function() {
             if (this.readyState == 4 && this.status == 200) {
                 let results = JSON.parse(xhr.responseText);
+
+                // Clear the search results
                 if (searchResultsDrafts) {
                     searchResultsDrafts.innerHTML = '';
                 }
 
                 // Modify the search ul background color to white
-                searchResultsDrafts.style.backgroundColor = 'white';
+                searchResultsDrafts.style.backgroundColor = white;
 
                 // Loop through the list of dictionaries
                 if (results.length > 0) {
@@ -184,29 +208,29 @@ function getDraftsResults() {
                         // Create link for search result product
                         let linkTag = document.createElement('a');
                         linkTag.href = "/forum/post/" + pk;
-                        linkTag.style.color = 'black';
+                        linkTag.style.color = black;
                         linkTag.style.display = 'block';
 
 
                         // Add mouse enter and mouse out event listeners for li and link
                         li.addEventListener('mouseenter', function() {
-                            li.style.backgroundColor = '#4285f4';
-                            linkTag.style.color = 'white';
+                            li.style.backgroundColor = royalBlue;
+                            linkTag.style.color = white;
                         });
 
                         li.addEventListener('mouseout', function() {
-                            li.style.backgroundColor = 'white';
-                            linkTag.style.color = 'black';
+                            li.style.backgroundColor = white;
+                            linkTag.style.color = black;
                         });
 
                         linkTag.addEventListener('mouseenter', function() {
-                            li.style.backgroundColor = '#4285f4';
-                            linkTag.style.color = 'white';
+                            li.style.backgroundColor = royalBlue;
+                            linkTag.style.color = white;
                         });
 
                         linkTag.addEventListener('mouseout', function() {
-                            li.style.backgroundColor = 'white';
-                            linkTag.style.color = 'black';
+                            li.style.backgroundColor = white;
+                            linkTag.style.color = black;
                         });
 
                         // Append title as text node to link
@@ -228,11 +252,11 @@ function getDraftsResults() {
 
                     // Add mouse enter and mouse out event listeners for li
                     li.addEventListener('mouseenter', function() {
-                        li.style.backgroundColor = '#4285f4';
+                        li.style.backgroundColor = royalBlue;
                     });
 
                     li.addEventListener('mouseout', function() {
-                        li.style.backgroundColor = 'white';
+                        li.style.backgroundColor = white;
                     });
 
                     // Append li to search results

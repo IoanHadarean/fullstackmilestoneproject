@@ -1,8 +1,8 @@
 // Get HTML elements
-let totalLikes = document.getElementById('total-likes');
-let likeBtn = document.getElementById('like-post');
-let dislikeBtn = document.getElementById('dislike-post');
-let hiddenLikeFormInput = document.getElementById('like-form-input');
+var totalLikes = document.getElementById('total-likes');
+var likeBtn = document.getElementById('like-post');
+var dislikeBtn = document.getElementById('dislike-post');
+var hiddenLikeFormInput = document.getElementById('like-form-input');
 
 // Add event listeners
 likeBtn.addEventListener('click', likePost);
@@ -25,7 +25,7 @@ function getCookie(cname) {
     return "";
 }
 
-
+// AJAX function for liking a post
 function likePost(e) {
     let pk = hiddenLikeFormInput.value;
     let xhr = new XMLHttpRequest();
@@ -50,7 +50,7 @@ function likePost(e) {
     e.preventDefault();
 }
 
-
+// AJAX function for disliking a post
 function dislikePost(e) {
     let pk = hiddenLikeFormInput.value;
     let xhr = new XMLHttpRequest();

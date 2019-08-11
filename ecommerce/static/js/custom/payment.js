@@ -12,4 +12,4 @@ useDefaultCard.addEventListener('change', function() {
         newCardForm.style.display = 'block';
         currentCardForm.style.display = 'none';
     }
-})
+});

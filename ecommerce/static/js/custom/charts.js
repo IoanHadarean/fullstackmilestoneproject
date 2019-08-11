@@ -1,8 +1,8 @@
 /* global Chart */
 
 // Get HTML elements
-let loaderDiv = document.getElementsByTagName('div')[3];
-let header = document.getElementsByTagName('h1')[0];
+var loaderDiv = document.getElementsByTagName('div')[3];
+var header = document.getElementsByTagName('h1')[0];
 
 // AJAX request for getting the charts data from the endpoint
 function getChartsData() {
@@ -49,16 +49,17 @@ function constructCharts(data) {
 
         // Get the remaining of the text section
         let textSection = '';
-        for (var i = 1; i < keySplit.length; i++) {
-            textSection += keySplit[i] + ' ';
+        for (var j = 1; j < keySplit.length; j++) {
+            textSection += keySplit[j] + ' ';
         }
 
         // Put together the capitalized text
         let capitalizedText = capitalizedFirstWord + ' ' + textSection;
-
+        
+        // Separate the charts for the orders and the sales based on customization
         if (key == 'orders_last_3_days' || key == 'orders_last_3_months') {
-            var ctx = document.getElementById(key).getContext('2d');
-            var chart = new Chart(ctx, {
+            var ctx_orders = document.getElementById(key).getContext('2d');
+            var chart_orders = new Chart(ctx_orders, {
                 type: 'line',
                 data: {
                     labels: dataLabels,
@@ -98,6 +99,7 @@ function constructCharts(data) {
                             }
                         }],
                     },
+                    // Customize charts.js tooltips
                     tooltips: {
                         callbacks: {
                             label: function(tooltipItem, data) {
@@ -116,8 +118,8 @@ function constructCharts(data) {
             });
         }
         else {
-            var ctx = document.getElementById(key).getContext('2d');
-            var chart = new Chart(ctx, {
+            var ctx_sales = document.getElementById(key).getContext('2d');
+            var chart_sales = new Chart(ctx_sales, {
                 type: 'line',
                 data: {
                     labels: dataLabels,
@@ -149,6 +151,7 @@ function constructCharts(data) {
                             ticks: {
                                 min: 0,
                                 beginAtZero: true,
+                                // Append £ to yAxes values
                                 callback: function(value, index, values) {
                                     if (Math.floor(value) === value) {
                                         return value + ' £';
@@ -157,6 +160,7 @@ function constructCharts(data) {
                             }
                         }],
                     },
+                    // Customize charts.js tooltips
                     tooltips: {
                         callbacks: {
                             label: function(tooltipItem, data) {
