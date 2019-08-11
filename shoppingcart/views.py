@@ -589,23 +589,28 @@ class AddCouponView(View):
                 Check if the coupon total is not more than the value of the order
                 and if the user has not already used that coupon.
                 """
-                if order.get_total() >= 0 and user_coupon.is_used is False and get_coupon.amount < order.get_total():
-                    user_coupon.is_used = True
-                    if order.coupon.number_of_usages_allowed > 0:
-                        order.coupon.number_of_usages_allowed -= 1
-                        order.coupon.save()
-                    else:
-                        order.coupon.active = False
-                        order.coupon.save()
-                    user_coupon.save()
-                    order.save()
-                    messages.success(self.request, "Successfully added coupon")
-                    return redirect("checkout")
-                elif order.get_total() >= 0 and user_coupon.is_used is True and get_coupon.amount < order.get_total():
-                    messages.warning(self.request, "You have already used this coupon")
-                    return redirect("checkout")
-                elif get_coupon.amount >= order.get_total():
-                    messages.warning(self.request, "You can not use this coupon for items with the price less than or equal to the value of the coupon")
+                if order.used_coupon == False:
+                    if order.get_total() >= 0 and user_coupon.is_used is False and get_coupon.amount < order.get_total():
+                        user_coupon.is_used = True
+                        order.used_coupon = True
+                        if order.coupon.number_of_usages_allowed > 0:
+                            order.coupon.number_of_usages_allowed -= 1
+                            order.coupon.save()
+                        else:
+                            order.coupon.active = False
+                            order.coupon.save()
+                        user_coupon.save()
+                        order.save()
+                        messages.success(self.request, "Successfully added coupon")
+                        return redirect("checkout")
+                    elif order.get_total() >= 0 and user_coupon.is_used is True and get_coupon.amount < order.get_total():
+                        messages.warning(self.request, "You have already used this coupon")
+                        return redirect("checkout")
+                    elif get_coupon.amount >= order.get_total():
+                        messages.warning(self.request, "You can not use this coupon for items with the price less than or equal to the value of the coupon")
+                        return redirect("checkout")
+                else:
+                    messages.warning(self.request, "You can not use more than one coupon for an order")
                     return redirect("checkout")
             except ObjectDoesNotExist:
                 messages.info(self.request, "You do not have an active order")

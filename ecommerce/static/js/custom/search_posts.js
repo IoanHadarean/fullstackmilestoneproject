@@ -72,7 +72,7 @@ function getPostsResults() {
                         linkTag.href = "/forum/post/" + pk;
                         linkTag.style.color = 'black';
                         linkTag.style.display = 'block';
-                        
+
                         // Change the border of search typeahead
                         searchTypeAhead.style.border = '1px grey solid';
                         searchTypeAhead.style.borderTop = '0';
@@ -115,7 +115,7 @@ function getPostsResults() {
                     li.style.paddingLeft = '10px';
                     li.style.height = '35px';
                     li.innerHTML = searchText;
-                    
+
                     // Change the border of search typeahead
                     searchTypeAhead.style.border = '1px grey solid';
                     searchTypeAhead.style.borderTop = '0';
@@ -251,4 +251,21 @@ function getDraftsResults() {
     let csrftoken = getCookie('csrftoken');
     xhr.setRequestHeader('X-CSRFToken', csrftoken);
     xhr.send();
+}
+
+// Performed debouncing to avoid unnecessary requests on keyup
+var debounceTimeout = null;
+
+if (searchInputPosts) {
+    searchInputPosts.addEventListener('keyup', function(event) {
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(getPostsResults, 500);
+    });
+}
+
+if (searchInputDrafts) {
+    searchInputDrafts.addEventListener('keyup', function(event) {
+        clearTimeout(debounceTimeout);
+        debounceTimeout = setTimeout(getDraftsResults, 500);
+    });
 }

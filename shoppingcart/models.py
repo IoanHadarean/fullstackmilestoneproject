@@ -130,6 +130,7 @@ class Order(models.Model):
         'Coupon', on_delete=models.SET_NULL, blank=True, null=True)
     user_coupon = models.ForeignKey(
         'UserCoupon', on_delete=models.SET_NULL, blank=True, null=True)
+    used_coupon = models.BooleanField(default=False)
     being_delivered = models.BooleanField(default=False)
     received = models.BooleanField(default=False)
     refund_requested = models.BooleanField(default=False)
@@ -174,6 +175,8 @@ class Order(models.Model):
     regardless if the coupon was used or not
     or if the difference between the total of the items 
     in the cart and the coupon amount is less than 0.
+    This function is used for some checks in the 
+    'checkout.html' and 'order_summary.html' templates.
     """
     
     def get_total_with_coupon(self):
@@ -183,6 +186,7 @@ class Order(models.Model):
         if self.coupon:
             total_with_coupon -= self.coupon.amount
         return total_with_coupon
+
 
 class Address(models.Model):
     """Address details for a user"""

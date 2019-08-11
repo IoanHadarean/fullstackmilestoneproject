@@ -185,6 +185,7 @@ ul {
 }
 
 /* ------------------------------------------------Charts ----------------------------------------- */
+
 .charts-container {
   margin: auto;
   display: flex;
@@ -262,6 +263,12 @@ ul {
   header,
   .carousel {
     height: 100vh;
+  }
+}
+
+@media (max-width: 480px) {
+  .no-display-mobile {
+    display: none;
   }
 }
 

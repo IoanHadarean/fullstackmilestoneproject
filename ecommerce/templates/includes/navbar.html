@@ -26,23 +26,23 @@
       <!-- Right -->
       <ul class="navbar-nav nav-flex-icons">
         <li class="nav-item">
-          <a class="nav-link waves-effect" href="{% url 'post_list' %}"><i class="fa fa-comments"></i>Forum</a>
+          <a class="nav-link waves-effect" href="{% url 'post_list' %}"><i class="fa fa-comments"></i><span class = "no-display-mobile">Forum</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link waves-effect" href="{% url 'contact' %}"><i class="fas fa-envelope"></i>Contact us</a>
+          <a class="nav-link waves-effect" href="{% url 'contact' %}"><i class="fas fa-envelope"></i><span class = "no-display-mobile">Contact</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link waves-effect" href="{% url 'request_refund' %}"><i class="fas fa-money-bill-alt"></i>Request Refund</a>
+          <a class="nav-link waves-effect" href="{% url 'request_refund' %}"><i class="fas fa-money-bill-alt"></i><span class = "no-display-mobile">Refund</span></a>
         </li>
         {% if request.user.is_authenticated %}
         <li class="nav-item">
-          <a class="nav-link waves-effect" href="{% url 'profile' %}"><i class="fa fa-user"></i>Profile</a>
+          <a class="nav-link waves-effect" href="{% url 'profile' %}"><i class="fa fa-user"></i><span class = "no-display-mobile">Profile</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link waves-effect" href="{% url 'logout' %}"><i class="fa fa-sign-out-alt"></i>Logout</a>
+          <a class="nav-link waves-effect" href="{% url 'logout' %}"><i class="fa fa-sign-out-alt"></i><span class = "no-display-mobile">Logout</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link waves-effect" href="{% url 'charts' %}"><i class="fas fa-chart-line"></i>Charts</a>
+          <a class="nav-link waves-effect" href="{% url 'charts' %}"><i class="fas fa-chart-line"></i><span class = "no-display-mobile">Charts</span></a>
         </li>
         <li class="nav-item">
           <a href="{% url 'order_summary' %}" class="nav-link waves-effect">
@@ -54,15 +54,15 @@
                 {% endif %}
               </span>
               <i class="fas fa-shopping-cart"></i>
-              <span class="clearfix d-none d-sm-inline-block"> Cart </span>
+              <span class="clearfix no-display-mobile d-none d-sm-inline-block"> Cart </span>
             </a>
         </li>
         {% else %}
         <li class="nav-item">
-          <a class="nav-link waves-effect" href="{% url 'login' %}"><i class="fa fa-sign-in-alt"></i>Login</a>
+          <a class="nav-link waves-effect" href="{% url 'login' %}"><i class="fa fa-sign-in-alt"></i><span class = "no-display-mobile">Login</span></a>
         </li>
         <li class="nav-item">
-          <a class="nav-link waves-effect" href="{% url 'registration' %}"><i class="fa fa-user-plus"></i> Register</a>
+          <a class="nav-link waves-effect" href="{% url 'registration' %}"><i class="fa fa-user-plus"></i><span class = "no-display-mobile">Register</span></a>
         </li>
         {% endif %}
       </ul>

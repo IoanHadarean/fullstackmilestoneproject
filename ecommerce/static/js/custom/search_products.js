@@ -34,6 +34,7 @@ function getProductResults() {
     }
     let searchText = searchInput.value;
     searchResults.innerHTML = '';
+    searchTypeAhead.style.border = 'none';
     if (searchText) {
         xhr.onload = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -70,8 +71,6 @@ function getProductResults() {
                         // Change the border of search typeahead
                         searchTypeAhead.style.border = '1px grey solid';
                         searchTypeAhead.style.borderTop = '0';
-
-
 
                         // Add mouse enter and mouse out event listeners for li and link
                         li.addEventListener('mouseenter', function() {
@@ -142,3 +141,12 @@ function getProductResults() {
     xhr.setRequestHeader('X-CSRFToken', csrftoken);
     xhr.send();
 }
+
+
+// Performed debouncing to avoid unnecessary requests on keyup
+var debounceTimeout = null;
+
+searchInput.addEventListener('keyup', function(event) {
+    clearTimeout(debounceTimeout);
+    debounceTimeout = setTimeout(getProductResults, 500);
+});
