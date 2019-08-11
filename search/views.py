@@ -19,19 +19,19 @@ def search_posts(request):
         search_text = request.POST.get('posts')
     else:
         search_text = ''
-        
+
     post_list = Post.objects.filter((Q(title__icontains=search_text) |
-                                      Q(text__icontains=search_text) |
-                                      Q(created_date__icontains=search_text)) &
-                                      Q(published_date__isnull=False))
-                                      
+                                     Q(text__icontains=search_text) |
+                                     Q(created_date__icontains=search_text)) &
+                                    Q(published_date__isnull=False))
+
     post_list_count = post_list.count()
-    
+
     """Add pagination for searching posts"""
     paginator = Paginator(post_list, 8)
     page = request.GET.get('page')
     post_list = paginator.get_page(page)
-    
+
     context = {
         'search_text': search_text,
         'post_list': post_list,
@@ -46,12 +46,12 @@ def posts_results(request, search_text):
         post_list = Post.objects.filter((Q(title__icontains=search_text) |
                                          Q(text__icontains=search_text) |
                                          Q(created_date__icontains=search_text)) &
-                                         Q(published_date__isnull=False))
+                                        Q(published_date__isnull=False))
         if post_list.count() >= 7:
             post_list = post_list[:7]
         else:
             post_list = post_list[:post_list.count()]
-            
+
         posts = []
         for post in post_list:
             dict_item = {}
@@ -72,19 +72,19 @@ def search_drafts(request):
         search_text = request.POST.get('drafts')
     else:
         search_text = ''
-        
+
     draft_list = Post.objects.filter((Q(title__icontains=search_text) |
                                      Q(text__icontains=search_text) |
                                      Q(created_date__icontains=search_text)) &
                                      Q(published_date__isnull=True))
-                                     
+
     draft_list_count = draft_list.count()
-    
+
     """Add pagination for searching drafts"""
     paginator = Paginator(draft_list, 8)
     page = request.GET.get('page')
     post_list = paginator.get_page(page)
-    
+
     context = {
         'search_text': search_text,
         'post_list': post_list,
@@ -104,7 +104,7 @@ def drafts_results(request, search_text):
             draft_list = draft_list[:7]
         else:
             draft_list = draft_list[:draft_list.count()]
-        
+
         drafts = []
         for draft in draft_list:
             print(draft.author)
@@ -113,7 +113,7 @@ def drafts_results(request, search_text):
                 dict_item[draft.title] = draft.pk
             if draft.author.username == request.user.username:
                 drafts.append(dict_item)
-        
+
         return JsonResponse(drafts, safe=False)
 
 
@@ -136,7 +136,7 @@ def search_products(request):
     paginator = Paginator(item_list, 8)
     page = request.GET.get('page')
     object_list = paginator.get_page(page)
-    
+
     context = {
         'search_text': search_text,
         'object_list': object_list,
@@ -156,7 +156,7 @@ def products_results(request, search_text):
             item_list = item_list[:7]
         else:
             item_list = item_list[:item_list.count()]
-            
+
         items = []
         for item in item_list:
             dict_item = {}
@@ -165,7 +165,7 @@ def products_results(request, search_text):
             items.append(dict_item)
 
         return JsonResponse(items, safe=False)
-    
+
 
 def filter_by_dresses(request):
     """Filter products by category 'dresses'"""

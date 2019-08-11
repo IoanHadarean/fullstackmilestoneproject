@@ -25,18 +25,21 @@ SECRET_KEY = os.environ.get("SECRET_KEY")
 # Application definition
 
 INSTALLED_APPS = [
+    # built-in modules
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    
+
+    # installed apps
     'django_forms_bootstrap',
     'crispy_forms',
     'django_countries',
     'storages',
-    
+
+    # project apps
     'forum',
     'search',
     'shoppingcart',
@@ -118,6 +121,8 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+
+# AWS Configuration for storing static and media files
 AWS_S3_OBJECT_PARAMETERS = {
     'Expires': 'Thu, 14 Dec 2099 20:00:00 GMT',
     'CacheControl': 'max-age=94608000'
@@ -130,6 +135,8 @@ AWS_SECRET_ACCESS_KEY = os.environ.get("AWS_SECRET_ACCESS_KEY")
 
 AWS_S3_CUSTOM_DOMAIN = '%s.s3.amazonaws.com' % AWS_STORAGE_BUCKET_NAME
 
+
+# Storage for static files and static url and root
 STATICFILES_STORAGE = 'custom_storages.StaticStorage'
 
 STATICFILES_LOCATION = 'static'
@@ -138,6 +145,8 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = (os.path.join(BASE_DIR, 'static'),)
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 
+
+# Storage for media files and media url and root
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
@@ -145,14 +154,11 @@ MEDIAFILES_LOCATION = 'media'
 
 DEFAULT_FILE_STORAGE = 'custom_storages.MediaStorage'
 
+# Message storage
 MESSAGE_STORAGE = 'django.contrib.messages.storage.session.SessionStorage'
 
+# Send grid backend for sending emails
 EMAIL_BACKEND = 'sgbackend.SendGridBackend'
 
-
+# Crispy template pack as bootstrap 4 for styling
 CRISPY_TEMPLATE_PACK = 'bootstrap4'
-
-    
-    
-    
-    

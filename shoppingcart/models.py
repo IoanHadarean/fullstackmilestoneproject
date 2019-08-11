@@ -151,7 +151,7 @@ class Order(models.Model):
 
     def __str__(self):
         return self.user.username
-    
+
     """
     Get the total for all the items in the cart
     and only decrease the total if there is an user
@@ -159,7 +159,7 @@ class Order(models.Model):
     the total of the items in the cart and the coupon amount
     should also be greater than 0.
     """
-    
+
     def get_total(self):
         total = 0
         for order_item in self.items.all():
@@ -172,17 +172,17 @@ class Order(models.Model):
             self.save()
         print(total)
         return total
-        
+
     """
     Get the total for all the items in the cart.
     If there is a coupon get the total
     regardless if the coupon was used or not
-    or if the difference between the total of the items 
+    or if the difference between the total of the items
     in the cart and the coupon amount is less than 0.
-    This function is used for some checks in the 
+    This function is used for some checks in the
     'checkout.html' and 'order_summary.html' templates.
     """
-    
+
     def get_total_with_coupon(self):
         total_with_coupon = 0
         for order_item in self.items.all():

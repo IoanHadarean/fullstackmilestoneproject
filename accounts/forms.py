@@ -13,7 +13,7 @@ class UserLoginForm(forms.Form):
 
 
 class UserRegistrationForm(UserCreationForm):
-    """ Form used to register a new user"""
+    """Form used to register a new user"""
 
     password1 = forms.CharField(
         label="Password",
@@ -28,6 +28,7 @@ class UserRegistrationForm(UserCreationForm):
         model = User
         fields = ['email', 'username', 'password1', 'password2']
 
+    """Check for unique email address"""
     def clean_email(self):
         email = self.cleaned_data.get('email')
         username = self.cleaned_data.get('username')
@@ -35,6 +36,7 @@ class UserRegistrationForm(UserCreationForm):
             raise forms.ValidationError(u'Email address must be unique')
         return email
 
+    """Verify if the password was confirmed or if the passwords match"""
     def clean_password(self):
         password1 = self.cleaned_data.get('password1')
         password2 = self.cleaned_data.get('password2')
@@ -48,6 +50,8 @@ class UserRegistrationForm(UserCreationForm):
 
 
 class UserUpdateForm(forms.ModelForm):
+    """Form used to update the user email and username"""
+
     email = forms.EmailField()
 
     class Meta:
@@ -56,6 +60,8 @@ class UserUpdateForm(forms.ModelForm):
 
 
 class ProfileUpdateForm(forms.ModelForm):
+    """Form used to update the user profile image"""
+
     class Meta:
         model = Profile
         fields = ['image']

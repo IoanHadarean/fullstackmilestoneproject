@@ -14,6 +14,7 @@
                 </tr>
             </thead>
             <tbody>
+                <!-- Order items -->
                 {% for order_item in object.items.all %}
                 <tr>
                     <th scope="row">{{ forloop.counter }}</th>
@@ -23,6 +24,7 @@
                         <a href="{% url 'remove_single_item_from_cart' order_item.item.slug %}"><i class="fa fa-minus mr-2"></i></a> {{ order_item.quantity }}
                         <a href="{% url 'add_to_cart' order_item.item.slug %}"><i class="fa fa-plus ml-2"></i></a>
                     </td>
+                    <!-- Show item discount price if any -->
                     <td>
                         {% if order_item.item.discount_price %} £{{ order_item.get_total_item_discount_price }}
                         <span class="badge badge-primary">(Saving £{{order_item.get_amount_saved }})</span> {% else %} £{{ order_item.get_total_item_price }} {% endif %}
@@ -40,7 +42,10 @@
                         <a class="btn btn-primary float-right" href="/">Continue Shopping</a>
                     </td>
                 </tr>
-                {% endfor %} {% if object.coupon and object.get_total_with_coupon > 0 and object.items.all %}
+                {% endfor %}
+                <!-- Show order total if there are items in the cart -->
+                <!-- Show discount price if there is an order coupon -->
+                {% if object.coupon and object.get_total_with_coupon > 0 and object.items.all %}
                 <tr>
                     <td colspan="4"><b>Coupon</b></td>
                     <td><b>-£{{ object.coupon.amount }}</b></td>
@@ -52,6 +57,7 @@
                     <td><b>£{{ object.get_total }}</b></td>
                 </tr>
                 {% endif %}
+                <!-- Link for getting back to products -->
                 {% if object.items.all %}
                 <tr>
                     <td colspan="5">

@@ -11,7 +11,7 @@ today = date.today()
 
 
 class ChartsView(View):
-
+    
     """View that renders the charts template"""
     def get(self, request, *args, **kwargs):
         return render(request, 'charts/charts.html', {})
@@ -22,12 +22,8 @@ For each order in orders, if the ordered
 date(day) is in the last 3 days, append the amount
 to the lasy 3 days sales. For each date time in the
 last 3 days, if the date is equal to the datetime,
-increase the orders for that day by 1. Append
-Append each order of the day as a key,value pair to the
-monthly orders.
+increase the orders for that day by 1
 """
-
-
 def day_orders():
     last_3_days = []
     for i in range(0, 3):
@@ -57,13 +53,10 @@ last 3 months in a list.
 For each order in orders, if the ordered
 month is in the last 3 months, append the amount
 to the last 3 month sales. For each date time in the
-last 3 months datetime, if the month is equal to the
+last 3 months datetime, if the month is equal to the 
 datetime, month, increase the orders for that month by 1.
-Append each order of the month as a key,value pair to the
-monthly orders.
+Append each month or
 """
-
-
 def month_orders():
     last_3_months = []
     last_3_months_datetime = []
@@ -87,13 +80,6 @@ def month_orders():
                     monthly_orders.append({date_time.strftime("%B"): orders_per_month})
 
     return monthly_orders, last_3_months_datetime, orders_last_3_months_total, sales_last_3_months_total
-
-
-"""
-Get the last 3 days orders for each respective day plus
-the total as a key,value pair. If there were no orders for that day,
-add '0' to the value.
-"""
 
 
 def last_3_days_orders():
@@ -135,13 +121,6 @@ def last_3_days_orders():
     orders_last_3_days.append({'Total': orders_last_3_days_total})
 
     return orders_last_3_days
-
-
-"""
-Get the last 3 months orders for each respective month plus
-the total as a key,value pair. If there were no orders for that month,
-add '0' to the value.
-"""
 
 
 def last_3_months_orders():
@@ -186,13 +165,6 @@ def last_3_months_orders():
     return orders_last_3_months
 
 
-"""
-Get the last 3 days sales for each respective day plus
-the total as a key,value pair. If there were no sales for that day,
-add '0' to the value.
-"""
-
-
 def last_3_days_sales():
 
     daily_orders, last_3_days, orders_last_3_days_total, sales_last_3_days_total = day_orders()
@@ -232,13 +204,6 @@ def last_3_days_sales():
     sales_last_3_days.append({'Total': sales_last_3_days_total})
 
     return sales_last_3_days
-
-
-"""
-Get the last 3 months sales for each respective month plus
-the total as a key,value pair. If there were no sales for that month,
-add '0' to the value.
-"""
 
 
 def last_3_months_sales():
@@ -281,13 +246,6 @@ def last_3_months_sales():
     sales_last_3_months.append({'Total': sales_last_3_months_total})
 
     return sales_last_3_months
-
-
-"""
-Get the data (orders and sales)  for the
-last 3 months and last 3 days. Return the data
-as a JsonResponse used for AJAX.
-"""
 
 
 def get_data(request, *args, **kwargs):

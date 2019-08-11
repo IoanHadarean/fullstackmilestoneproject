@@ -4,10 +4,12 @@
 <title>Charts</title>
 {% endblock %}
 {% block content %}
+<!-- Loader/spinner for AJAX -->
 <div class="loader">
     <img src="{% static 'img/giphy.gif' %}" alt="Loading..." >
 </div>
 
+<!-- Charts -->
 <h1 class="text-center mt-3 mb-3 no-display-header">Orders and sales</h1>
 <div class="row charts-container">
     <div class="col-sm-12 col-md-6 col-lg-5 mt-5" url-endpoint = "{% url 'chart-data' %}">

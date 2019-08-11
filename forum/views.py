@@ -4,8 +4,6 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 from django.urls import reverse_lazy
 from django.db.models import Q
-from django.template.loader import render_to_string
-import json
 from django.http import JsonResponse
 from django.contrib import messages
 from forum.forms import PostForm, CommentForm, PostEditForm
@@ -18,7 +16,7 @@ from django.views.generic import (ListView, CreateView,
 class PostListView(ListView):
     """A class that defines the view for all the posts"""
     model = Post
-    paginate_by = 5
+    paginate_by = 6
 
     def get_queryset(self):
         return Post.objects.filter(published_date__lte=timezone.now()).order_by('-published_date')
@@ -27,7 +25,7 @@ class PostListView(ListView):
 class UserPostListView(ListView):
     """A class that defines the view for a specific user's posts"""
     model = Post
-    paginate_by = 5
+    paginate_by = 6
 
     def get_queryset(self):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
@@ -75,7 +73,7 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
             'form': form
         }
         return render(self.request, "forum/post_edit_form.html", context)
-        
+
     def post(self, *args, **kwargs):
         user = self.request.user
         post = Post.objects.get(pk=self.kwargs['pk'])
@@ -103,7 +101,7 @@ class DraftListView(ListView):
     login_url = 'accounts/login/'
     redirect_field_name = 'post_list.html'
     model = Post
-    paginate_by = 5
+    paginate_by = 6
 
     def get_queryset(self):
         user = get_object_or_404(User, username=self.kwargs.get('username'))
@@ -160,6 +158,7 @@ def dislike_post(request, pk):
         'total_likes': post.likes_total,
     }
     return JsonResponse(context, safe=False)
+
 
 @login_required
 def post_publish(request, pk):

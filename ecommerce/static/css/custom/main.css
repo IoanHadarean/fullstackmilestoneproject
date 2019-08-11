@@ -93,6 +93,7 @@ ul {
 }
 
 /* ------------------------------------------------ Reset Password --------------------------- */
+
 .margin-top-plus {
   margin-top: 50px;
 }
@@ -135,12 +136,11 @@ ul {
 }
 
 .posttitle {
-  font-size: 3em;
   text-align: center;
 }
 
-.postcontent {
-  font-size: 1.5em;
+.post-details {
+  margin-top: 20px;
 }
 
 .centerstage {
@@ -156,6 +156,10 @@ ul {
 .save,
 .btn-comment {
   margin-bottom: 150px;
+}
+
+.comments-container {
+  margin-top: 70px;
 }
 
 
@@ -187,6 +191,7 @@ ul {
 .custom-height-form {
   height: 35px;
 }
+
 
 /* ------------------------------------------------Charts ----------------------------------------- */
 
@@ -254,6 +259,57 @@ ul {
   }
 }
 
+@media (max-width: 576px) {
+  .btn-comment {
+    margin-right: 20px;
+  }
+
+  .btn-comment,
+  .btn-reply,
+  #like-post,
+  #dislike-post {
+    font-size: 9px;
+  }
+}
+
+@media (min-width: 577px) and (max-width: 809px) {
+  .btn-comment {
+    margin-right: 50px;
+  }
+  
+  .btn-comment,
+  .btn-reply,
+  #like-post,
+  #dislike-post {
+    font-size: 10px;
+  }
+}
+
+
+@media (min-width: 810px) {
+  .btn-comment {
+    margin-right: 140px;
+  }
+}
+
+@media (min-width: 810px) and (max-width: 991px) {
+  .btn-comment,
+  .btn-reply,
+  #like-post,
+  #dislike-post {
+    font-size: 10px;
+  }
+}
+
+@media (min-width: 992px) {
+  .btn-comment,
+  .btn-reply,
+  #like-post,
+  #dislike-post {
+    font-size: 12px;
+  }
+}
+
 @media (min-width: 768px) and (max-width: 4000px) {
   .footer {
     width: 100%;
@@ -295,7 +351,8 @@ ul {
 @media (min-width: 768px) {
   .content-section,
   .centerstage,
-  .table-responsive {
+  .table-responsive,
+  .post-details {
     margin-top: 50px;
   }
 }
@@ -310,7 +367,7 @@ ul {
   .resize-font {
     font-size: 12px;
   }
-  
+
   .navbar-brand {
     font-size: 14px;
   }

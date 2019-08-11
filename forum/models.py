@@ -7,8 +7,8 @@ from django.contrib.auth.models import User
 class Post(models.Model):
     """A model class that is used for a single post"""
     author = models.ForeignKey(User, on_delete=models.CASCADE)
-    title = models.CharField(max_length=200)
-    text = models.TextField()
+    title = models.CharField(max_length=24)
+    text = models.TextField(max_length=500)
     likes = models.ManyToManyField(User, related_name='post_likes', blank=True)
     likes_total = models.IntegerField(default=0)
     created_date = models.DateTimeField(default=timezone.now)

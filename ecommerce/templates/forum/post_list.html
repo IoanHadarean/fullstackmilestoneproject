@@ -1,11 +1,7 @@
-{% extends "base.html" %} {% load static %}
-{% block custom_css %}
-<link rel="stylesheet" href="{% static 'css/custom.css' %}" type="text/css" />
-{% endblock %}
-{% block custom_title %}
+{% extends "base.html" %} {% load static %} {% block custom_css %}
+<link rel="stylesheet" href="{% static 'css/custom.css' %}" type="text/css" /> {% endblock %} {% block custom_title %}
 <title>Posts</title>
-{% endblock %}
-{% block content %}
+{% endblock %} {% block content %}
 <div class="centerstage">
 
     <!-- Search through posts if there are any-->
@@ -13,24 +9,28 @@
     <div class="container">
         <div class="display">
             {% if 'drafts/' in request.path %}
+            <!-- Search drafts form -->
             <form class="custom-height-form" action="{% url 'search_drafts' %}" method="POST">
                 {% csrf_token %}
                 <input type="text" id="search_drafts" class="col-md-8 col-sm-8 col-7 col-lg-8" name="drafts">
                 <button id="btn-search" class="btn btn-primary" type="submit">Search</button>
             </form>
             
+            <!-- Search typeahead container for AJAX results -->
             <div id="search-typeahead" class="mb-5 col-7 col-lg-8 col-sm-8 col-md-8">
                 <ul id="search-results-drafts">
 
                 </ul>
             </div>
-            {% else %} 
+            {% else %}
+            <!-- Search posts form -->
             <form class="custom-height-form" action="{% url 'search_posts' %}" method="POST">
-            {% csrf_token %}
-            <input type="text" id="search_posts" class="col-md-8 col-sm-8 col-7 col-lg-8" name="posts">
-            <button id="btn-search" class="btn btn-primary" type="submit">Search</button>
+                {% csrf_token %}
+                <input type="text" id="search_posts" class="col-md-8 col-sm-8 col-7 col-lg-8" name="posts">
+                <button id="btn-search" class="btn btn-primary" type="submit">Search</button>
             </form>
-
+            
+            <!-- Search typeahead container for AJAX results -->
             <div id="search-typeahead" class="mb-5 col-7 col-lg-8 col-sm-8 col-md-8">
                 <ul id="search-results-posts">
 
@@ -38,6 +38,7 @@
             </div>
             {% endif %}
         </div>
+        <!-- Show number of results for drafts and posts -->
         {% if 'search_drafts/' in request.path %} {% if draft_list_count == 1 %}
         <p>{{ draft_list_count }} draft has been found</p>
         {% else %}
@@ -55,33 +56,41 @@
     {% endif %} {% endif %}
 
     <!-- Post list -->
-    {% for post in post_list %}
-    <div class="post">
-        {% if post.author.profile.image %}
-        <img class="rounded-circle" src="{{ post.author.profile.image.url }}" alt="profile-image">
-        {% else %}
-        <img class="rounded-circle" src="{% static 'img/avatar.png' %}" width="70" height="70" alt="profile-image">
-        {% endif %}
-        <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>
-        <div class="date">
-            {% if 'drafts/' not in request.path %}
-            <p>Written by <a class="mr-2" href="{% url 'user_posts' post.author.username %}">{{ post.author }}</a> on {{post.published_date|date:"D M Y"}}</p>
-            {% endif %}
+    <section class="text-center mb-4">
+
+        <div class="row wow fadeIn">
+
+            {% for post in post_list %}
+            <div class="post col-lg-4 col-sm-6 col-12 col-md-6 mb-4">
+                    <!-- Post image -->
+                    {% if post.author.profile.image %}
+                        <img class="rounded-circle" src="{{ post.author.profile.image.url }}" width="70" height="70" alt="profile-image">
+                    {% else %}
+                        <img class="rounded-circle" src="{% static 'img/avatar.png' %}" width="70" height="70" alt="profile-image">
+                    {% endif %}
+                    <!-- Post content and title -->
+                    <h2><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h2>
+                    <div class="date">
+                        {% if 'drafts/' not in request.path %}
+                        <p>Written by <a class="mr-2" href="{% url 'user_posts' post.author.username %}">{{ post.author }}</a>on {{post.published_date|date:"D d M Y"}}</p>
+                        {% endif %}
+                    </div>
+                    <!-- Show count of post comments -->
+                    <a href="{% url 'post_detail' pk=post.pk %}">Comments:
+                    {% if post.comments.count > 0 %}
+                        {% for comment in post.comments.all %}
+                            {% if comment.approved_comment and not comment.reply %}
+                                {{ comment.comments_excluding_replies.count }}
+                            {% endif %}
+                        {% endfor %}
+                    {% else %}
+                    0
+                    {% endif %}
+                    </a>
+            </div>
+            {% endfor %}
         </div>
-        <a href="{% url 'post_detail' pk=post.pk %}">Comments:
-        {% if post.comments.count > 0 %}
-        {% for comment in post.comments.all %}
-            {% if comment.approved_comment and not comment.reply %}
-                {{ comment.comments_excluding_replies.count }}
-            {% endif %}
-            
-        {% endfor %}
-        {% else %}
-        0
-        {% endif %}
-        </a>
-    </div>
-    {% endfor %}
+    </section>
 
 
     <!-- Pagination for posts -->
@@ -109,8 +118,7 @@
                            <span class="sr-only">(current)</span>
                        </a>
             </li>
-            {% elif num > page_obj.number|add:'-3' and num
-            < page_obj.number|add: '3' %} <li class="page-item">
+            {% elif num > page_obj.number|add:'-3' and num < page_obj.number|add:'3' %} <li class="page-item">
                 <a class="page-link" href="?page={{ num }}">{{ num }}
                            <span class="sr-only">(current)</span>
                        </a>

@@ -18,9 +18,13 @@ class Profile(models.Model):
     def __str__(self):
         return f'{self.user.username} Profile'
 
+    """
+    Overwrite the save function and save the image with
+    a thumbnail of 300 x 300
+    """
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)
-        
+
         if self.image and hasattr(self.image, 'url'):
             img = Image.open(self.image)
 

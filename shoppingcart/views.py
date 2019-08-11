@@ -331,7 +331,7 @@ class PaymentView(View):
                 send_mail(
                     'Wedding Planner order',
                     """
-                    Your order was successful! 
+                    Your order was successful!
                     Thank you for shopping with us!
                     Your order reference code is: {}""".format(order.ref_code),
                     'weddingplanner@email.com',
@@ -438,6 +438,7 @@ def item_detail(request, slug):
         'random_category_items': random_category_items
     }
     return render(request, 'shoppingcart/product.html', context)
+
 
 @login_required
 def add_to_cart(request, slug):
@@ -579,12 +580,12 @@ class AddCouponView(View):
                     if the order does not have a coupon yet. Assign the coupon to the
                     order and the user coupon specific to the user that made the order.
                     If the order already has a coupon try to get the coupon from the user
-                    coupons and if it does not exist notify the user that he can not use 
+                    coupons and if it does not exist notify the user that he can not use
                     more than one coupon for an order.
                     """
-                    if order.used_coupon == False:
+                    if order.used_coupon is False:
                         user_coupon = UserCoupon.objects.get_or_create(user=self.request.user, coupon=get_coupon)
-                        if user_coupon[0].is_used == False:
+                        if user_coupon[0].is_used is False:
                             order.coupon = get_coupon
                             order.user_coupon = user_coupon[0]
                         order.save()
@@ -604,7 +605,7 @@ class AddCouponView(View):
                 Check if the coupon total is not more than the value of the order
                 and if the user has not already used that coupon.
                 """
-                if user_coupon and order.used_coupon == False:
+                if user_coupon and order.used_coupon is False:
                     if order.get_total_with_coupon() > 0 and user_coupon[0].is_used is False:
                         user_coupon[0].is_used = True
                         order.used_coupon = True
@@ -624,7 +625,7 @@ class AddCouponView(View):
                     elif order.get_total_with_coupon() <= 0:
                         messages.warning(self.request, "You can not use this coupon for items with the price less than or equal to the value of the coupon")
                         return redirect("checkout")
-                elif user_coupon and order.used_coupon == True:
+                elif user_coupon and order.used_coupon is True:
                     messages.warning(self.request, "You can not use more than one coupon for an order")
                     return redirect("checkout")
             except ObjectDoesNotExist:

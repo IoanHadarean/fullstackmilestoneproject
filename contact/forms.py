@@ -3,6 +3,12 @@ from .models import Enquiry
 
 
 class ContactForm(forms.Form):
+
+    """
+    Form used for the contact fields with widgets
+    that customize the form inputs.
+    """
+
     name = forms.CharField(max_length=50, required=True, widget=forms.TextInput(attrs={
         'class': 'form-control',
         'id': 'name',
@@ -24,4 +30,3 @@ class ContactForm(forms.Form):
         'id': 'message',
         'name': 'message',
     }))
-
