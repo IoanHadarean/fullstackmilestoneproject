@@ -266,6 +266,8 @@ ul {
 
   .btn-comment,
   .btn-reply,
+  .post-edit,
+  .post-remove,
   #like-post,
   #dislike-post {
     font-size: 9px;
@@ -279,6 +281,8 @@ ul {
   
   .btn-comment,
   .btn-reply,
+  .post-edit,
+  .post-remove,
   #like-post,
   #dislike-post {
     font-size: 10px;
@@ -295,6 +299,8 @@ ul {
 @media (min-width: 810px) and (max-width: 991px) {
   .btn-comment,
   .btn-reply,
+  .post-edit,
+  .post-remove,
   #like-post,
   #dislike-post {
     font-size: 10px;
@@ -304,6 +310,8 @@ ul {
 @media (min-width: 992px) {
   .btn-comment,
   .btn-reply,
+  .post-edit,
+  .post-remove,
   #like-post,
   #dislike-post {
     font-size: 12px;

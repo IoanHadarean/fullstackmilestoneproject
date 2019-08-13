@@ -6,7 +6,7 @@ from django.urls import reverse_lazy
 from django.db.models import Q
 from django.http import JsonResponse
 from django.contrib import messages
-from forum.forms import PostForm, CommentForm, PostEditForm
+from forum.forms import PostForm, CommentForm, PostEditForm, CommentEditForm
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.views.generic import (ListView, CreateView,
@@ -173,8 +173,9 @@ def post_publish(request, pk):
 def add_comment_to_post(request, pk):
     """Allow adding a comment to a post"""
     post = get_object_or_404(Post, pk=pk)
+    user = request.user
     if request.method == "POST":
-        form = CommentForm(request.POST or None)
+        form = CommentForm(user, request.POST or None)
         if form.is_valid():
             comment = form.save(commit=False)
             comment.post = post
@@ -182,7 +183,7 @@ def add_comment_to_post(request, pk):
             messages.success(request, "Your comment is pending approval...")
             return redirect('post_detail', pk=post.pk)
     else:
-        form = CommentForm()
+        form = CommentForm(user)
     return render(request, 'forum/comment_form.html', {'form': form})
 
 
@@ -191,8 +192,9 @@ def add_reply_to_comment(request, pk, id):
     """Allow adding a reply to a post comment"""
     comment = get_object_or_404(Comment, id=id)
     post = get_object_or_404(Post, pk=pk)
+    user = request.user
     if request.method == "POST":
-        form = CommentForm(request.POST or None)
+        form = CommentForm(user, request.POST or None)
         if form.is_valid():
             author = request.POST.get('author')
             text = request.POST.get('text')
@@ -207,7 +209,7 @@ def add_reply_to_comment(request, pk, id):
             messages.success(request, "Your reply has been successfully added")
             return HttpResponseRedirect(post.get_absolute_url())
     else:
-        form = CommentForm()
+        form = CommentForm(user)
     return render(request, 'forum/reply_form.html',
                   {'form': form, 'comment': comment})
 
@@ -229,3 +231,35 @@ def comment_remove(request, pk):
     comment.delete()
     messages.success(request, "You have successfully removed the comment.")
     return redirect('post_detail', pk=post_pk)
+    
+    
+class CommentUpdateView(LoginRequiredMixin, UpdateView):
+    """
+    Update a single post comment and redirect to the details for
+    that post. The user needs to be logged in to update a post comment.
+    """
+    def get(self, *args, **kwargs):
+        user = self.request.user
+        comment = Comment.objects.get(pk=self.kwargs['pk'])
+        form = CommentEditForm(user, comment)
+        form.author = user
+        context = {
+            'form': form
+        }
+        return render(self.request, "forum/comment_edit_form.html", context)
+
+    def post(self, *args, **kwargs):
+        user = self.request.user
+        comment = Comment.objects.get(pk=self.kwargs['pk'])
+        form = CommentEditForm(user, comment, self.request.POST or None)
+        if form.is_valid():
+            author = form.cleaned_data.get('author')
+            text = form.cleaned_data.get('text')
+            comment.author = author
+            comment.text = text
+            comment.save()
+            messages.success(self.request, "You have successfully edited the comment")
+            return redirect('post_detail', pk=comment.post.pk)
+    
+    
+    

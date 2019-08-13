@@ -35,7 +35,7 @@ class Comment(models.Model):
     """A model class used for a single comment"""
     post = models.ForeignKey('forum.Post', related_name='comments', on_delete=models.CASCADE)
     reply = models.ForeignKey("Comment", null=True, related_name='replies', on_delete=models.CASCADE)
-    author = models.CharField(max_length=200)
+    author = models.ForeignKey(User, on_delete=models.CASCADE)
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
     approved_comment = models.BooleanField(default=False)

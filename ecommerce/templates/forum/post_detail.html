@@ -21,8 +21,8 @@
 
     <!-- Buttons for editing and removing posts -->
     {% if user.is_authenticated %} {% if post.author == request.user %}
-    <a class="btn btn-primary" href="{% url 'post_edit' pk=post.pk %}"><i class="fa fa-edit"></i></a>
-    <a class="btn btn-primary" href="{% url 'post_remove' pk=post.pk %}"><i class="fa fa-trash-alt"></i></a> {% endif %} {% endif %}
+    <a class="btn btn-default post-edit" href="{% url 'post_edit' pk=post.pk %}"><i class="fa fa-edit"></i></a>
+    <a class="btn btn-danger post-remove" href="{% url 'post_remove' pk=post.pk %}"><i class="fa fa-trash-alt"></i></a> {% endif %} {% endif %}
 
     <!-- Button for adding a comment -->
     <hr>
@@ -45,6 +45,8 @@
         <p>{{ comment.created_date }}</p>
         <p>{{comment.text|safe|linebreaks}}</p>
         <p>Posted By: {{comment.author}}</p>
+        <!-- Comment edit and delete buttons -->
+        <a class="btn btn-default" href="{% url 'comment_edit' pk=comment.pk %}"><i class="fa fa-edit"></i></a>
         <!-- Reply button and reply blockquote container-->
         <a class="btn btn-primary btn-reply" href="{% url 'add_reply_to_comment' pk=post.pk id=comment.id %}">Reply</a> {% endif %} {% for reply in comment.replies.all %}
         <blockquote class="blockquote">

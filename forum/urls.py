@@ -19,6 +19,8 @@ urlpatterns = [
          name='post_draft_list'),
     re_path(r'^post/(?P<pk>\d+)/comment/$', views.add_comment_to_post,
             name='add_comment_to_post'),
+    re_path(r'^comment/(?P<pk>\d+)/edit/$', views.CommentUpdateView.as_view(),
+            name='comment_edit'),
     re_path(r'^post/(?P<pk>\d+)/comment/(?P<id>\d+)/reply/$',
             views.add_reply_to_comment, name='add_reply_to_comment'),
     re_path(r'^comment/(?P<pk>\d+)/approve/$', views.comment_approve,

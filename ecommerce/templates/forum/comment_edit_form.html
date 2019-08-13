@@ -1,19 +1,17 @@
 {% extends 'base.html' %}
 {% block custom_title %}
-<title>Edit {{ form.title.value }}</title>
+<title>Edit comment</title>
 {% endblock %}
 {% block content %}
-
-    <!-- Form for editing a post -->
-    <h1>Edit {{ form.title.value }}</h1>
+    
+    <!-- Form for editing a post comment -->
+    <h1>Edit Comment</h1>
     <form class="post-form" method="POST">
         {% csrf_token %}
-        {{form.as_p}}
+        {{ form.as_p }}
         <button type="submit" class="save btn btn-default">Save</button>
     </form>
 {% endblock %}
 
 <!-- Include forum-box -->
-{% block forum %}
-    {% include 'includes/forum-box.html' %}
-{% endblock %}
+{% block forum %} {% include 'includes/forum-box.html' %} {% endblock %}
