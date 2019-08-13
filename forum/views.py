@@ -196,14 +196,13 @@ def add_reply_to_comment(request, pk, id):
     if request.method == "POST":
         form = CommentForm(user, request.POST or None)
         if form.is_valid():
-            author = request.POST.get('author')
             text = request.POST.get('text')
             reply_id = request.POST.get('comment_id')
             comment_qs = None
             if reply_id:
                 comment_qs = Comment.objects.get(id=reply_id)
             comment = Comment.objects.create(post=post, reply=comment_qs,
-                                             author=author, text=text,
+                                             author=user, text=text,
                                              approved_comment=True)
             comment.save()
             messages.success(request, "Your reply has been successfully added")
@@ -260,6 +259,3 @@ class CommentUpdateView(LoginRequiredMixin, UpdateView):
             comment.save()
             messages.success(self.request, "You have successfully edited the comment")
             return redirect('post_detail', pk=comment.post.pk)
-    
-    
-    

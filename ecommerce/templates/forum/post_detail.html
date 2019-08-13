@@ -40,13 +40,18 @@
         <p>{{ comment.created_date }}</p>
         <p>{{comment.text|safe|linebreaks}}</p>
         <p>Posted By: {{comment.author}}</p>
-        <a class="btn btn-default" href="{% url 'comment_remove' pk=comment.pk %}"><i class="fa fa-trash"></i></a>
-        <a class="btn btn-primary" href="{% url 'comment_approve' pk=comment.pk %}"><i class="fa fa-check"></i></a> {% endif %} {% endif %} {% if comment.approved_comment and not comment.reply %}
+        <a class="btn btn-danger comment-remove" href="{% url 'comment_remove' pk=comment.pk %}"><i class="fa fa-trash"></i></a>
+        <a class="btn btn-primary comment-approve" href="{% url 'comment_approve' pk=comment.pk %}"><i class="fa fa-check"></i></a> {% endif %} {% endif %} {% if comment.approved_comment and not comment.reply %}
         <p>{{ comment.created_date }}</p>
         <p>{{comment.text|safe|linebreaks}}</p>
         <p>Posted By: {{comment.author}}</p>
+        
         <!-- Comment edit and delete buttons -->
-        <a class="btn btn-default" href="{% url 'comment_edit' pk=comment.pk %}"><i class="fa fa-edit"></i></a>
+        {% if comment.author == request.user %}
+        <a class="btn btn-default comment-edit" href="{% url 'comment_edit' pk=comment.pk %}"><i class="fa fa-edit"></i></a>
+        <a class="btn btn-danger comment-remove" href="{% url 'comment_remove' pk=comment.pk %}"><i class="fa fa-trash"></i></a>
+        {% endif %}
+        
         <!-- Reply button and reply blockquote container-->
         <a class="btn btn-primary btn-reply" href="{% url 'add_reply_to_comment' pk=post.pk id=comment.id %}">Reply</a> {% endif %} {% for reply in comment.replies.all %}
         <blockquote class="blockquote">
