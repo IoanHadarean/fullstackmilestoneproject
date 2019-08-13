@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% block custom_title %}
+<title>Edit reply</title>
+{% endblock %}
+{% block content %}
+    
+    <!-- Form for adding a new reply -->
+    <h1>Edit Reply</h1>
+    <form class="post-form" method="POST">
+        {% csrf_token %}
+        <input type = "hidden" name="comment_id" value={{ comment.id }}>
+        {{ form.as_p }}
+        <button type="submit" class="save btn btn-default">Save</button>
+    </form>
+{% endblock %}
+
+
+<!-- Include forum-box -->
+{% block forum %} {% include 'includes/forum-box.html' %} {% endblock %}

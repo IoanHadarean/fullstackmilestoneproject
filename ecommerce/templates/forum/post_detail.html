@@ -58,6 +58,8 @@
             {{ reply.created_date}}
             <br> {{reply.text|safe|linebreaks|striptags}}
             <br> Posted By: {{ reply.author|striptags }}
+            <a class="btn btn-default comment-edit" href="{% url 'edit_reply' pk=post.pk id=reply.id %}"><i class="fa fa-edit"></i></a>
+            <a class="btn btn-danger comment-remove" href="{% url 'reply_remove' pk=reply.pk %}"><i class="fa fa-trash"></i></a>
         </blockquote>
         <br> {% endfor %} {% endif %} {% empty %}
         <p>No Comments</p>

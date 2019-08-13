@@ -223,25 +223,20 @@ def edit_reply(request, pk, id):
         form = CommentEditForm(user, comment, request.POST or None)
         if form.is_valid():
             text = request.POST.get('text')
-            comment.text = text
+            reply_id = request.POST.get('comment_id')
+            if reply_id:
+                comment_qs = Comment.objects.get(id=reply_id)
+            comment = Comment.objects.get(post=post, reply=comment_qs,
+                                          author=user, text=text,
+                                          approved_comment=True)
             comment.save()
-            messages.success(request, "You have successfully edited the reply")
+            messages.success(request, "Your have successfully edited the reply")
             return HttpResponseRedirect(post.get_absolute_url())
     else:
         form = CommentEditForm(user, comment)
-    return render(request, 'forum/reply_edit_form.html',
+    return render(request, 'forum/reply_form.html',
                   {'form': form, 'comment': comment})
     
-
-@login_required
-def reply_remove(request, pk):
-    """Delete a post comment reply"""
-    comment = get_object_or_404(Comment, pk=pk)
-    post_pk = comment.post.pk
-    comment.delete()
-    messages.success(request, "You have successfully removed the reply.")
-    return redirect('post_detail', pk=post_pk)
-
 
 @login_required
 def comment_approve(request, pk):
