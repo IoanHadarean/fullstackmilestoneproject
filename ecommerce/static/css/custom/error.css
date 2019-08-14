@@ -5,13 +5,15 @@ body {
 }
 
 .error-template {
-    padding: 40px 15px;text-align: center;
+    padding: 2.5rem 0.9375rem;
+    text-align: center;
 }
 
 .error-actions {
-    margin-top:15px;margin-bottom:15px;
+    margin-top:0.9375rem;
+    margin-bottom:0.9375rem;
 }
 
 .error-actions .btn {
-    margin-right:10px; 
+    margin-right:0.625rem; 
 }

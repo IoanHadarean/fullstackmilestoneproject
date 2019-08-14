@@ -10,7 +10,7 @@
         Written by <a class="mr-2" href="{% url 'user_posts' post.author.username %}">{{ post.author }}</a> on {{post.published_date|date:"D M Y"}}
     </div>
     {% else %} {% if post.author == request.user %}
-    <a class="btn btn-default" href="{% url 'post_publish' pk=post.pk %}">Publish</a> {% endif %} {% endif %}
+    <a class="btn btn-primary" href="{% url 'post_publish' pk=post.pk %}">Publish</a> {% endif %} {% endif %}
 
     <p class="postcontent">{{post.text|striptags|safe|linebreaksbr}}</p>
 
@@ -46,20 +46,24 @@
         <p>{{comment.text|safe|linebreaks}}</p>
         <p>Posted By: {{comment.author}}</p>
         
-        <!-- Comment edit and delete buttons -->
-        {% if comment.author == request.user %}
-        <a class="btn btn-default comment-edit" href="{% url 'comment_edit' pk=comment.pk %}"><i class="fa fa-edit"></i></a>
-        <a class="btn btn-danger comment-remove" href="{% url 'comment_remove' pk=comment.pk %}"><i class="fa fa-trash"></i></a>
-        {% endif %}
+        <div>
+            <!-- Comment edit and delete buttons -->
+            {% if comment.author == request.user %}
+            <a class="btn btn-default comment-edit" href="{% url 'comment_edit' pk=comment.pk %}"><i class="fa fa-edit"></i></a>
+            <a class="btn btn-danger comment-remove" href="{% url 'comment_remove' pk=comment.pk %}"><i class="fa fa-trash"></i></a>
+            {% endif %}
         
-        <!-- Reply button and reply blockquote container-->
-        <a class="btn btn-primary btn-reply" href="{% url 'add_reply_to_comment' pk=post.pk id=comment.id %}">Reply</a> {% endif %} {% for reply in comment.replies.all %}
+            <!-- Reply button and reply blockquote container-->
+            <a class="btn btn-primary btn-reply" href="{% url 'add_reply_to_comment' pk=post.pk id=comment.id %}">Reply</a> {% endif %} {% for reply in comment.replies.all %}
+        </div>
         <blockquote class="blockquote">
             {{ reply.created_date}}
             <br> {{reply.text|safe|linebreaks|striptags}}
             <br> Posted By: {{ reply.author|striptags }}
-            <a class="btn btn-default comment-edit" href="{% url 'edit_reply' pk=post.pk id=reply.id %}"><i class="fa fa-edit"></i></a>
-            <a class="btn btn-danger comment-remove" href="{% url 'reply_remove' pk=reply.pk %}"><i class="fa fa-trash"></i></a>
+            <div>
+                <a class="btn btn-default comment-edit" href="{% url 'edit_reply' pk=post.pk id=reply.id %}"><i class="fa fa-edit"></i></a>
+                <a class="btn btn-danger comment-remove" href="{% url 'reply_remove' pk=reply.pk %}"><i class="fa fa-trash"></i></a>
+            </div>
         </blockquote>
         <br> {% endfor %} {% endif %} {% empty %}
         <p>No Comments</p>

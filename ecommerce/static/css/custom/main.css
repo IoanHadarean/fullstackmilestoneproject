@@ -27,7 +27,7 @@ p {
 }
 
 .table-responsive {
-  margin-top: 20px;
+  margin-top: 1.25rem;
 }
 
 h1,
@@ -77,9 +77,9 @@ ul {
 }
 
 .logo-image {
-  width: 90px;
-  height: 60px;
-  margin-top: -10px;
+  width: 5.625rem;
+  height: 3.75rem;
+  margin-top: -0.625rem;
 }
 
 /* -----------------------------------------------Main content---------------------------- */
@@ -95,7 +95,7 @@ ul {
 /* ------------------------------------------------ Reset Password --------------------------- */
 
 .margin-top-plus {
-  margin-top: 50px;
+  margin-top: 3.125rem;
 }
 
 /* -------------------------------------------------Profile--------------------------- */
@@ -132,7 +132,7 @@ ul {
 }
 
 .post {
-  margin-top: 15px;
+  margin-top: 0.9375rem;
 }
 
 .posttitle {
@@ -140,7 +140,7 @@ ul {
 }
 
 .post-details {
-  margin-top: 20px;
+  margin-top: 1.25rem;
 }
 
 .centerstage {
@@ -150,16 +150,16 @@ ul {
 
 .btn-comment {
   position: absolute;
-  right: 0px;
+  right: 0rem;
 }
 
 .save,
 .btn-comment {
-  margin-bottom: 150px;
+  margin-bottom: 9.375rem;
 }
 
 .comments-container {
-  margin-top: 70px;
+  margin-top: 4.375rem;
 }
 
 
@@ -177,19 +177,19 @@ ul {
 }
 
 #btn-search {
-  height: 36px;
-  line-height: 5px;
+  height: 2.25rem;
+  line-height: 0.3125rem;
   margin: 0;
-  margin-top: -1px;
+  margin-top: 0.0625rem;
 }
 
 #search_drafts,
 #search_posts {
-  height: 35px;
+  height: 2.1875rem;
 }
 
 .custom-height-form {
-  height: 35px;
+  height: 2.1875rem;
 }
 
 
@@ -220,7 +220,7 @@ ul {
 }
 
 .loader>img {
-  width: 150px;
+  width: 9.375rem;
 }
 
 /* -------------------------------------------------Footer------------------------------------------------- */
@@ -229,7 +229,7 @@ ul {
   width: auto;
   background-color: black;
   bottom: 0;
-  margin-top: 150px;
+  margin-top: 9.375rem;
   position: relative;
   text-align: center;
   line-height: 10%;
@@ -254,45 +254,66 @@ ul {
 
 @media (max-width: 440px) {
   #btn-search {
-    margin-left: -10px;
-    font-size: 9px;
+    margin-left: -0.625rem;
+    font-size: 0.5625rem;
   }
 }
 
 @media (max-width: 576px) {
   .btn-comment {
-    margin-right: 20px;
+    margin-right: 1.25rem;
   }
 
   .btn-comment,
   .btn-reply,
   .post-edit,
   .post-remove,
+  .comment-remove,
+  .comment-edit,
   #like-post,
   #dislike-post {
-    font-size: 9px;
+    font-size: 0.5625rem;
+    display: inline-flex !important;
+    justify-content: center;
+    align-items: center;
+    height: 2.25rem;
+  }
+  
+  .post-edit,
+  .post-remove,
+  .comment-remove,
+  .comment-edit,
+  #like-post,
+  #dislike-post {
+    width: 4.375rem;
+  }
+  
+  .btn-reply {
+    width: 6.25rem;
   }
 }
 
 @media (min-width: 577px) and (max-width: 809px) {
   .btn-comment {
-    margin-right: 50px;
+    margin-right: 3.125rem;
   }
   
   .btn-comment,
   .btn-reply,
   .post-edit,
   .post-remove,
+  .comment-remove,
+  .comment-edit,
   #like-post,
   #dislike-post {
-    font-size: 10px;
+    font-size: 0.625rem;
   }
 }
 
 
 @media (min-width: 810px) {
   .btn-comment {
-    margin-right: 140px;
+    margin-right: 8.75rem;
   }
 }
 
@@ -301,9 +322,11 @@ ul {
   .btn-reply,
   .post-edit,
   .post-remove,
+  .comment-remove,
+  .comment-edit,
   #like-post,
   #dislike-post {
-    font-size: 10px;
+    font-size: 0.625rem;
   }
 }
 
@@ -314,7 +337,7 @@ ul {
   .post-remove,
   #like-post,
   #dislike-post {
-    font-size: 12px;
+    font-size: 0.75rem;
   }
 }
 
@@ -361,29 +384,29 @@ ul {
   .centerstage,
   .table-responsive,
   .post-details {
-    margin-top: 50px;
+    margin-top: 3.125rem;
   }
 }
 
 @media (min-width: 991px) and (max-width: 1920px) {
   .content-section {
-    max-width: 900px;
+    max-width: 56.25rem;
   }
 }
 
 @media (min-width: 991px) and (max-width: 1200px) {
   .resize-font {
-    font-size: 12px;
+    font-size: 0.75rem;
   }
 
   .navbar-brand {
-    font-size: 14px;
+    font-size: 0.875rem;
   }
 }
 
 @media (min-width: 1921px) and (max-width: 4000px) {
   .content-section {
-    max-width: 1200px;
+    max-width: 75rem;
   }
 }
 
