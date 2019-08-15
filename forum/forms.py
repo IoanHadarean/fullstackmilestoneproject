@@ -86,7 +86,7 @@ class CommentForm(forms.ModelForm):
                 'rows': 5
             })
         }
-        
+
     def __init__(self, user, *args, **kwargs):
         super().__init__(*args, **kwargs)
         self.fields['author'].queryset = User.objects.filter(username=user.username)

@@ -2,21 +2,19 @@
 <div class="centerstage col-md-6">
     <div class="content-section">
         <h3>Check out the latest posts!</h3>
-        <p class='text-muted'>Get the latest updates and find out what our customers say about us.
-            <ul class="list-group">
-                <li class="list-group-item list-group-item-light">
-                    <a href="{% url 'post_list' %}">All Posts</a>
-                </li>
-                <li class="list-group-item list-group-item-light">
-                    <a href="{% url 'post_new' %}">Add New Post</a>
-                </li>
-                {% if user.is_authenticated %}
-                <li class="list-group-item list-group-item-light">
-                    <a href="{% url 'post_draft_list' user.username %}">Drafts</a>
-                </li>
-                {% endif %}
-            </ul>
-        </p>
+        <p class='text-muted'>Get the latest updates and find out what our customers say about us.</p>
+        <ul class="list-group">
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'post_list' %}">All Posts</a>
+            </li>
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'post_new' %}">Add New Post</a>
+            </li>
+            {% if user.is_authenticated %}
+            <li class="list-group-item list-group-item-light">
+                <a href="{% url 'post_draft_list' user.username %}">Drafts</a>
+            </li>
+            {% endif %}
+        </ul>
     </div>
 </div>
- 

@@ -121,6 +121,7 @@
                 </span>
               <span>£{{ item.get_discount_price|floatformat }}</span> {% else %}
               <span>£{{ item.price|floatformat }}</span> {% endif %}
+            </h4>
           </div>
         </div>
 
@@ -230,6 +231,6 @@
   {% endif %}
 </div>
 {% endblock %} {% block custom_js %}
-<script type="text/javascript" src="{% static 'js/custom/home.js' %}"></script>
-<script type="text/javascript" src="{% static 'js/custom/search_products.js' %}"></script>
+<script src="{% static 'js/custom/home.js' %}"></script>
+<script src="{% static 'js/custom/search_products.js' %}"></script>
 {% endblock %}

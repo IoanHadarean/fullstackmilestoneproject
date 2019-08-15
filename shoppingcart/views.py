@@ -91,12 +91,12 @@ class CheckoutView(View):
                 use_default_shipping = form.cleaned_data.get('use_default_shipping')
                 use_default_billing = form.cleaned_data.get('use_default_billing')
                 same_billing_address = form.cleaned_data.get('same_billing_address')
-                if use_default_shipping:
-                    address_qs = Address.objects.filter(
+                address_qs = Address.objects.filter(
                         user=self.request.user,
                         address_type='S',
                         default=True
                     )
+                if use_default_shipping:
                     if address_qs.exists():
                         shipping_address = address_qs[0]
                         order.shipping_address = shipping_address
@@ -250,7 +250,7 @@ class PaymentView(View):
                 if len(card_list) > 0:
                     """Update the context with the default credit card"""
                     context.update({
-                        'card': card_list[0]
+                        'saved_cards': card_list
                     })
             return render(self.request, "shoppingcart/payment.html", context)
         else:

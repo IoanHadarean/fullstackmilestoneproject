@@ -42,7 +42,7 @@
             <div class="row">
               <!--Grid column-->
               <div class="col-lg-4 col-md-12 mb-4">
-                <label for="country">Country</label> {{ form.shipping_country }}
+                <label for="id_shipping_country">Country</label> {{ form.shipping_country }}
                 <div class="invalid-feedback">
                   Please select a valid country.
                 </div>
@@ -98,7 +98,7 @@
             <div class="row">
               <!--Grid column-->
               <div class="col-lg-4 col-md-12 mb-4">
-                <label for="country">Country</label>
+                <label for="id_billing_country">Country</label>
                 <!--</select>-->
                 {{ form.billing_country }}
                 <div class="invalid-feedback">
@@ -120,14 +120,15 @@
               <input type="checkbox" class="custom-control-input" name="set_default_billing" id="set_default_billing">
               <label class="custom-control-label" for="set_default_billing">Save as default billing address</label>
             </div>
-          </div>
-          
-          {% if default_billing_address %}
+            
+             {% if default_billing_address %}
           <div class="custom-control custom-checkbox">
             <input type="checkbox" class="custom-control-input" name="use_default_billing" id="use_default_billing">
             <label class="custom-control-label" for="use_default_billing">Use default billing address: {{ default_billing_address.street_address|truncatechars:10 }} </label>
           </div>
           {% endif %}
+          </div>
+          
           <hr>
 
           <h3>Payment option</h3>
@@ -141,9 +142,7 @@
             {% endfor %}
           </div>
           <hr class="mb-4">
-          <a href="/shoppingcart/order_summary/">
-            <button class="btn btn-primary" type="button">Back To Summary</button>
-          </a>
+          <a class="btn btn-primary" href="/shoppingcart/order_summary/">Back To Summary</a>
           <button class="btn btn-warning" type="submit">Continue to payment</button>
         </form>
       </div>
@@ -158,5 +157,5 @@
 </div>
 {% endblock %}
 {% block custom_js %}
-<script type="text/javascript" src="{% static 'js/custom/checkout.js' %}"></script>
+<script src="{% static 'js/custom/checkout.js' %}"></script>
 {% endblock %}

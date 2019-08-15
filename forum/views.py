@@ -211,8 +211,8 @@ def add_reply_to_comment(request, pk, id):
         form = CommentForm(user)
     return render(request, 'forum/reply_form.html',
                   {'form': form, 'comment': comment})
-                  
-                  
+
+
 @login_required
 def edit_reply(request, pk, id):
     """Allow editing a post comment reply"""
@@ -231,7 +231,7 @@ def edit_reply(request, pk, id):
         form = CommentEditForm(user, comment)
     return render(request, 'forum/reply_edit_form.html',
                   {'form': form, 'comment': comment})
-    
+
 
 @login_required
 def reply_remove(request, pk):
@@ -260,8 +260,8 @@ def comment_remove(request, pk):
     comment.delete()
     messages.success(request, "You have successfully removed the comment.")
     return redirect('post_detail', pk=post_pk)
-    
-    
+
+
 class CommentUpdateView(LoginRequiredMixin, UpdateView):
     """
     Update a single post comment and redirect to the details for

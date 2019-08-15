@@ -12,21 +12,21 @@
 <!-- Charts -->
 <h1 class="text-center mt-3 mb-3 no-display-header">Orders and sales</h1>
 <div class="row charts-container">
-    <div class="col-sm-12 col-md-6 col-lg-5 mt-5" url-endpoint = "{% url 'chart-data' %}">
+    <div class="col-sm-12 col-md-6 col-lg-5 mt-5">
         <canvas id="orders_last_3_days" width="200" height="200"></canvas>
     </div>
-    <div class="col-sm-12 col-md-6 col-lg-5 mt-5" url-endpoint = "{% url 'chart-data' %}">
+    <div class="col-sm-12 col-md-6 col-lg-5 mt-5">
         <canvas id="orders_last_3_months" width="200" height="200"></canvas>
     </div>
-    <div class="col-sm-12 col-md-6 col-lg-5 mt-5" url-endpoint = "{% url 'chart-data' %}">
+    <div class="col-sm-12 col-md-6 col-lg-5 mt-5">
          <canvas id="sales_last_3_days" width="200" height="200"></canvas>
     </div>
-    <div class="col-sm-12 col-md-6 col-lg-5 mt-5" url-endpoint = "{% url 'chart-data' %}">
+    <div class="col-sm-12 col-md-6 col-lg-5 mt-5">
          <canvas id="sales_last_3_months" width="200" height="200"></canvas>
     </div>
 </div>
 {% endblock %}
 {% block custom_js %}
-<script type="text/javascript" src="{% static 'js/custom/charts.js' %}"></script>
-<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+<script src="{% static 'js/custom/charts.js' %}"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
 {% endblock %}

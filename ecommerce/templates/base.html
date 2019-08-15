@@ -1,6 +1,6 @@
 {% load static %}
 <!DOCTYPE html>
-<html>
+<html lang="en">
 
 <head>
 
@@ -35,7 +35,7 @@
   {% include 'includes/navbar.html' %}
 
   <!-- Main content -->
-  <main role="main" class="container">
+  <main class="container">
     <div class="row">
       <!-- Include alerts-->
       {% include 'includes/alerts.html' %}
@@ -52,24 +52,24 @@
 
   <!-- SCRIPTS -->
   <!-- JQuery -->
-  <script type="text/javascript" src="{% static 'js/library/jquery-3.4.1.min.js' %}"></script>
+  <script src="{% static 'js/library/jquery-3.4.1.min.js' %}"></script>
   <!-- Bootstrap tooltips -->
-  <script type="text/javascript" src="{% static 'js/library/popper.min.js' %}"></script>
+  <script src="{% static 'js/library/popper.min.js' %}"></script>
   <!-- Bootstrap core JavaScript -->
-  <script type="text/javascript" src="{% static 'js/library/bootstrap.min.js' %}"></script>
+  <script src="{% static 'js/library/bootstrap.min.js' %}"></script>
   <!-- MDB core JavaScript -->
-  <script type="text/javascript" src="{% static 'js/library/mdb.min.js' %}"></script>
+  <script src="{% static 'js/library/mdb.min.js' %}"></script>
   <!-- Initializations -->
-  <script type="text/javascript">
+  <script>
     // Animations initialization
     new WOW().init();
   </script>
   
   <!-- Window history -->
-   <script type="text/javascript" src="{% static 'js/custom/back_button.js' %}"></script>
+   <script src="{% static 'js/custom/back_button.js' %}"></script>
   
   <!-- Chart.js -->
-  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.8.0/Chart.min.js"></script>
   
   <!-- Custom JavaScript block -->
   {% block custom_js %}

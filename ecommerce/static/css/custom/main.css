@@ -86,6 +86,11 @@ ul {
   margin-top: -0.625rem;
 }
 
+.navbar-left {
+  margin-top: 5px;
+  margin-bottom: -5px;
+}
+
 /* -----------------------------------------------Main content---------------------------- */
 
 .content-section {
