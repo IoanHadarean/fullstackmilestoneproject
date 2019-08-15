@@ -49,6 +49,11 @@ button:hover {
   padding: 0.25rem 0;
   color: #fa755a;
 }
+
+.card-details {
+  padding: 5px 30px;
+}
+
 .stripe-form-row {
   width: 100%;
   float: left;

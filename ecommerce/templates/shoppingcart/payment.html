@@ -1,8 +1,6 @@
-{% extends 'base.html' %} {% load static %}
-{% block custom_title %}
+{% extends 'base.html' %} {% load static %} {% block custom_title %}
 <title>Payment</title>
-{% endblock %}
-{% block custom_css %}
+{% endblock %} {% block custom_css %}
 <link rel="stylesheet" href="{% static 'css/custom/stripe.css' %}" type="text/css" /> {% endblock %} {% block content %}
 <!-- Checkout form -->
 <div class="container wow fadeIn">
@@ -22,7 +20,7 @@
                 <script src="https://js.stripe.com/v3/"></script>
 
                 {% if card %}
-                <div style="padding: 5px 30px;">
+                <div class="card-details">
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input" name="use_default_card" id="use_default_card">
                         <label class="custom-control-label" for="use_default_card">Use default card: **** **** **** {{ card.last4 }}
@@ -72,6 +70,11 @@
 
         <!-- Order Snippet -->
         {% include 'includes/order_snippet.html' %}
+        <div class="col-md-12">
+            <a href="/shoppingcart/checkout/">
+                <button class="btn btn-primary no-margins-btn" type="button">Back To Checkout</button>
+            </a>
+        </div>
     </div>
 </div>
 {% endblock %} {% block custom_js %}
