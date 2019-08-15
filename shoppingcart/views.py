@@ -111,7 +111,6 @@ class CheckoutView(View):
                 shipping and/or billing address in the database.
                 """
                 if not same_billing_address:
-
                     if use_default_shipping:
                         if address_qs_shipping.exists():
                             shipping_address = address_qs_shipping[0]
@@ -202,7 +201,7 @@ class CheckoutView(View):
                 If the user wants to have the same billing address as the shipping
                 address, get the shipping address inputs from the form, add it to the
                 order, then add the billing to the order, which is the same as the shipping
-                address. Verify if the user wants to set a default shipping address. 
+                address. Verify if the user wants to set a default shipping address.
                 If there already is a default shipping address and the user wants to save a new
                 shipping address, overwrite the old one in the database, else insert the new
                 default address into the database.
@@ -223,7 +222,18 @@ class CheckoutView(View):
                         )
                         shipping_address.save()
 
+                        billing_address = Address(
+                            user=self.request.user,
+                            street_address=shipping_address1,
+                            appartment_address=shipping_address2,
+                            country=shipping_country,
+                            zip_code=shipping_zip_code,
+                            address_type='B'
+                        )
+                        billing_address.save()
+
                         order.shipping_address = shipping_address
+                        order.billing_address = billing_address
                         order.save()
 
                         """Set the default shipping address"""
@@ -237,14 +247,14 @@ class CheckoutView(View):
                                                            appartment_address=shipping_address2,
                                                            country=shipping_country,
                                                            zip_code=shipping_zip_code)
-
-                        billing_address = shipping_address
-                        billing_address.pk = None
-                        billing_address.save()
-                        billing_address.address_type = 'B'
-                        billing_address.save()
-                        order.billing_address = billing_address
-                        order.save()
+                            if not address_qs_billing.exists():
+                                billing_address.default = True
+                                billing_address.save()
+                            else:
+                                address_qs_billing.update(street_address=shipping_address1,
+                                                          appartment_address=shipping_address2,
+                                                          country=shipping_country,
+                                                          zip_code=shipping_zip_code)
                     else:
                         messages.info(self.request, "Please fill in the required shipping address fields")
                         return redirect('checkout')
