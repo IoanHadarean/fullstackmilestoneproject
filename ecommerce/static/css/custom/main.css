@@ -91,6 +91,12 @@ ul {
   margin-bottom: -5px;
 }
 
+.navbar-toggler:hover {
+  box-shadow: none;
+  background-color: transparent;
+  transform: none;
+}
+
 /* -----------------------------------------------Main content---------------------------- */
 
 .content-section {

@@ -207,57 +207,69 @@ class CheckoutView(View):
                 default address into the database.
                 """
                 if same_billing_address:
-                    shipping_address1 = form.cleaned_data.get('shipping_address')
-                    shipping_address2 = form.cleaned_data.get('shipping_address2')
-                    shipping_country = form.cleaned_data.get('shipping_country')
-                    shipping_zip_code = form.cleaned_data.get('shipping_zip_code')
-                    if is_valid_form([shipping_address1, shipping_country, shipping_zip_code]):
-                        shipping_address = Address(
-                            user=self.request.user,
-                            street_address=shipping_address1,
-                            appartment_address=shipping_address2,
-                            country=shipping_country,
-                            zip_code=shipping_zip_code,
-                            address_type='S'
-                        )
-                        shipping_address.save()
-
-                        billing_address = Address(
-                            user=self.request.user,
-                            street_address=shipping_address1,
-                            appartment_address=shipping_address2,
-                            country=shipping_country,
-                            zip_code=shipping_zip_code,
-                            address_type='B'
-                        )
-                        billing_address.save()
-
-                        order.shipping_address = shipping_address
-                        order.billing_address = billing_address
-                        order.save()
-
-                        """Set the default shipping address"""
-                        set_default_shipping = form.cleaned_data.get('set_default_shipping')
-                        if set_default_shipping:
-                            if not address_qs_shipping.exists():
-                                shipping_address.default = True
-                                shipping_address.save()
-                            else:
-                                address_qs_shipping.update(street_address=shipping_address1,
-                                                           appartment_address=shipping_address2,
-                                                           country=shipping_country,
-                                                           zip_code=shipping_zip_code)
-                            if not address_qs_billing.exists():
-                                billing_address.default = True
-                                billing_address.save()
-                            else:
-                                address_qs_billing.update(street_address=shipping_address1,
-                                                          appartment_address=shipping_address2,
-                                                          country=shipping_country,
-                                                          zip_code=shipping_zip_code)
+                    """Use default shipping address and set it as billing address as well"""
+                    if use_default_shipping:
+                        if address_qs_shipping.exists():
+                            shipping_address = address_qs_shipping[0]
+                            billing_address = address_qs_shipping[0]
+                            order.shipping_address = shipping_address
+                            order.billing_address = billing_address
+                            order.save()
+                        else:
+                            messages.info(self.request, "No default shipping address available")
+                            return redirect('checkout')
                     else:
-                        messages.info(self.request, "Please fill in the required shipping address fields")
-                        return redirect('checkout')
+                        shipping_address1 = form.cleaned_data.get('shipping_address')
+                        shipping_address2 = form.cleaned_data.get('shipping_address2')
+                        shipping_country = form.cleaned_data.get('shipping_country')
+                        shipping_zip_code = form.cleaned_data.get('shipping_zip_code')
+                        if is_valid_form([shipping_address1, shipping_country, shipping_zip_code]):
+                            shipping_address = Address(
+                                user=self.request.user,
+                                street_address=shipping_address1,
+                                appartment_address=shipping_address2,
+                                country=shipping_country,
+                                zip_code=shipping_zip_code,
+                                address_type='S'
+                            )
+                            shipping_address.save()
+        
+                            billing_address = Address(
+                                user=self.request.user,
+                                street_address=shipping_address1,
+                                appartment_address=shipping_address2,
+                                country=shipping_country,
+                                zip_code=shipping_zip_code,
+                                address_type='B'
+                            )
+                            billing_address.save()
+        
+                            order.shipping_address = shipping_address
+                            order.billing_address = billing_address
+                            order.save()
+        
+                            """Set the default shipping/billing address"""
+                            set_default_shipping = form.cleaned_data.get('set_default_shipping')
+                            if set_default_shipping:
+                                if not address_qs_shipping.exists():
+                                    shipping_address.default = True
+                                    shipping_address.save()
+                                else:
+                                    address_qs_shipping.update(street_address=shipping_address1,
+                                                               appartment_address=shipping_address2,
+                                                               country=shipping_country,
+                                                               zip_code=shipping_zip_code)
+                                if not address_qs_billing.exists():
+                                    billing_address.default = True
+                                    billing_address.save()
+                                else:
+                                    address_qs_billing.update(street_address=shipping_address1,
+                                                              appartment_address=shipping_address2,
+                                                              country=shipping_country,
+                                                              zip_code=shipping_zip_code)
+                        else:
+                            messages.info(self.request, "Please fill in the required shipping address fields")
+                            return redirect('checkout')
 
                 payment_option = form.cleaned_data.get('payment_option')
 
