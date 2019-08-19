@@ -60,6 +60,7 @@ ul {
   display: flex;
   align-items: center;
   justify-content: center;
+  text-align: center;
 }
 
 .navbar-toggler:hover,
@@ -101,6 +102,10 @@ ul {
 .navbar-left {
   margin-top: 5px;
   margin-bottom: -5px;
+}
+
+.margin-left-10 {
+  margin-left: 10px;
 }
 
 /* -----------------------------------------------Main content---------------------------- */

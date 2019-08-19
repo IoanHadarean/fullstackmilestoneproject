@@ -47,7 +47,11 @@ def fetchCards(profile):
     card_list = cards['data']
     return card_list
 
-"""Delete a card from the saved cards"""
+"""
+Delete a card from the saved cards.
+If the default card is deleted, the next one
+becomes the default card.
+"""
 
 
 @login_required
@@ -55,6 +59,25 @@ def delete_card(request, id):
     customerprofile = Profile.objects.get(user=request.user)
     stripe.Customer.delete_source(customerprofile.stripe_customer_id, id)
     messages.success(request, "You have successfully removed the saved card")
+    return redirect("payment", payment_option="stripe")
+
+"""
+Set a saved card as a default card.
+The current default card becomes
+a saved card.
+"""
+
+
+@login_required
+def save_default_card(request, id):
+    customerprofile = Profile.objects.get(user=request.user)
+    if customerprofile.stripe_customer_id != '' and customerprofile.stripe_customer_id is not None:
+        customer = stripe.Customer.retrieve(
+            customerprofile.stripe_customer_id
+        )
+    customer.default_source = id
+    customer.save()
+    messages.success(request, "You have successfully set the new default card")
     return redirect("payment", payment_option="stripe")
 
 
@@ -316,8 +339,17 @@ class PaymentView(View):
                 'DISPLAY_COUPON_FORM': False
             }
             customerprofile = Profile.objects.get(user=self.request.user)
+            if customerprofile.stripe_customer_id != '' and customerprofile.stripe_customer_id is not None:
+                customer = stripe.Customer.retrieve(
+                    customerprofile.stripe_customer_id
+                )
             if customerprofile.one_click_purchasing:
-                card_list =  fetchCards(customerprofile)
+                card_list = fetchCards(customerprofile)
+                for card in card_list:
+                    if customer.default_source == card.id:
+                        context.update({
+                            'default_card': card
+                        })
                 if len(card_list) > 0:
                     """Update the context with the default credit cards"""
                     context.update({

@@ -21,20 +21,39 @@
 
                 {% if saved_cards %}
                 {% for card in saved_cards %}
-                <div class="card-details use_default_card_{{forloop.counter}}">
+                {% if card == default_card %}
+                <div class="card-details use_default_card">
                     <div class="custom-control custom-checkbox">
-                        <input type="checkbox" class="custom-control-input use-default-card" name="use_default_card" id="use_default_card_{{forloop.counter}}">
-                        <label class="custom-control-label" for="use_default_card_{{forloop.counter}}">Use default card: **** **** **** {{ card.last4 }}
+                        <input type="checkbox" class="custom-control-input" name="use_default_card" id="use_default_card">
+                        <label class="custom-control-label" for="use_default_card">Use default card: **** **** **** {{ card.last4 }}
                             <span>Exp: {{ card.exp_month }}/{{ card.exp_year }}</span>
                         </label>
-                        <a href="{% url 'delete_card' id=card.id %}">
-                            <span>
+                        <a class="margin-left-10" href="{% url 'delete_card' id=card.id %}">
+                            <span class="text-danger">
                                 <i class="fa fa-trash"></i>
                                 Remove Card
                             </span>
                         </a>
                     </div>
                 </div>
+                {% else %}
+                <div class="card-details saved_card">
+                    <div class="custom-control custom-checkbox">
+                        <span>**** **** **** {{ card.last4 }} Exp: {{ card.exp_month }}/{{ card.exp_year }}</span>
+                        <a class="margin-left-10" href="{% url 'save_default_card' id=card.id %}">
+                            <span class="text-warning">
+                                Set Default
+                            </span>
+                        </a>
+                        <a class="margin-left-10" href="{% url 'delete_card' id=card.id %}">
+                            <span class="text-danger">
+                                <i class="fa fa-trash"></i>
+                                Remove Card
+                            </span>
+                        </a>
+                    </div>
+                </div>
+                {% endif %}
                 {% endfor %}
                 {% endif %}
                 
