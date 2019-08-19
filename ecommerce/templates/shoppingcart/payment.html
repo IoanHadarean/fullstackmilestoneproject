@@ -21,7 +21,7 @@
 
                 {% if saved_cards %}
                 {% for card in saved_cards %}
-                <div class="card-details">
+                <div class="card-details use_default_card_{{forloop.counter}}">
                     <div class="custom-control custom-checkbox">
                         <input type="checkbox" class="custom-control-input use-default-card" name="use_default_card" id="use_default_card_{{forloop.counter}}">
                         <label class="custom-control-label" for="use_default_card_{{forloop.counter}}">Use default card: **** **** **** {{ card.last4 }}
