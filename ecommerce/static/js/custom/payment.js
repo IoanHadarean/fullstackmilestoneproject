@@ -3,7 +3,7 @@ var currentCardForm = document.getElementsByClassName('current-card-form')[0];
 var newCardForm = document.getElementsByClassName('new-card-form')[0];
 var useDefaultCard = document.getElementsByClassName('use-default-card');
 
-
+// Function for filtering cards by id
 function filterCards(arr, card) {
     return arr.filter(function(element) {
         return element.id != card.id;
@@ -38,4 +38,5 @@ for (var i = 0; i < useDefaultCard.length; i++) {
         }
     });
 }
+
 

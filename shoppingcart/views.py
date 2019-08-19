@@ -9,7 +9,7 @@ from django.shortcuts import render, get_object_or_404, redirect
 from django.views.generic import ListView, View
 from django.utils import timezone
 from django.db.models import Q
-from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm
+from .forms import CheckoutForm, CouponForm, RefundForm, PaymentForm, DeleteCardForm
 from accounts.models import Profile
 from .models import Item, OrderItem, Order, Address, Payment, Coupon, Refund, UserCoupon
 
@@ -34,6 +34,28 @@ def is_valid_form(values):
         if field == '':
             valid = False
     return valid
+
+"""Fetch the users card list"""
+
+
+def fetchCards(profile):
+    cards = stripe.Customer.list_sources(
+                    profile.stripe_customer_id,
+                    limit=3,
+                    object='card'
+                )
+    card_list = cards['data']
+    return card_list
+
+"""Delete a card from the saved cards"""
+
+
+@login_required
+def delete_card(request, id):
+    customerprofile = Profile.objects.get(user=request.user)
+    stripe.Customer.delete_source(customerprofile.stripe_customer_id, id)
+    messages.success(request, "You have successfully removed the saved card")
+    return redirect("payment", payment_option="stripe")
 
 
 class CheckoutView(View):
@@ -233,7 +255,7 @@ class CheckoutView(View):
                                 address_type='S'
                             )
                             shipping_address.save()
-        
+
                             billing_address = Address(
                                 user=self.request.user,
                                 street_address=shipping_address1,
@@ -243,11 +265,11 @@ class CheckoutView(View):
                                 address_type='B'
                             )
                             billing_address.save()
-        
+
                             order.shipping_address = shipping_address
                             order.billing_address = billing_address
                             order.save()
-        
+
                             """Set the default shipping/billing address"""
                             set_default_shipping = form.cleaned_data.get('set_default_shipping')
                             if set_default_shipping:
@@ -295,15 +317,9 @@ class PaymentView(View):
             }
             customerprofile = Profile.objects.get(user=self.request.user)
             if customerprofile.one_click_purchasing:
-                """Fetch the users card list"""
-                cards = stripe.Customer.list_sources(
-                    customerprofile.stripe_customer_id,
-                    limit=3,
-                    object='card'
-                )
-                card_list = cards['data']
+                card_list =  fetchCards(customerprofile)
                 if len(card_list) > 0:
-                    """Update the context with the default credit card"""
+                    """Update the context with the default credit cards"""
                     context.update({
                         'saved_cards': card_list
                     })
@@ -317,24 +333,32 @@ class PaymentView(View):
         order = Order.objects.get(user=self.request.user, ordered=False)
         form = PaymentForm(self.request.POST)
         customerprofile = Profile.objects.get(user=self.request.user)
+        if customerprofile.one_click_purchasing:
+            card_list = fetchCards(customerprofile)
 
         if form.is_valid():
             token = form.cleaned_data.get('stripeToken')
             save = form.cleaned_data.get('save')
             use_default = form.cleaned_data.get('use_default')
+            delete_card = form.cleaned_data.get('delete_card')
 
             """Allow fetching cards from stripe"""
             if save:
                 """
                 If there is not a customer id associated on the
                 customer profile, create the stripe customer and save it,
-                else create a source for the customer
+                else create a source for the customer if there are no more
+                than three saved cards
                 """
                 if customerprofile.stripe_customer_id != '' and customerprofile.stripe_customer_id is not None:
                     customer = stripe.Customer.retrieve(
                         customerprofile.stripe_customer_id
                     )
-                    customer.sources.create(source=token)
+                    if len(card_list) < 3:
+                        customer.sources.create(source=token)
+                    else:
+                        messages.warning(self.request, "We are sorry, but you can not save more than 3 cards. Please consider removing one of the saved cards!")
+                        return redirect("payment", payment_option="stripe")
                 else:
                     customer = stripe.Customer.create(
                         email=self.request.user.email
@@ -343,7 +367,7 @@ class PaymentView(View):
                     customerprofile.stripe_customer_id = customer['id']
                     customerprofile.one_click_purchasing = True
                     customerprofile.save()
-
+    
             amount = int(order.get_total() * 100)
 
             try:
@@ -361,6 +385,7 @@ class PaymentView(View):
                         currency="gbp",
                         source=token
                     )
+
 
                 """Create the payment"""
                 payment = Payment()
@@ -449,7 +474,7 @@ class PaymentView(View):
                     )
                 return redirect("/")
         messages.warning(self.request, "Invalid data received")
-        return redirect("/payment/stripe/")
+        return redirect('payment', payment_option='stripe')
 
 
 class HomeView(ListView):

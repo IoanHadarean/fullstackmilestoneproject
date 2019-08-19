@@ -27,6 +27,12 @@
                         <label class="custom-control-label" for="use_default_card_{{forloop.counter}}">Use default card: **** **** **** {{ card.last4 }}
                             <span>Exp: {{ card.exp_month }}/{{ card.exp_year }}</span>
                         </label>
+                        <a href="{% url 'delete_card' id=card.id %}">
+                            <span>
+                                <i class="fa fa-trash"></i>
+                                Remove Card
+                            </span>
+                        </a>
                     </div>
                 </div>
                 {% endfor %}
@@ -36,6 +42,7 @@
                     <form action="." method="POST" class="stripe-form">
                         {% csrf_token %}
                         <input type="hidden" name="use_default" value="true">
+                        <input type="hidden" name="delete_card" value="true">
                         <div class="stripe-form-row">
                             <button id="stripeBtn">Submit Payment</button>
                         </div>

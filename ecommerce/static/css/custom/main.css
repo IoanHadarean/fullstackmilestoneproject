@@ -62,6 +62,18 @@ ul {
   justify-content: center;
 }
 
+.navbar-toggler:hover,
+.close:hover {
+  box-shadow: none;
+  background-color: transparent;
+  transform: none;
+}
+
+.main-include {
+  align-items:center;
+  justify-content:center;
+}
+
 /* ----------------------------------------Navigation---------------------------------- */
 
 .bg-steel {
@@ -89,12 +101,6 @@ ul {
 .navbar-left {
   margin-top: 5px;
   margin-bottom: -5px;
-}
-
-.navbar-toggler:hover {
-  box-shadow: none;
-  background-color: transparent;
-  transform: none;
 }
 
 /* -----------------------------------------------Main content---------------------------- */

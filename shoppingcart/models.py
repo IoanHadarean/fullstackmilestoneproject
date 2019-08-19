@@ -170,7 +170,6 @@ class Order(models.Model):
             total -= self.coupon.amount
             self.amount = total
             self.save()
-        print(total)
         return total
 
     """

@@ -73,3 +73,11 @@ class PaymentForm(forms.Form):
     stripeToken = forms.CharField(required=False)
     save = forms.BooleanField(required=False)
     use_default = forms.BooleanField(required=False)
+    delete_card = forms.CharField(required=False)
+    
+    
+class DeleteCardForm(forms.Form):
+    """
+    Form for deleting a saved credit/debit card
+    """
+    card_value = forms.CharField()
