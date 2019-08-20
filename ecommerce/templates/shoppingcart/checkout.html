@@ -1,9 +1,8 @@
-{% extends 'base.html' %} {% load crispy_forms_tags %}
+{% extends 'base.html' %} {% load crispy_forms_tags %} 
+{% load countries %}
 {% block custom_title %}
 <title>Checkout</title>
-{% endblock %}
-{% load static %}
-{% block content %}
+{% endblock %} {% load static %} {% block content %}
 <!-- Checkout form -->
 <div class="container wow fadeIn">
 
@@ -28,13 +27,13 @@
 
             <!--address-->
             <div class="md-form mb-5">
-              <input type="text" placeholder="1234 Main St" id="shipping_address" name="shipping_address" class="form-control" />
+              <input type="text" placeholder="1234 Main St" id="shipping_address" value="{{order.shipping_address.street_address}}" name="shipping_address" class="form-control" />
               <label for="shipping_address" class="">Address</label>
             </div>
 
             <!--address-2-->
             <div class="md-form mb-5">
-              <input type="text" placeholder="Appartment or suite" id="shipping_address2" name="shipping_address2" class="form-control" />
+              <input type="text" placeholder="Appartment or suite" id="shipping_address2" value="{{order.shipping_address.appartment_address}}" name="shipping_address2" class="form-control" />
               <label for="shipping_address2" class="">Address 2 (optional)</label>
             </div>
 
@@ -42,7 +41,17 @@
             <div class="row">
               <!--Grid column-->
               <div class="col-lg-4 col-md-12 mb-4">
-                <label for="id_shipping_country">Country</label> {{ form.shipping_country }}
+                <label for="id_shipping_country">Country</label>{% get_countries as countries %}
+                <select name="shipping_country" class="custom-select d-block w-100">
+                  {% if order.shipping_address.country %}
+                    <option value="{{ order.shipping_address.country.code }}" selected>{{ order.shipping_address.country.name }}</option>
+                    {% else %}
+                    <option value="select-country" selected>(select country)</option>
+                    {% endif %}
+                  {% for country in countries %}
+                    <option value="{{ country.code }}">{{ country.name }}</option>
+                  {% endfor %}
+                </select>
                 <div class="invalid-feedback">
                   Please select a valid country.
                 </div>
@@ -51,7 +60,7 @@
               <!--Grid column-->
               <div class="col-lg-4 col-md-6 mb-4">
                 <label for="shipping_zip_code">Zip</label>
-                <input type="text" placeholder="Zip code" id="shipping_zip_code" name="shipping_zip_code" class="form-control" />
+                <input type="text" placeholder="Zip code" id="shipping_zip_code" value="{{order.shipping_address.zip_code}}" name="shipping_zip_code" class="form-control" />
                 <div class="invalid-feedback">
                   Zip code required.
                 </div>
@@ -59,22 +68,32 @@
             </div>
 
             <div class="custom-control custom-checkbox">
+              {% if order.same_billing_address == True %}
+              <input type="checkbox" class="custom-control-input" name="same_billing_address" id="same_billing_address" checked>
+              {% else %}
               <input type="checkbox" class="custom-control-input" name="same_billing_address" id="same_billing_address">
+              {% endif %}
               <label class="custom-control-label" for="same_billing_address">Billing address is the same as my shipping address</label>
             </div>
             <div class="custom-control custom-checkbox save-default-shipping">
-              <input type="checkbox" class="custom-control-input" name="set_default_shipping" id="set_default_shipping">
+              {% if order.save_default_shipping == True %}
+              <input type="checkbox" class="custom-control-input" name="set_default_shipping" id="set_default_shipping" checked>
+              {% else %}
+               <input type="checkbox" class="custom-control-input" name="set_default_shipping" id="set_default_shipping">
+               {% endif %}
               <label class="custom-control-label" for="set_default_shipping">Save as default shipping address</label>
             </div>
           </div>
-          
+
           {% if default_shipping_address %}
           <div class="custom-control custom-checkbox use-default-shipping">
-            <input type="checkbox" class="custom-control-input" name="use_default_shipping" id="use_default_shipping">
+            {% if order.shipping_address.default == True %}
+            <input type="checkbox" class="custom-control-input" name="use_default_shipping" id="use_default_shipping" checked> {% else %}
+            <input type="checkbox" class="custom-control-input" name="use_default_shipping" id="use_default_shipping"> {% endif %}
             <label class="custom-control-label" for="use_default_shipping">Use default shipping address: {{ default_shipping_address.street_address|truncatechars:10 }} </label>
           </div>
           {% endif %}
-          
+
           <hr>
 
 
@@ -84,13 +103,13 @@
 
             <!--address-->
             <div class="md-form mb-5">
-              <input type="text" placeholder="1234 Main St" id="billing_address" name="billing_address" class="form-control" />
+              <input type="text" placeholder="1234 Main St" id="billing_address" value="{{order.billing_address.street_address}}" name="billing_address" class="form-control" />
               <label for="billing_address" class="">Address</label>
             </div>
 
             <!--address-2-->
             <div class="md-form mb-5">
-              <input type="text" placeholder="Appartment or suite" id="billing_address2" name="billing_address2" class="form-control" />
+              <input type="text" placeholder="Appartment or suite" id="billing_address2" value="{{order.billing_address.appartment_address}}" name="billing_address2" class="form-control" />
               <label for="billing_address2" class="">Address 2 (optional)</label>
             </div>
 
@@ -99,8 +118,17 @@
               <!--Grid column-->
               <div class="col-lg-4 col-md-12 mb-4">
                 <label for="id_billing_country">Country</label>
-                <!--</select>-->
-                {{ form.billing_country }}
+                {% get_countries as countries %}
+                <select name="billing_country" class="custom-select d-block w-100">
+                  {% if order.billing_address.country %}
+                    <option value="{{ order.billing_address.country.code }}" selected>{{ order.billing_address.country.name }}</option>
+                  {% else %}
+                    <option value="select-country" selected>(select country)</option>
+                  {% endif %}
+                  {% for country in countries %}
+                    <option value="{{ country.code }}">{{ country.name }}</option>
+                  {% endfor %}
+                </select>
                 <div class="invalid-feedback">
                   Please select a valid country.
                 </div>
@@ -109,7 +137,7 @@
               <!--Grid column-->
               <div class="col-lg-4 col-md-6 mb-4">
                 <label for="billing_zip_code">Zip</label>
-                <input type="text" placeholder="Zip code" id="billing_zip_code" name="billing_zip_code" class="form-control" />
+                <input type="text" placeholder="Zip code" id="billing_zip_code" value="{{order.billing_address.zip_code}}" name="billing_zip_code" class="form-control" />
                 <div class="invalid-feedback">
                   Zip code required.
                 </div>
@@ -117,18 +145,24 @@
             </div>
 
             <div class="custom-control custom-checkbox">
+              {% if order.save_default_billing == True %}
+              <input type="checkbox" class="custom-control-input" name="set_default_billing" id="set_default_billing" checked>
+              {% else %}
               <input type="checkbox" class="custom-control-input" name="set_default_billing" id="set_default_billing">
+              {% endif %}
               <label class="custom-control-label" for="set_default_billing">Save as default billing address</label>
             </div>
           </div>
-          
-               {% if default_billing_address %}
+
+          {% if default_billing_address %}
           <div class="custom-control custom-checkbox use-default-billing">
-            <input type="checkbox" class="custom-control-input" name="use_default_billing" id="use_default_billing">
+            {% if order.billing_address.default == True %}
+            <input type="checkbox" class="custom-control-input" name="use_default_billing" id="use_default_billing" checked> {% else %}
+            <input type="checkbox" class="custom-control-input" name="use_default_billing" id="use_default_billing"> {% endif %}
             <label class="custom-control-label" for="use_default_billing">Use default billing address: {{ default_billing_address.street_address|truncatechars:10 }} </label>
           </div>
           {% endif %}
-          
+
           <hr>
 
           <h3>Payment option</h3>
@@ -136,7 +170,10 @@
           <div class="d-block my-3">
             {% for value, name in form.fields.payment_option.choices %}
             <div class="custom-control custom-radio">
-              <input id="{{ name }}" name="payment_option" value="{{ value }}" type="radio" class="custom-control-input" required>
+              {% if order.payment_option == 'S' %}
+              <input id="{{ name }}" name="payment_option" value="{{ value }}" type="radio" class="custom-control-input" checked required>
+              {% else %}
+              <input id="{{ name }}" name="payment_option" value="{{ value }}" type="radio" class="custom-control-input" required> {% endif %}
               <label class="custom-control-label" for="{{ name }}">{{ name }}</label>
             </div>
             {% endfor %}
@@ -155,7 +192,6 @@
     </div>
   </div>
 </div>
-{% endblock %}
-{% block custom_js %}
+{% endblock %} {% block custom_js %}
 <script src="{% static 'js/custom/checkout.js' %}"></script>
 {% endblock %}

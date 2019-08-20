@@ -29,6 +29,7 @@ ADDRESS_CHOICES = (
 )
 
 
+
 class Item(models.Model):
     """
     Item class that contains the details of an item. Has an add_to_cart
@@ -124,6 +125,9 @@ class Order(models.Model):
     shipping_address = models.ForeignKey(
         'Address', related_name='shipping_address',
         on_delete=models.SET_NULL, blank=True, null=True)
+    save_default_shipping = models.BooleanField(default=False)
+    save_default_billing = models.BooleanField(default=False)
+    same_billing_address = models.BooleanField(default=False)
     payment = models.ForeignKey(
         'Payment', on_delete=models.SET_NULL, blank=True, null=True)
     coupon = models.ForeignKey(
@@ -136,6 +140,7 @@ class Order(models.Model):
     refund_requested = models.BooleanField(default=False)
     refund_granted = models.BooleanField(default=False)
     amount = models.IntegerField(blank=True, null=True)
+    payment_option = models.CharField(max_length=10, default='payment')
 
     """
     Phases of an order:
