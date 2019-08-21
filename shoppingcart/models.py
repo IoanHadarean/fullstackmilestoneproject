@@ -124,6 +124,8 @@ class Order(models.Model):
     shipping_address = models.ForeignKey(
         'Address', related_name='shipping_address',
         on_delete=models.SET_NULL, blank=True, null=True)
+    use_default_shipping = models.BooleanField(default=False)
+    use_default_billing = models.BooleanField(default=False)
     save_default_shipping = models.BooleanField(default=False)
     save_default_billing = models.BooleanField(default=False)
     same_billing_address = models.BooleanField(default=False)

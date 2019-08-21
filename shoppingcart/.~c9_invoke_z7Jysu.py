@@ -158,9 +158,6 @@ class CheckoutView(View):
                 if not same_billing_address:
                     order.same_billing_address = False
                     if use_default_shipping:
-                        order.use_default_shipping = True
-                        if order.save_default_shipping == True:
-                            order.save_default_shipping = False
                         if address_qs_shipping.exists():
                             shipping_address = address_qs_shipping[0]
                             order.shipping_address = shipping_address
@@ -193,10 +190,6 @@ class CheckoutView(View):
                             set_default_shipping = form.cleaned_data.get('set_default_shipping')
                             if set_default_shipping:
                                 order.save_default_shipping = True
-                                if order.use_default_shipping == True:
-                                    order.use_default_shipping = False
-                                if order.use_default_shipping == True:
-                                    order.use_default_shipping = False
                                 if not address_qs_shipping.exists():
                                     shipping_address.default = True
                                     shipping_address.save()
@@ -205,14 +198,12 @@ class CheckoutView(View):
                                                                appartment_address=shipping_address2,
                                                                country=shipping_country,
                                                                zip_code=shipping_zip_code)
+                            else:
+                                order.save_default_shipping = False
                         else:
                             messages.info(self.request, "Please fill in the required shipping address fields")
-                            return redirect("checkout")
-                            
+
                     if use_default_billing:
-                        order.use_default_billing = True
-                        if order.save_default_billing == True:
-                            order.save_default_billing = False
                         if address_qs_billing.exists():
                             billing_address = address_qs_billing[0]
                             order.billing_address = billing_address
@@ -245,8 +236,6 @@ class CheckoutView(View):
                             set_default_billing = form.cleaned_data.get('set_default_billing')
                             if set_default_billing:
                                 order.save_default_billing = True
-                                if order.use_default_billing == True:
-                                    order.use_default_billing = False
                                 if not address_qs_billing.exists():
                                     billing_address.default = True
                                     billing_address.save()
@@ -255,9 +244,11 @@ class CheckoutView(View):
                                                               appartment_address=billing_address2,
                                                               country=billing_country,
                                                               zip_code=billing_zip_code)
+                            else:
+                                order.save_default_billing = False
                         else:
                             messages.info(self.request, "Please fill in the required billing address fields")
-                            return redirect("checkout")
+                            return redirect('checkout')
                 """
                 If the user wants to have the same billing address as the shipping
                 address, get the shipping address inputs from the form, add it to the
@@ -269,11 +260,8 @@ class CheckoutView(View):
                 """
                 if same_billing_address:
                     order.same_billing_address = True
-                    """Use default shipping address and set it as billing address too"""
+                    """Use default shipping address and set it as billing address as well"""
                     if use_default_shipping:
-                        order.use_default_shipping = True
-                        if order.save_default_shipping == True:
-                            order.save_default_shipping = False
                         if address_qs_shipping.exists():
                             shipping_address = address_qs_shipping[0]
                             billing_address = address_qs_shipping[0]
@@ -288,7 +276,7 @@ class CheckoutView(View):
                         shipping_address2 = form.cleaned_data.get('shipping_address2')
                         shipping_country = form.cleaned_data.get('shipping_country')
                         shipping_zip_code = form.cleaned_data.get('shipping_zip_code')
-                        if is_valid_form([shipping_address1, shipping_address2, shipping_country, shipping_zip_code]):
+                        if is_valid_form([shipping_address1, shipping_country, shipping_zip_code]):
                             shipping_address = Address(
                                 user=self.request.user,
                                 street_address=shipping_address1,
@@ -317,8 +305,6 @@ class CheckoutView(View):
                             set_default_shipping = form.cleaned_data.get('set_default_shipping')
                             if set_default_shipping:
                                 order.save_default_shipping = True
-                                if order.use_default_shipping == True:
-                                    order.use_default_shipping = False
                                 if not address_qs_shipping.exists():
                                     shipping_address.default = True
                                     shipping_address.save()
@@ -335,22 +321,22 @@ class CheckoutView(View):
                                                               appartment_address=shipping_address2,
                                                               country=shipping_country,
                                                               zip_code=shipping_zip_code)
+                            else:
+                                order.save_default_shipping = False
                         else:
                             messages.info(self.request, "Please fill in the required shipping address fields")
-                            return redirect("checkout")
+                            return redirect('checkout')
+
                 payment_option = form.cleaned_data.get('payment_option')
                 order.payment_option = payment_option
                 order.save()
-        
+
                 """Redirect according to payment option"""
                 if payment_option == 'S':
                     return redirect('payment', payment_option='stripe')
                 else:
                     messages.warning(self.request, "Invalid payment option selected")
                     return redirect('checkout')
-            else:
-                messages.warning(self.request, "Invalid data")
-                return redirect("checkout")
         except ObjectDoesNotExist:
             messages.warning(self.request, "You do not have an active order")
             return redirect("order_summary")
@@ -819,36 +805,5 @@ class UpdateCardView(View):
         }
         return render(self.request, "shoppingcart/update_card.html", context)
     
-    """Post the update card form details"""
-    def post(self, *args, **kwargs):
-        form = UpdateCardForm(self.request.POST or None)
-        customerprofile = Profile.objects.get(user=self.request.user)
-        card_id = self.kwargs['id']
-        is_default_source = False
-        if form.is_valid():
-            token = form.cleaned_data.get('stripeToken')
-            if customerprofile.stripe_customer_id != '' and customerprofile.stripe_customer_id is not None:
-                customer = stripe.Customer.retrieve(
-                    customerprofile.stripe_customer_id
-                )
-                if customer.default_source == card_id:
-                    is_default_source = True
-            stripe.Customer.delete_source(customerprofile.stripe_customer_id, card_id)
-            updated_source = stripe.Customer.create_source(customerprofile.stripe_customer_id, source=token)
-            if is_default_source == True:
-                customer.default_source = updated_source.id
-                customer.save()
-            messages.success(self.request, "Your card details have been updated successfully")
-            return redirect("payment", payment_option="stripe")
-        else:
-            messages.warning(self.request, "Invalid credit card details")
-            return redirect("payment", payment_option="stripe")
-            
-        
-        
-        
-        
-        
-        
-        
-        
+    """Update cardNumber, cardExpMonth, cardExpYear and ca
+    def post

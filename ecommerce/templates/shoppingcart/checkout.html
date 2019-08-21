@@ -42,7 +42,7 @@
               <!--Grid column-->
               <div class="col-lg-4 col-md-12 mb-4">
                 <label for="id_shipping_country">Country</label>{% get_countries as countries %}
-                <select name="shipping_country" class="custom-select d-block w-100">
+                <select name="shipping_country" id="id_shipping_country" class="custom-select d-block w-100">
                   {% if order.shipping_address.country %}
                     <option value="{{ order.shipping_address.country.code }}" selected>{{ order.shipping_address.country.name }}</option>
                     {% else %}
@@ -87,7 +87,7 @@
 
           {% if default_shipping_address %}
           <div class="custom-control custom-checkbox use-default-shipping">
-            {% if order.shipping_address.default == True %}
+            {% if order.use_default_shipping == True %}
             <input type="checkbox" class="custom-control-input" name="use_default_shipping" id="use_default_shipping" checked> {% else %}
             <input type="checkbox" class="custom-control-input" name="use_default_shipping" id="use_default_shipping"> {% endif %}
             <label class="custom-control-label" for="use_default_shipping">Use default shipping address: {{ default_shipping_address.street_address|truncatechars:10 }} </label>
@@ -119,7 +119,7 @@
               <div class="col-lg-4 col-md-12 mb-4">
                 <label for="id_billing_country">Country</label>
                 {% get_countries as countries %}
-                <select name="billing_country" class="custom-select d-block w-100">
+                <select name="billing_country" id="id_billing_country" class="custom-select d-block w-100">
                   {% if order.billing_address.country %}
                     <option value="{{ order.billing_address.country.code }}" selected>{{ order.billing_address.country.name }}</option>
                   {% else %}
@@ -144,7 +144,7 @@
               </div>
             </div>
 
-            <div class="custom-control custom-checkbox">
+            <div class="custom-control custom-checkbox save-default-billing">
               {% if order.save_default_billing == True %}
               <input type="checkbox" class="custom-control-input" name="set_default_billing" id="set_default_billing" checked>
               {% else %}
@@ -156,7 +156,7 @@
 
           {% if default_billing_address %}
           <div class="custom-control custom-checkbox use-default-billing">
-            {% if order.billing_address.default == True %}
+            {% if order.use_default_billing == True %}
             <input type="checkbox" class="custom-control-input" name="use_default_billing" id="use_default_billing" checked> {% else %}
             <input type="checkbox" class="custom-control-input" name="use_default_billing" id="use_default_billing"> {% endif %}
             <label class="custom-control-label" for="use_default_billing">Use default billing address: {{ default_billing_address.street_address|truncatechars:10 }} </label>
