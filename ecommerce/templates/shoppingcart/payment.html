@@ -26,7 +26,13 @@
                         <label class="custom-control-label" for="use_default_card">Use default card: **** **** **** {{ card.last4 }}
                             <span>Exp: {{ card.exp_month }}/{{ card.exp_year }}</span>
                         </label>
-                        <a class="margin-left-10" href="{% url 'delete_card' id=card.id %}">
+                        <a class="margin-left-card update-card-details" href="#">
+                            <span class="text-default">
+                                <i class="fa fa-edit"></i>
+                                Update Card Details
+                            </span>
+                        </a>
+                        <a class="margin-left-card" href="{% url 'delete_card' id=card.id %}">
                             <span class="text-danger">
                                 <i class="fa fa-trash"></i>
                                 Remove Card
@@ -39,12 +45,19 @@
                 <div class="card-details saved_card">
                     <div class="custom-control custom-checkbox">
                         <span>**** **** **** {{ card.last4 }} Exp: {{ card.exp_month }}/{{ card.exp_year }}</span>
-                        <a class="margin-left-10" href="{% url 'save_default_card' id=card.id %}">
+                        <a class="margin-left-card save-default-card" href="{% url 'save_default_card' id=card.id %}">
                             <span class="text-warning">
+                                <i class="fa fa-save"></i>
                                 Save As Default
                             </span>
                         </a>
-                        <a class="margin-left-10" href="{% url 'delete_card' id=card.id %}">
+                        <a class="margin-left-card" href="#">
+                            <span class="text-default">
+                                <i class="fa fa-edit"></i>
+                                Update Card Details
+                            </span>
+                        </a>
+                        <a class="margin-left-card" href="{% url 'delete_card' id=card.id %}">
                             <span class="text-danger">
                                 <i class="fa fa-trash"></i>
                                 Remove Card

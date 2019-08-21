@@ -29,7 +29,6 @@ ADDRESS_CHOICES = (
 )
 
 
-
 class Item(models.Model):
     """
     Item class that contains the details of an item. Has an add_to_cart

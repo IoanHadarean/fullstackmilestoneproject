@@ -430,7 +430,6 @@ class PaymentView(View):
                         source=token
                     )
 
-
                 """Create the payment"""
                 payment = Payment()
                 payment.stripe_charge_id = charge['id']

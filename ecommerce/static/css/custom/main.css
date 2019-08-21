@@ -104,10 +104,6 @@ ul {
   margin-bottom: -5px;
 }
 
-.margin-left-10 {
-  margin-left: 10px;
-}
-
 /* -----------------------------------------------Main content---------------------------- */
 
 .content-section {
@@ -186,6 +182,11 @@ ul {
 
 .comments-container {
   margin-top: 4.375rem;
+}
+
+/* -----------------------------------------------Payment-------------------------------- */
+.margin-left-card {
+  margin-left: 10px;
 }
 
 
@@ -427,6 +428,17 @@ ul {
 
   .navbar-brand {
     font-size: 0.875rem;
+  }
+}
+
+@media (max-width: 992px) {
+  .save-default-card,
+  .update-card-details {
+    display: flex;
+  }
+  
+  .margin-left-card {
+    margin-left: 0;
   }
 }
 
