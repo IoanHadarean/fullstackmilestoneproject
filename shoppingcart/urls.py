@@ -11,7 +11,8 @@ from .views import (
     delete_card,
     save_default_card,
     AddCouponView,
-    RequestRefundView
+    RequestRefundView,
+    UpdateCardView,
 )
 from search import urls as search_urls
 
@@ -29,5 +30,6 @@ urlpatterns = [
     path('payment/delete_card/<id>/', delete_card, name='delete_card'),
     path('payment/save_default_card/<id>/', save_default_card, name='save_default_card'),
     path('request_refund/', RequestRefundView.as_view(), name='request_refund'),
+    path('update_card/<id>/', UpdateCardView.as_view(), name='update_card'),
     path('', include(search_urls))
 ]

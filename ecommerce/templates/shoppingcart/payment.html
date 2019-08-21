@@ -26,7 +26,7 @@
                         <label class="custom-control-label" for="use_default_card">Use default card: **** **** **** {{ card.last4 }}
                             <span>Exp: {{ card.exp_month }}/{{ card.exp_year }}</span>
                         </label>
-                        <a class="margin-left-card update-card-details" href="#">
+                        <a class="margin-left-card update-card-details" href="{% url 'update_card' id=card.id %}">
                             <span class="text-default">
                                 <i class="fa fa-edit"></i>
                                 Update Card Details
@@ -51,7 +51,7 @@
                                 Save As Default
                             </span>
                         </a>
-                        <a class="margin-left-card" href="#">
+                        <a class="margin-left-card" href="{% url 'update_card' id=card.id %}">
                             <span class="text-default">
                                 <i class="fa fa-edit"></i>
                                 Update Card Details

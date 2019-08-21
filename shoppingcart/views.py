@@ -793,3 +793,10 @@ class RequestRefundView(View):
             except ObjectDoesNotExist:
                 messages.info(self.request, "This order does not exist")
                 return redirect("request_refund")
+
+
+class UpdateCardView(View):
+    
+    """Render the update card form in the template"""
+    def get(self, *args, **kwargs):
+        return render(self.request, "shoppingcart/update_card.html")
