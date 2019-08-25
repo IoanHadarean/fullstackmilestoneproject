@@ -48,6 +48,11 @@ class UserRegistrationForm(UserCreationForm):
 
 class UserUpdateForm(forms.ModelForm):
     """Form used to update the user email and username"""
+    
+    def __init__(self, *args, **kwargs):
+        super(UserUpdateForm, self).__init__(*args, **kwargs)
+        self['username'].initial = ''
+        self['email'].initial = ''
 
     email = forms.EmailField()
 
@@ -58,6 +63,10 @@ class UserUpdateForm(forms.ModelForm):
 
 class ProfileUpdateForm(forms.ModelForm):
     """Form used to update the user profile image"""
+    
+    def __init__(self, *args, **kwargs):
+        super(ProfileUpdateForm, self).__init__(*args, **kwargs)
+        self.fields['image'].required = False
 
     class Meta:
         model = Profile
