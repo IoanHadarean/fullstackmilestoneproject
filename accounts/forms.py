@@ -21,7 +21,7 @@ class UserRegistrationForm(UserCreationForm):
     password2 = forms.CharField(
         label="Password Confirmation",
         widget=forms.PasswordInput)
-
+    username = forms.CharField()
     email = forms.EmailField()
 
     class Meta:
@@ -30,19 +30,16 @@ class UserRegistrationForm(UserCreationForm):
 
     """Check for unique email address"""
     def clean_email(self):
-        email = self.cleaned_data.get('email')
         username = self.cleaned_data.get('username')
+        email = self.cleaned_data.get('email')
         if User.objects.filter(email=email).exclude(username=username):
             raise forms.ValidationError(u'Email address must be unique')
         return email
 
-    """Verify if the password was confirmed or if the passwords match"""
-    def clean_password(self):
+    """Verify if the passwords match"""
+    def clean_passwords_match(self):
         password1 = self.cleaned_data.get('password1')
         password2 = self.cleaned_data.get('password2')
-
-        if not password1 or not password2:
-            raise ValidationError('Please confirm your password')
 
         if password1 != password2:
             raise ValidationError('Passwords must match!')

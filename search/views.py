@@ -129,7 +129,7 @@ def search_products(request):
     item_list = Item.objects.filter(Q(title__icontains=search_text) |
                                     Q(price__iexact=search_text) |
                                     Q(discount_price__iexact=search_text) |
-                                    Q(category__icontains=search_text))
+                                    Q(category__icontains=search_text)).order_by('title')
     item_list_count = item_list.count()
 
     """Add pagination for search"""
@@ -151,7 +151,7 @@ def products_results(request, search_text):
         item_list = Item.objects.filter(Q(title__icontains=search_text) |
                                         Q(price__iexact=search_text) |
                                         Q(discount_price__iexact=search_text) |
-                                        Q(category__icontains=search_text))
+                                        Q(category__icontains=search_text)).order_by('title')
         if item_list.count() >= 7:
             item_list = item_list[:7]
         else:
@@ -169,7 +169,7 @@ def products_results(request, search_text):
 
 def filter_by_dresses(request):
     """Filter products by category 'dresses'"""
-    item_list = Item.objects.filter(Q(category__icontains='dresses'))
+    item_list = Item.objects.filter(Q(category__icontains='dresses')).order_by('title')
 
     """Add pagination for filter"""
     paginator = Paginator(item_list, 8)
@@ -183,7 +183,7 @@ def filter_by_dresses(request):
 
 def filter_by_shoes(request):
     """Filter products by category 'shoes'"""
-    item_list = Item.objects.filter(Q(category__icontains='shoes'))
+    item_list = Item.objects.filter(Q(category__icontains='shoes')).order_by('title')
 
     """Add pagination for filter"""
     paginator = Paginator(item_list, 8)
@@ -197,7 +197,7 @@ def filter_by_shoes(request):
 
 def filter_by_suits(request):
     """Filter products by category 'suits'"""
-    item_list = Item.objects.filter(Q(category__icontains='suits'))
+    item_list = Item.objects.filter(Q(category__icontains='suits')).order_by('title')
 
     """Add pagination for filter"""
     paginator = Paginator(item_list, 8)
@@ -211,7 +211,7 @@ def filter_by_suits(request):
 
 def filter_by_veils(request):
     """Filter products by category 'veils'"""
-    item_list = Item.objects.filter(Q(category__icontains='veils'))
+    item_list = Item.objects.filter(Q(category__icontains='veils')).order_by('title')
 
     """Add pagination for filter"""
     paginator = Paginator(item_list, 8)
@@ -225,7 +225,7 @@ def filter_by_veils(request):
 
 def filter_by_rings(request):
     """Filter products by category 'rings'"""
-    item_list = Item.objects.filter(Q(category__icontains='rings'))
+    item_list = Item.objects.filter(Q(category__icontains='rings')).order_by('title')
 
     """Add pagination for filter"""
     paginator = Paginator(item_list, 8)
@@ -239,7 +239,7 @@ def filter_by_rings(request):
 
 def filter_by_flowers(request):
     """Filter products by category 'flowers'"""
-    item_list = Item.objects.filter(Q(category__icontains='flowers'))
+    item_list = Item.objects.filter(Q(category__icontains='flowers')).order_by('title')
 
     """Add pagination for filter"""
     paginator = Paginator(item_list, 8)
@@ -253,7 +253,7 @@ def filter_by_flowers(request):
 
 def filter_by_hair_accessories(request):
     """Filter products by category 'hair_accessories'"""
-    item_list = Item.objects.filter(Q(category__icontains='hair accessories'))
+    item_list = Item.objects.filter(Q(category__icontains='hair accessories')).order_by('title')
 
     """Add pagination for filter"""
     paginator = Paginator(item_list, 8)
@@ -267,21 +267,7 @@ def filter_by_hair_accessories(request):
 
 def filter_by_purses(request):
     """Filter products by category 'purses'"""
-    item_list = Item.objects.filter(Q(category__icontains='purses'))
-
-    """Add pagination for filter"""
-    paginator = Paginator(item_list, 8)
-    page = request.GET.get('page')
-    object_list = paginator.get_page(page)
-    context = {
-        'object_list': object_list,
-    }
-    return render(request, 'shoppingcart/home.html', context)
-
-
-def filter_by_neckties(request):
-    """Filter products by category 'neckties'"""
-    item_list = Item.objects.filter(Q(category__icontains='neckties'))
+    item_list = Item.objects.filter(Q(category__icontains='purses')).order_by('title')
 
     """Add pagination for filter"""
     paginator = Paginator(item_list, 8)
@@ -295,7 +281,7 @@ def filter_by_neckties(request):
 
 def filter_by_shirts(request):
     """Filter products by category 'shirts'"""
-    item_list = Item.objects.filter(Q(category__icontains='shirts'))
+    item_list = Item.objects.filter(Q(category__icontains='shirts')).order_by('title')
 
     """Add pagination for filter"""
     paginator = Paginator(item_list, 8)
@@ -309,7 +295,7 @@ def filter_by_shirts(request):
 
 def filter_by_belts(request):
     """Filter products by category 'belts'"""
-    item_list = Item.objects.filter(Q(category__icontains='belts'))
+    item_list = Item.objects.filter(Q(category__icontains='belts')).order_by('title')
 
     """Add pagination for filter"""
     paginator = Paginator(item_list, 8)
@@ -323,7 +309,7 @@ def filter_by_belts(request):
 
 def filter_by_tags(request, category):
     """Filter dinamically by product category tags"""
-    item_list = Item.objects.filter(Q(category__icontains=category))
+    item_list = Item.objects.filter(Q(category__icontains=category)).order_by('title')
 
     """Add pagination for filter"""
     paginator = Paginator(item_list, 8)

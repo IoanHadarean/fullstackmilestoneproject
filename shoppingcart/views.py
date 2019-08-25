@@ -159,7 +159,7 @@ class CheckoutView(View):
                     order.same_billing_address = False
                     if use_default_shipping:
                         order.use_default_shipping = True
-                        if order.save_default_shipping == True:
+                        if order.save_default_shipping is True:
                             order.save_default_shipping = False
                         if address_qs_shipping.exists():
                             shipping_address = address_qs_shipping[0]
@@ -193,9 +193,9 @@ class CheckoutView(View):
                             set_default_shipping = form.cleaned_data.get('set_default_shipping')
                             if set_default_shipping:
                                 order.save_default_shipping = True
-                                if order.use_default_shipping == True:
+                                if order.use_default_shipping is True:
                                     order.use_default_shipping = False
-                                if order.use_default_shipping == True:
+                                if order.use_default_shipping is True:
                                     order.use_default_shipping = False
                                 if not address_qs_shipping.exists():
                                     shipping_address.default = True
@@ -208,10 +208,10 @@ class CheckoutView(View):
                         else:
                             messages.info(self.request, "Please fill in the required shipping address fields")
                             return redirect("checkout")
-                            
+
                     if use_default_billing:
                         order.use_default_billing = True
-                        if order.save_default_billing == True:
+                        if order.save_default_billing is True:
                             order.save_default_billing = False
                         if address_qs_billing.exists():
                             billing_address = address_qs_billing[0]
@@ -245,7 +245,7 @@ class CheckoutView(View):
                             set_default_billing = form.cleaned_data.get('set_default_billing')
                             if set_default_billing:
                                 order.save_default_billing = True
-                                if order.use_default_billing == True:
+                                if order.use_default_billing is True:
                                     order.use_default_billing = False
                                 if not address_qs_billing.exists():
                                     billing_address.default = True
@@ -272,7 +272,7 @@ class CheckoutView(View):
                     """Use default shipping address and set it as billing address too"""
                     if use_default_shipping:
                         order.use_default_shipping = True
-                        if order.save_default_shipping == True:
+                        if order.save_default_shipping is True:
                             order.save_default_shipping = False
                         if address_qs_shipping.exists():
                             shipping_address = address_qs_shipping[0]
@@ -317,7 +317,7 @@ class CheckoutView(View):
                             set_default_shipping = form.cleaned_data.get('set_default_shipping')
                             if set_default_shipping:
                                 order.save_default_shipping = True
-                                if order.use_default_shipping == True:
+                                if order.use_default_shipping is True:
                                     order.use_default_shipping = False
                                 if not address_qs_shipping.exists():
                                     shipping_address.default = True
@@ -341,7 +341,7 @@ class CheckoutView(View):
                 payment_option = form.cleaned_data.get('payment_option')
                 order.payment_option = payment_option
                 order.save()
-        
+
                 """Redirect according to payment option"""
                 if payment_option == 'S':
                     return redirect('payment', payment_option='stripe')
@@ -567,9 +567,9 @@ def item_detail(request, slug):
     """
     item = get_object_or_404(Item, slug=slug)
     """Get random 4 items with the same category as the detail view item"""
-    category_items = Item.objects.filter(category=item.category).exclude(title=item.title).values_list('id', flat=True)
+    category_items = Item.objects.filter(category=item.category).exclude(title=item.title).values_list('id', flat=True).order_by('title')
     random_items_id_list = random.sample(list(category_items), min(len(category_items), 4))
-    random_category_items = Item.objects.filter(id__in=random_items_id_list)
+    random_category_items = Item.objects.filter(id__in=random_items_id_list).order_by('title')
     context = {
         'item': item,
         'random_category_items': random_category_items
@@ -810,7 +810,7 @@ class RequestRefundView(View):
 
 
 class UpdateCardView(View):
-    
+
     """Render the update card form in the template"""
     def get(self, *args, **kwargs):
         form = UpdateCardForm()
@@ -818,7 +818,7 @@ class UpdateCardView(View):
             'form': form
         }
         return render(self.request, "shoppingcart/update_card.html", context)
-    
+
     """Post the update card form details"""
     def post(self, *args, **kwargs):
         form = UpdateCardForm(self.request.POST or None)
@@ -835,7 +835,7 @@ class UpdateCardView(View):
                     is_default_source = True
             stripe.Customer.delete_source(customerprofile.stripe_customer_id, card_id)
             updated_source = stripe.Customer.create_source(customerprofile.stripe_customer_id, source=token)
-            if is_default_source == True:
+            if is_default_source is True:
                 customer.default_source = updated_source.id
                 customer.save()
             messages.success(self.request, "Your card details have been updated successfully")
@@ -843,12 +843,3 @@ class UpdateCardView(View):
         else:
             messages.warning(self.request, "Invalid credit card details")
             return redirect("payment", payment_option="stripe")
-            
-        
-        
-        
-        
-        
-        
-        
-        

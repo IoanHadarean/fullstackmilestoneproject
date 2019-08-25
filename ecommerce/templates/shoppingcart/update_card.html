@@ -4,6 +4,8 @@
 {% endblock %} {% block content %}
 
 <div class="card pb-5 content-section">
+    
+    <!-- Form for updating card details by creating a new token -->
     <script src="https://js.stripe.com/v3/"></script>
     <form action="." method="POST" class="stripe-form" id="stripe-form">
         {% csrf_token %}

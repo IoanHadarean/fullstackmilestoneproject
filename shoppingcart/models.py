@@ -45,6 +45,9 @@ class Item(models.Model):
     description = models.TextField()
     image = models.ImageField()
 
+    class Meta:
+        ordering = ['title']
+
     def __str__(self):
         return self.title
 
