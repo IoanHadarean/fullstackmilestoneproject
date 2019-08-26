@@ -1,7 +1,6 @@
 from django.test import TestCase
 from .backends import EmailAuth
 from django.contrib.auth.models import User
-from django.core.exceptions import ValidationError
 
 # Create your tests here.
 

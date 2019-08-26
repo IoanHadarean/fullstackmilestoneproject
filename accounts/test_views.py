@@ -1,12 +1,10 @@
 from django.test import TestCase
-from django.conf import settings
 from django.contrib.auth.models import User
 from django.test.client import Client
 from django.contrib import auth
 from .forms import UserLoginForm, UserRegistrationForm
 from django.shortcuts import reverse
 from django.core.exceptions import ObjectDoesNotExist
-from django.test.client import RequestFactory
 from .models import Profile
 
 # Create your tests here.
@@ -24,7 +22,6 @@ class LoginLogoutTest(TestCase):
             'username': 'user2',
             'password': 'random2'
         }
-        self.factory = RequestFactory()
 
     def test_login_post_success(self):
         # send login data

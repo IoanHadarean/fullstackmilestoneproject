@@ -28,7 +28,7 @@ monthly orders.
 """
 
 
-def day_orders():
+def day_orders(today, orders):
     last_3_days = []
     for i in range(0, 3):
         last_3_days.append(today - datetime.timedelta(i))
@@ -64,7 +64,7 @@ monthly orders.
 """
 
 
-def month_orders():
+def month_orders(today, orders):
     last_3_months = []
     last_3_months_datetime = []
     for i in range(0, 3):
@@ -96,9 +96,9 @@ add '0' to the value.
 """
 
 
-def last_3_days_orders():
+def last_3_days_orders(today, orders):
 
-    daily_orders, last_3_days, orders_last_3_days_total, sales_last_3_days_total = day_orders()
+    daily_orders, last_3_days, orders_last_3_days_total, sales_last_3_days_total = day_orders(today, orders)
 
     days = []
     for date in last_3_days:
@@ -144,9 +144,9 @@ add '0' to the value.
 """
 
 
-def last_3_months_orders():
+def last_3_months_orders(today, orders):
 
-    monthly_orders, last_3_months_datetime, orders_last_3_months_total, sales_last_3_months_total = month_orders()
+    monthly_orders, last_3_months_datetime, orders_last_3_months_total, sales_last_3_months_total = month_orders(today, orders)
 
     months = []
     for date in last_3_months_datetime:
@@ -193,9 +193,9 @@ add '0' to the value.
 """
 
 
-def last_3_days_sales():
+def last_3_days_sales(today, orders):
 
-    daily_orders, last_3_days, orders_last_3_days_total, sales_last_3_days_total = day_orders()
+    daily_orders, last_3_days, orders_last_3_days_total, sales_last_3_days_total = day_orders(today, orders)
 
     days = []
     for date in last_3_days:
@@ -241,9 +241,9 @@ add '0' to the value.
 """
 
 
-def last_3_months_sales():
+def last_3_months_sales(today, orders):
 
-    monthly_orders, last_3_months_datetime, orders_last_3_months_total, sales_last_3_months_total = month_orders()
+    monthly_orders, last_3_months_datetime, orders_last_3_months_total, sales_last_3_months_total = month_orders(today, orders)
 
     months = []
     for date in last_3_months_datetime:
@@ -292,10 +292,10 @@ as a JsonResponse used for AJAX.
 
 def get_data(request, *args, **kwargs):
 
-    orders_last_3_days = last_3_days_orders()
-    orders_last_3_months = last_3_months_orders()
-    sales_last_3_days = last_3_days_sales()
-    sales_last_3_months = last_3_months_sales()
+    orders_last_3_days = last_3_days_orders(today, orders)
+    orders_last_3_months = last_3_months_orders(today, orders)
+    sales_last_3_days = last_3_days_sales(today, orders)
+    sales_last_3_months = last_3_months_sales(today, orders)
 
     data = {
         'orders_last_3_days': orders_last_3_days,
