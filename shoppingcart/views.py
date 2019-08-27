@@ -81,7 +81,7 @@ def save_default_card(request, id):
     return redirect("payment", payment_option="stripe")
 
 
-class CheckoutView(View):
+class CheckoutView(LoginRequiredMixin, View):
     """
     Render the checkout form with the order if the order exists.
     If the order does not exist, notify the user that he/she does not
@@ -147,7 +147,7 @@ class CheckoutView(View):
                     )
                 """
                 If the 'same_billing_address' is not checked
-                verify if there the user wants to use default shipping/billing.
+                verify if the user wants to use default shipping/billing.
                 If yes, then get then default shipping address and/or billing address
                 from the database, else get the shipping and/or billing address from
                 the inputs. If there already is a default shipping and/or billing
@@ -169,6 +169,7 @@ class CheckoutView(View):
                             messages.info(self.request, "No default shipping address available")
                             return redirect('checkout')
                     else:
+                        order.use_default_shipping = False
                         shipping_address1 = form.cleaned_data.get('shipping_address')
                         shipping_address2 = form.cleaned_data.get('shipping_address2')
                         shipping_country = form.cleaned_data.get('shipping_country')
@@ -193,10 +194,6 @@ class CheckoutView(View):
                             set_default_shipping = form.cleaned_data.get('set_default_shipping')
                             if set_default_shipping:
                                 order.save_default_shipping = True
-                                if order.use_default_shipping is True:
-                                    order.use_default_shipping = False
-                                if order.use_default_shipping is True:
-                                    order.use_default_shipping = False
                                 if not address_qs_shipping.exists():
                                     shipping_address.default = True
                                     shipping_address.save()
@@ -221,6 +218,7 @@ class CheckoutView(View):
                             messages.info(self.request, "No default billing address available")
                             return redirect('checkout')
                     else:
+                        order.use_default_billing = False
                         billing_address1 = form.cleaned_data.get('billing_address')
                         billing_address2 = form.cleaned_data.get('billing_address2')
                         billing_country = form.cleaned_data.get('billing_country')
@@ -245,8 +243,6 @@ class CheckoutView(View):
                             set_default_billing = form.cleaned_data.get('set_default_billing')
                             if set_default_billing:
                                 order.save_default_billing = True
-                                if order.use_default_billing is True:
-                                    order.use_default_billing = False
                                 if not address_qs_billing.exists():
                                     billing_address.default = True
                                     billing_address.save()
@@ -269,6 +265,10 @@ class CheckoutView(View):
                 """
                 if same_billing_address:
                     order.same_billing_address = True
+                    if order.save_default_billing is True:
+                        order.save_default_billing = False
+                    if order.use_default_billing is True:
+                        order.use_default_billing = False
                     """Use default shipping address and set it as billing address too"""
                     if use_default_shipping:
                         order.use_default_shipping = True
@@ -284,10 +284,13 @@ class CheckoutView(View):
                             messages.info(self.request, "No default shipping address available")
                             return redirect('checkout')
                     else:
+                        order.use_default_shipping = False
                         shipping_address1 = form.cleaned_data.get('shipping_address')
                         shipping_address2 = form.cleaned_data.get('shipping_address2')
                         shipping_country = form.cleaned_data.get('shipping_country')
                         shipping_zip_code = form.cleaned_data.get('shipping_zip_code')
+
+                        """Check if the form fields are valid(not empty)"""
                         if is_valid_form([shipping_address1, shipping_address2, shipping_country, shipping_zip_code]):
                             shipping_address = Address(
                                 user=self.request.user,
@@ -345,9 +348,6 @@ class CheckoutView(View):
                 """Redirect according to payment option"""
                 if payment_option == 'S':
                     return redirect('payment', payment_option='stripe')
-                else:
-                    messages.warning(self.request, "Invalid payment option selected")
-                    return redirect('checkout')
             else:
                 messages.warning(self.request, "Invalid data")
                 return redirect("checkout")

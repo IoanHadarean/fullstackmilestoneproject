@@ -5,3 +5,5 @@ __pycache__/
 env.py
 /.c9/
 **/*.jpg
+/coverage.data
+/coverage/

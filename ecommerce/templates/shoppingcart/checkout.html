@@ -27,13 +27,13 @@
 
             <!--address-->
             <div class="md-form mb-5">
-              <input type="text" placeholder="1234 Main St" id="shipping_address" value="{{order.shipping_address.street_address}}" name="shipping_address" class="form-control" />
+              <input type="text" placeholder="1234 Main St" id="shipping_address" value="{{order.shipping_address.street_address}}" name="shipping_address" class="form-control" required />
               <label for="shipping_address" class="">Address</label>
             </div>
 
             <!--address-2-->
             <div class="md-form mb-5">
-              <input type="text" placeholder="Appartment or suite" id="shipping_address2" value="{{order.shipping_address.appartment_address}}" name="shipping_address2" class="form-control" />
+              <input type="text" placeholder="Appartment or suite" id="shipping_address2" value="{{order.shipping_address.appartment_address}}" name="shipping_address2" class="form-control" required/>
               <label for="shipping_address2" class="">Address 2 (optional)</label>
             </div>
 
@@ -42,7 +42,7 @@
               <!--Grid column-->
               <div class="col-lg-4 col-md-12 mb-4">
                 <label for="id_shipping_country">Country</label>{% get_countries as countries %}
-                <select name="shipping_country" id="id_shipping_country" class="custom-select d-block w-100">
+                <select name="shipping_country" id="id_shipping_country" class="custom-select d-block w-100" required>
                   {% if order.shipping_address.country %}
                     <option value="{{ order.shipping_address.country.code }}" selected>{{ order.shipping_address.country.name }}</option>
                     {% else %}
@@ -60,7 +60,7 @@
               <!--Grid column-->
               <div class="col-lg-4 col-md-6 mb-4">
                 <label for="shipping_zip_code">Zip</label>
-                <input type="text" placeholder="Zip code" id="shipping_zip_code" value="{{order.shipping_address.zip_code}}" name="shipping_zip_code" class="form-control" />
+                <input type="text" placeholder="Zip code" id="shipping_zip_code" value="{{order.shipping_address.zip_code}}" name="shipping_zip_code" class="form-control" minlength='6' maxlength='12' required />
                 <div class="invalid-feedback">
                   Zip code required.
                 </div>
@@ -103,13 +103,13 @@
 
             <!--address-->
             <div class="md-form mb-5">
-              <input type="text" placeholder="1234 Main St" id="billing_address" value="{{order.billing_address.street_address}}" name="billing_address" class="form-control" />
+              <input type="text" placeholder="1234 Main St" id="billing_address" value="{{order.billing_address.street_address}}" name="billing_address" class="form-control" required/>
               <label for="billing_address" class="">Address</label>
             </div>
 
             <!--address-2-->
             <div class="md-form mb-5">
-              <input type="text" placeholder="Appartment or suite" id="billing_address2" value="{{order.billing_address.appartment_address}}" name="billing_address2" class="form-control" />
+              <input type="text" placeholder="Appartment or suite" id="billing_address2" value="{{order.billing_address.appartment_address}}" name="billing_address2" class="form-control" required/>
               <label for="billing_address2" class="">Address 2 (optional)</label>
             </div>
 
@@ -119,7 +119,7 @@
               <div class="col-lg-4 col-md-12 mb-4">
                 <label for="id_billing_country">Country</label>
                 {% get_countries as countries %}
-                <select name="billing_country" id="id_billing_country" class="custom-select d-block w-100">
+                <select name="billing_country" id="id_billing_country" class="custom-select d-block w-100" required>
                   {% if order.billing_address.country %}
                     <option value="{{ order.billing_address.country.code }}" selected>{{ order.billing_address.country.name }}</option>
                   {% else %}
@@ -137,7 +137,7 @@
               <!--Grid column-->
               <div class="col-lg-4 col-md-6 mb-4">
                 <label for="billing_zip_code">Zip</label>
-                <input type="text" placeholder="Zip code" id="billing_zip_code" value="{{order.billing_address.zip_code}}" name="billing_zip_code" class="form-control" />
+                <input type="text" placeholder="Zip code" id="billing_zip_code" value="{{order.billing_address.zip_code}}" name="billing_zip_code" class="form-control" minlength='6' maxlength='12' required/>
                 <div class="invalid-feedback">
                   Zip code required.
                 </div>
@@ -170,7 +170,7 @@
           <div class="d-block my-3">
             {% for value, name in form.fields.payment_option.choices %}
             <div class="custom-control custom-radio">
-              {% if order.payment_option == 'S' %}
+              {% if order.payment_option == value %}
               <input id="{{ name }}" name="payment_option" value="{{ value }}" type="radio" class="custom-control-input" checked required>
               {% else %}
               <input id="{{ name }}" name="payment_option" value="{{ value }}" type="radio" class="custom-control-input" required> {% endif %}
