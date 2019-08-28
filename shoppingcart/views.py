@@ -320,8 +320,6 @@ class CheckoutView(LoginRequiredMixin, View):
                             set_default_shipping = form.cleaned_data.get('set_default_shipping')
                             if set_default_shipping:
                                 order.save_default_shipping = True
-                                if order.use_default_shipping is True:
-                                    order.use_default_shipping = False
                                 if not address_qs_shipping.exists():
                                     shipping_address.default = True
                                     shipping_address.save()
