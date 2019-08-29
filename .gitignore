@@ -7,3 +7,4 @@ env.py
 **/*.jpg
 /coverage.data
 /coverage/
+htmlcov/ecommerce_env_py.html

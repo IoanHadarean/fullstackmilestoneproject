@@ -157,6 +157,10 @@ ul {
   margin-top: 0.9375rem;
 }
 
+.postcontent {
+  margin-left: 0.4rem;
+}
+
 .posttitle {
   text-align: center;
 }

@@ -36,7 +36,7 @@
     <!-- If there are no comments add a paragraph with a text of 'No Comments' -->
     <div class="container comments-container">
         {% for comment in post.comments.all %}
-        <br> {% if user.is_authenticated %} {% if not comment.approved_comment %} {% if user.is_superuser %}
+        {% if user.is_authenticated %} {% if not comment.approved_comment %} {% if user.is_superuser %}
         <p>{{ comment.created_date }}</p>
         <p>{{comment.text|safe|linebreaks}}</p>
         <p>Posted By: {{comment.author}}</p>

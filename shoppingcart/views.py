@@ -354,7 +354,7 @@ class CheckoutView(LoginRequiredMixin, View):
             return redirect("order_summary")
 
 
-class PaymentView(View):
+class PaymentView(LoginRequiredMixin, View):
     def get(self, *args, **kwargs):
         """Render the payment view and pass the order to the template"""
         order = Order.objects.get(user=self.request.user, ordered=False)
@@ -435,6 +435,7 @@ class PaymentView(View):
                         currency="gbp",
                         customer=customerprofile.stripe_customer_id
                     )
+                    
                 else:
                     charge = stripe.Charge.create(
                         amount=amount,
@@ -528,8 +529,6 @@ class PaymentView(View):
                     fail_silently=False,
                     )
                 return redirect("/")
-        messages.warning(self.request, "Invalid data received")
-        return redirect('payment', payment_option='stripe')
 
 
 class HomeView(ListView):
@@ -683,10 +682,12 @@ def remove_single_item_from_cart(request, slug):
             if order_item.quantity > 1:
                 order_item.quantity -= 1
                 order_item.save()
+                messages.info(request, "This item quantity was updated.")
+                return redirect("order_summary")
             else:
                 order.items.remove(order_item)
-            messages.info(request, "This item quantity was updated")
-            return redirect("order_summary")
+                messages.info(request, "This item was removed from your cart.")
+                return redirect("order_summary")
         else:
             messages.info(request, "This item is not in your cart.")
             return redirect("product", slug=slug)
@@ -695,7 +696,7 @@ def remove_single_item_from_cart(request, slug):
         return redirect("product", slug=slug)
 
 
-class AddCouponView(View):
+class AddCouponView(LoginRequiredMixin, View):
     """Add the cupon to the order"""
     def post(self, *args, **kwargs):
         form = CouponForm(self.request.POST or None)
@@ -800,14 +801,14 @@ class RequestRefundView(View):
                 refund.email = email
                 refund.save()
 
-                messages.info(self.request, "Your request was received.")
+                messages.info(self.request, "Your refund request was received.")
                 return redirect("request_refund")
             except ObjectDoesNotExist:
-                messages.info(self.request, "This order does not exist")
+                messages.info(self.request, "This order does not exist. Please check your email for the correct reference code.")
                 return redirect("request_refund")
 
 
-class UpdateCardView(View):
+class UpdateCardView(LoginRequiredMixin, View):
 
     """Render the update card form in the template"""
     def get(self, *args, **kwargs):

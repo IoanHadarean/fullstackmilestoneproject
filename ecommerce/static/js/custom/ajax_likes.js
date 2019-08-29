@@ -5,8 +5,12 @@ var dislikeBtn = document.getElementById('dislike-post');
 var hiddenLikeFormInput = document.getElementById('like-form-input');
 
 // Add event listeners
-likeBtn.addEventListener('click', likePost);
-dislikeBtn.addEventListener('click', dislikePost);
+if (likeBtn) {
+    likeBtn.addEventListener('click', likePost);
+}
+if (dislikeBtn) {
+    dislikeBtn.addEventListener('click', dislikePost);
+}
 
 // Function for retrieving the csrftoken cookie
 function getCookie(cname) {
@@ -33,10 +37,10 @@ function likePost(e) {
         if (this.readyState == 4 && this.status == 200) {
             let response = JSON.parse(xhr.responseText);
             if (response.total_likes != 1) {
-               totalLikes.innerHTML = response.total_likes + " Likes";
+                totalLikes.innerHTML = response.total_likes + " Likes";
             }
             else {
-               totalLikes.innerHTML = response.total_likes + " Like";
+                totalLikes.innerHTML = response.total_likes + " Like";
             }
         }
     };
@@ -58,10 +62,10 @@ function dislikePost(e) {
         if (this.readyState == 4 && this.status == 200) {
             let response = JSON.parse(xhr.responseText);
             if (response.total_likes != 1) {
-               totalLikes.innerHTML = response.total_likes + " Likes";
+                totalLikes.innerHTML = response.total_likes + " Likes";
             }
             else {
-               totalLikes.innerHTML = response.total_likes + " Like";
+                totalLikes.innerHTML = response.total_likes + " Like";
             }
         }
     };
@@ -74,6 +78,3 @@ function dislikePost(e) {
     xhr.send();
     e.preventDefault();
 }
-
-
-

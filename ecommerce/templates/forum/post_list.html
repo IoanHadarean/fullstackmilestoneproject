@@ -78,11 +78,7 @@
                     <!-- Show count of post comments -->
                     <a href="{% url 'post_detail' pk=post.pk %}">Comments:
                     {% if post.comments.count > 0 %}
-                        {% for comment in post.comments.all %}
-                            {% if comment.approved_comment and not comment.reply %}
-                                {{ comment.comments_excluding_replies.count }}
-                            {% endif %}
-                        {% endfor %}
+                        {{ post.comments_excluding_replies.count }}
                     {% else %}
                     0
                     {% endif %}

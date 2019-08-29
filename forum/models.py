@@ -20,6 +20,9 @@ class Post(models.Model):
 
     def approve_comments(self):
         return self.comments.filter(approved_comment=True)
+        
+    def comments_excluding_replies(self):
+        return self.comments.filter(reply=None)
 
     def get_absolute_url(self):
         return reverse("post_detail", kwargs={'pk': self.pk})
@@ -46,9 +49,6 @@ class Comment(models.Model):
 
     def get_absolute_url(self):
         return reverse('post_list')
-
-    def comments_excluding_replies(self):
-        return Comment.objects.filter(reply=None)
 
     def __str__(self):
         return self.text
