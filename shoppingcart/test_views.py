@@ -3,7 +3,7 @@ from .views import create_ref_code, is_valid_form, fetchCards, delete_card, save
 from .views import item_detail
 from accounts.models import Profile
 from django.contrib.auth.models import User
-from .models import Order, Address, OrderItem, Order, Item
+from .models import Order, Address, OrderItem, Order, Item, Coupon,  UserCoupon
 from .forms import CheckoutForm
 from django.test import RequestFactory
 from django.test.client import Client
@@ -13,8 +13,6 @@ from django.contrib.messages import get_messages
 import stripe
 import pytz
 import datetime
-
-stripe.api_key = "sk_test_4eC39HqLyjWDarjtT1zdp7dc"
 
 
 class CheckoutProcessTest(TestCase):
@@ -28,6 +26,19 @@ class CheckoutProcessTest(TestCase):
             'password': 'randompassword678'}
         self.user = User.objects.create_user(**self.credentials)
         self.user.save()
+        self.coupon = Coupon(code='WEDDING', amount=300, valid_from=datetime.datetime(2019, 8, 29, tzinfo=pytz.UTC),
+                             valid_to=datetime.datetime(2020, 8, 24, tzinfo=pytz.UTC), active=True)
+        self.coupon.save()
+        self.coupon2 = Coupon(code='WEDDING_PLANNER', amount=100, valid_from=datetime.datetime(2019, 8, 29, tzinfo=pytz.UTC),
+                             valid_to=datetime.datetime(2020, 8, 24, tzinfo=pytz.UTC), active=True)
+        self.coupon2.save()
+        self.user_coupon = UserCoupon(user=self.user, coupon=self.coupon)
+        self.user_coupon.save()
+        self.shirt = Item(title='Shirt', price=300.0, category='Shirts', label='primary', slug='random-slug', description='shirt')
+        self.shirt.image = SimpleUploadedFile(name='BE266_rose_top.jpg', 
+                                          content=open('/home/ubuntu/environment/ecommerce/media/random.jpg', 'rb').read(),
+                                          content_type='image/jpeg')
+        self.shirt.save()
         self.checkout_form1 = {
             'shipping_address': '1A Bridge Road',
             'shipping_address2': 'Gillingham',
@@ -338,6 +349,111 @@ class CheckoutProcessTest(TestCase):
         response = self.client.post('/shoppingcart/checkout/', self.checkout_form9)
         self.assertRedirects(response, '/shoppingcart/checkout/')
         
+    def test_add_coupon_post_fail_no_order(self):
+        self.client.post('/accounts/login/', self.credentials, follow=True)
+        request = self.factory.get('/')
+        request.user = self.user
+        response = self.client.post('/shoppingcart/add_coupon/', {'code': 'WEDDING'})
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), 'You do not have an active order')
+        self.assertRedirects(response, '/shoppingcart/checkout/', status_code=302, target_status_code=302)
+        
+    def test_add_coupon_post_fail_no_coupon(self):
+        self.client.post('/accounts/login/', self.credentials, follow=True)
+        request = self.factory.get('/')
+        request.user = self.user
+        order = Order(user=self.user, amount=700, 
+                      ordered_date=datetime.datetime(2019, 7, 26, tzinfo=pytz.UTC),
+                      ordered=False)
+        order.save()
+        response = self.client.post('/shoppingcart/add_coupon/', {'code': 'WEDDING_FIESTA'})
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), 'This coupon does not exist or is no longer active')
+        self.assertRedirects(response, '/shoppingcart/checkout/')
+        
+    def test_add_coupon_post_fail_coupon_amount_exceeds_or_equals_order_value(self):
+        self.client.post('/accounts/login/', self.credentials, follow=True)
+        request = self.factory.get('/')
+        request.user = self.user
+        orderitem = OrderItem(user=self.user, ordered=False, item=self.shirt, quantity=1)
+        orderitem.save()
+        order = Order(user=self.user, ordered_date=datetime.datetime(2019, 7, 26, tzinfo=pytz.UTC),
+                      ordered=False)
+        order.save()
+        order.items.add(orderitem)
+        order.save()
+        response = self.client.post('/shoppingcart/add_coupon/', {'code': 'WEDDING'})
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), 'You can not use this coupon for items with the price less than or equal to the value of the coupon')
+        self.assertRedirects(response, '/shoppingcart/checkout/')
+        
+    def test_add_coupon_post_fail_order_already_has_coupon(self):
+        self.client.post('/accounts/login/', self.credentials, follow=True)
+        request = self.factory.get('/')
+        request.user = self.user
+        order = Order(user=self.user, used_coupon=True, ordered_date=datetime.datetime(2019, 7, 26, tzinfo=pytz.UTC),
+                      ordered=False)
+        order.save()
+        response = self.client.post('/shoppingcart/add_coupon/', {'code': 'WEDDING'})
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), 'You can not use more than one coupon for an order')
+        self.assertRedirects(response, '/shoppingcart/checkout/')
+    
+    def test_add_coupon_post_fail_add_same_coupon_order_coupon_limit(self):
+        self.client.post('/accounts/login/', self.credentials, follow=True)
+        request = self.factory.get('/')
+        request.user = self.user
+        orderitem = OrderItem(user=self.user, ordered=False, item=self.shirt, quantity=2)
+        orderitem.save()
+        order = Order(user=self.user, used_coupon=True, ordered_date=datetime.datetime(2019, 7, 26, tzinfo=pytz.UTC),
+                      ordered=False)
+        order.save()
+        order.items.add(orderitem)
+        order.save()
+        response = self.client.post('/shoppingcart/add_coupon/', {'code': 'WEDDING'})
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), 'You can not use more than one coupon for an order')
+        self.assertRedirects(response, '/shoppingcart/checkout/')
+    
+    def test_add_coupon_post_fail_add_different_coupon_order_coupon_limit(self):
+        self.client.post('/accounts/login/', self.credentials, follow=True)
+        request = self.factory.get('/')
+        request.user = self.user
+        orderitem = OrderItem(user=self.user, ordered=False, item=self.shirt, quantity=2)
+        orderitem.save()
+        order = Order(user=self.user, used_coupon=True, ordered_date=datetime.datetime(2019, 7, 26, tzinfo=pytz.UTC),
+                      ordered=False)
+        order.save()
+        order.items.add(orderitem)
+        order.save()
+        response = self.client.post('/shoppingcart/add_coupon/', {'code': 'WEDDING_PLANNER'})
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), 'You can not use more than one coupon for an order')
+        self.assertRedirects(response, '/shoppingcart/checkout/')
+
+    def test_add_coupon_post_success(self):
+        self.client.post('/accounts/login/', self.credentials, follow=True)
+        request = self.factory.get('/')
+        request.user = self.user
+        orderitem = OrderItem(user=self.user, ordered=False, item=self.shirt, quantity=2)
+        orderitem.save()
+        order = Order(user=self.user, used_coupon=False, ordered_date=datetime.datetime(2019, 7, 26, tzinfo=pytz.UTC),
+                      ordered=False)
+        order.save()
+        order.items.add(orderitem)
+        order.save()
+        response = self.client.post('/shoppingcart/add_coupon/', {'code': 'WEDDING'})
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), 'Successfully added coupon')
+        self.assertRedirects(response, '/shoppingcart/checkout/')
+        
         
 class CardHandlersTest(TestCase):
     
@@ -348,7 +464,7 @@ class CardHandlersTest(TestCase):
             'password': 'randompassword678'}
         self.user = User.objects.create_user(**self.credentials)
         self.user.save()
-        self.profile = Profile(user=self.user, stripe_customer_id='cus_FgoD0vvyFVxqIP')
+        self.profile = Profile(user=self.user, stripe_customer_id='cus_FiLOa8AfQAfwNI')
         
     def test_delete_card(self):
         self.client.post('/accounts/login/', self.credentials, follow=True)
@@ -358,7 +474,7 @@ class CardHandlersTest(TestCase):
         setattr(request, '_messages', messages)
         request.user = self.user
         profile = Profile.objects.all()[0]
-        profile.stripe_customer_id = 'cus_FgoD0vvyFVxqIP'
+        profile.stripe_customer_id = 'cus_FiLOa8AfQAfwNI'
         profile.save()
         card_list = fetchCards(self.profile)
         customer = stripe.Customer.retrieve(profile.stripe_customer_id)
@@ -384,7 +500,7 @@ class CardHandlersTest(TestCase):
         setattr(request, '_messages', messages)
         request.user = self.user
         profile = Profile.objects.all()[0]
-        profile.stripe_customer_id = 'cus_FgoD0vvyFVxqIP'
+        profile.stripe_customer_id = 'cus_FiLOa8AfQAfwNI'
         profile.save()
         card_list = fetchCards(self.profile)
         save_default_card(request, card_list[2].id)
@@ -413,7 +529,7 @@ class PaymentViewTest(TestCase):
         self.profile = Profile(user=self.user)
         self.new_profile = Profile(user=self.new_user)
         customer_profile = Profile.objects.all()[0]
-        customer_profile.stripe_customer_id = 'cus_FgoD0vvyFVxqIP'
+        customer_profile.stripe_customer_id = 'cus_FiLOa8AfQAfwNI'
         customer_profile.one_click_purchasing = True
         customer_profile.save()
         self.shirt = Item(title='Shirt', price=300.0, category='Shirts', label='primary', slug='random-slug', description='shirt')

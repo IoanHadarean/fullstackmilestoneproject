@@ -5,7 +5,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 
 # Create your tests here.
 
-class TestUserRegistrationFrom(TestCase):
+class TestProfileModel(TestCase):
     
     def test_str_is_equal_to_username(self):
         user = User.objects.create_user('goagl', 'hello@yahoo.com', 'randompassword')

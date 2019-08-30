@@ -98,10 +98,10 @@ class OrderItem(models.Model):
         return self.quantity * self.item.price
 
     def get_total_item_discount_price(self):
-        return self.quantity * self.item.discount_price
+        return self.get_total_item_price() - self.get_amount_saved()
 
     def get_amount_saved(self):
-        return self.get_total_item_price() - self.get_total_item_discount_price()
+        return self.quantity * self.item.discount_price
 
     def get_final_price(self):
         if self.item.discount_price:
@@ -227,7 +227,7 @@ class Payment(models.Model):
     amount = models.FloatField()
     timestamp = models.DateTimeField(auto_now_add=True)
 
-    def _str_(self):
+    def __str__(self):
         return self.user.username
 
 

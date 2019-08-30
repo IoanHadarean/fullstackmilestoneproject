@@ -6,19 +6,21 @@ var savedCards = document.getElementsByClassName('saved_card');
 
 // Hide the new card form if use default card is checked, else show it
 // Hide the saved cards if use default card is checked
-useDefaultCard.addEventListener('change', function() {
-    if (this.checked == true) {
-        for (var j = 0; j < savedCards.length; j++) {
-            savedCards[j].style.display = 'none';
+if (useDefaultCard) {
+    useDefaultCard.addEventListener('change', function() {
+        if (this.checked == true) {
+            for (var j = 0; j < savedCards.length; j++) {
+                savedCards[j].style.display = 'none';
+            }
+            newCardForm.style.display = 'none';
+            currentCardForm.style.display = 'block';
         }
-        newCardForm.style.display = 'none';
-        currentCardForm.style.display = 'block';
-    }
-    else {
-        for (var j = 0; j < savedCards.length; j++) {
-            savedCards[j].style.display = 'block';
+        else {
+            for (var j = 0; j < savedCards.length; j++) {
+                savedCards[j].style.display = 'block';
+            }
+            newCardForm.style.display = 'block';
+            currentCardForm.style.display = 'none';
         }
-        newCardForm.style.display = 'block';
-        currentCardForm.style.display = 'none';
-    }
-});
+    });
+}
