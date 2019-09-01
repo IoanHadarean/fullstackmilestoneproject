@@ -1,6 +1,6 @@
-{% if post.author != request.user and request.user.is_authenticated %}
 <!-- Likes count -->
 <p id = "total-likes">{{ total_likes }} Like{{ total_likes|pluralize }}</p>
+{% if post.author != request.user and request.user.is_authenticated %}
 <!-- Form for likes/dislikes -->
 <form id = "like-form" method="POST">
     {% csrf_token %}

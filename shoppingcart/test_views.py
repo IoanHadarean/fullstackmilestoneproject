@@ -436,6 +436,25 @@ class CheckoutProcessTest(TestCase):
         self.assertEqual(len(messages), 1)
         self.assertEqual(str(messages[0]), 'You can not use more than one coupon for an order')
         self.assertRedirects(response, '/shoppingcart/checkout/')
+        
+    def test_add_coupon_post_fail_already_used_coupon(self):
+        self.client.post('/accounts/login/', self.credentials, follow=True)
+        request = self.factory.get('/')
+        request.user = self.user
+        self.user_coupon.is_used = True
+        self.user_coupon.save()
+        orderitem = OrderItem(user=self.user, ordered=False, item=self.shirt, quantity=2)
+        orderitem.save()
+        order = Order(user=self.user, used_coupon=False, ordered_date=datetime.datetime(2019, 7, 26, tzinfo=pytz.UTC),
+                      ordered=False)
+        order.save()
+        order.items.add(orderitem)
+        order.save()
+        response = self.client.post('/shoppingcart/add_coupon/', {'code': 'WEDDING'})
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), 'You have already used this coupon')
+        self.assertRedirects(response, '/shoppingcart/checkout/')
 
     def test_add_coupon_post_success(self):
         self.client.post('/accounts/login/', self.credentials, follow=True)
@@ -465,6 +484,10 @@ class CardHandlersTest(TestCase):
         self.user = User.objects.create_user(**self.credentials)
         self.user.save()
         self.profile = Profile(user=self.user, stripe_customer_id='cus_FiLOa8AfQAfwNI')
+        customer_profile = Profile.objects.all()[0]
+        customer_profile.stripe_customer_id = 'cus_FiLOa8AfQAfwNI'
+        customer_profile.one_click_purchasing = True
+        customer_profile.save()
         
     def test_delete_card(self):
         self.client.post('/accounts/login/', self.credentials, follow=True)
@@ -506,9 +529,44 @@ class CardHandlersTest(TestCase):
         save_default_card(request, card_list[2].id)
         
     def test_update_card_view_get_success(self):
-        response = self.client.get('/shoppingcart/request_refund/')
-        self.assertTemplateUsed(response, 'shoppingcart/request_refund.html')
-        
+        self.client.post('/accounts/login/', self.credentials, follow=True)
+        request = self.factory.get('/')
+        request.user = self.user
+        response = self.client.get('/shoppingcart/update_card/card_1FCukOF3JWQSMs3R5GHJkEuL/')
+        self.assertTemplateUsed(response, 'shoppingcart/update_card.html')
+    
+    def test_update_card_post_fail_invalid_card_details(self):
+        self.client.post('/accounts/login/', self.credentials, follow=True)
+        request = self.factory.get('/')
+        request.user = self.user
+        order = Order(user=self.user, amount=700, 
+                      ordered_date=datetime.datetime(2019, 7, 26, tzinfo=pytz.UTC),
+                      ordered=False)
+        order.save()
+        response = self.client.post('/shoppingcart/update_card/card_1FCukOF3JWQSMs3R5GHJkEuL/', {})
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), 'Invalid credit card details')
+        self.assertRedirects(response, '/shoppingcart/payment/stripe/', status_code=302, target_status_code=302)
+    
+    def test_update_card_post_success(self):
+        self.client.post('/accounts/login/', self.credentials, follow=True)
+        request = self.factory.get('/')
+        request.user = self.user
+        profile = Profile.objects.all()[0]
+        profile.stripe_customer_id = 'cus_FiLOa8AfQAfwNI'
+        profile.save()
+        order = Order(user=self.user, amount=700, 
+                      ordered_date=datetime.datetime(2019, 7, 26, tzinfo=pytz.UTC),
+                      ordered=False)
+        order.save()
+        card_list = fetchCards(profile)
+        update_card_url = '/shoppingcart/update_card/{}/'.format(card_list[0].id)
+        response = self.client.post(update_card_url, {'stripeToken': 'tok_visa'})
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), 'Your card details have been updated successfully')
+        self.assertRedirects(response, '/shoppingcart/payment/stripe/', status_code=302, target_status_code=302)
 
 class PaymentViewTest(TestCase):
     
@@ -861,16 +919,3 @@ class RequestRefundViewTest(TestCase):
         self.assertEqual(len(messages), 1)
         self.assertEqual(str(messages[0]), 'This order does not exist. Please check your email for the correct reference code.')
         self.assertRedirects(response, '/shoppingcart/request_refund/')
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        

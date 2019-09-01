@@ -5,6 +5,7 @@ from django.core.files.uploadedfile import SimpleUploadedFile
 import datetime
 import pytz
 
+
 class TestShoppingCartModels(TestCase):
     
     def setUp(self):
@@ -28,8 +29,10 @@ class TestShoppingCartModels(TestCase):
         self.refund = Refund(order=self.order, reason='I want my money back')
         self.refund.save()
         
-    def test_item_title_and_discount_price(self):
+    def test_item_title_discount_price_and_final_price(self):
         self.assertEqual(str(self.item), 'Shirt')
+        total_price = self.item.get_discount_price()
+        self.assertEqual(total_price, 250)
         
     def test_address_order_and_payment_username(self):
         self.assertEqual(str(self.address), 'goagl')
@@ -42,12 +45,17 @@ class TestShoppingCartModels(TestCase):
     def test_refund_pk(self):
         self.assertEqual(str(self.refund), "1")
         
-    def test_order_item_quantity_of_item(self):
+    def test_order_item_quantity_of_item_and_final_price(self):
         self.assertEqual(str(self.orderitem), '2 of Shirt')
+        self.assertEqual(self.orderitem.get_final_price(), 500)
         
     def test_order_item_total_discount_price_and_amount_saved(self):
         self.assertEqual(self.orderitem.get_total_item_discount_price(), 500)
         self.assertEqual(self.orderitem.get_amount_saved(), 100)
+        
+    
+        
+    
         
         
         

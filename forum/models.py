@@ -28,7 +28,7 @@ class Post(models.Model):
         return reverse("post_detail", kwargs={'pk': self.pk})
 
     def total_likes(self):
-        return self.likes.count
+        return self.likes.count()
 
     def __str__(self):
         return self.title

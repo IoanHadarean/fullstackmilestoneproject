@@ -6,7 +6,7 @@ from django.core.exceptions import ValidationError
 
 # Create your tests here.
 
-class TestUserRegistrationFrom(TestCase):
+class TestUserRegistrationForm(TestCase):
       
     def test_clean_email_return(self):
         form_params = {'username':'goagl', 'email':'hadareannelutu@yahoo.com', 'password1':'randompassword', 'password2':'randompassword2'}
