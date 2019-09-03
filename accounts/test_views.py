@@ -1,17 +1,17 @@
 from django.test import TestCase
 from django.contrib.auth.models import User
-from django.test.client import Client
 from django.contrib import auth
 from .forms import UserLoginForm, UserRegistrationForm
 from django.shortcuts import reverse
 from django.core.exceptions import ObjectDoesNotExist
 from .models import Profile
-
-# Create your tests here.
+from django.contrib.messages import get_messages
 
 
 class LoginLogoutTest(TestCase):
+    """Class for testing login/logout process"""
 
+    """Set up the login/logout credentials and user"""
     def setUp(self):
         self.credentials = {
             'username': 'user',
@@ -23,15 +23,18 @@ class LoginLogoutTest(TestCase):
             'password': 'random2'
         }
 
+    """Test the successful login of a user"""
     def test_login_post_success(self):
-        # send login data
         response = self.client.post('/accounts/login/',
                                     self.credentials, follow=True)
-        # should be logged in now
         self.assertTrue(response.context['user'].is_authenticated)
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), "You have successfully logged in!")
         self.assertRedirects(response, '/accounts/profile/',
                              status_code=302, target_status_code=200)
 
+    """Test if the user can logout after login"""
     def test_user_can_login_and_logout(self):
         self.client.post('/accounts/login/', {'username': 'user',
                                               'password': 'random'})
@@ -41,6 +44,10 @@ class LoginLogoutTest(TestCase):
         user = auth.get_user(self.client)
         self.assertEqual(user.is_authenticated, False)
 
+    """
+    Test redirection for user to profile if he/she is already authenticated
+    and tries to access the login page again
+    """
     def test_redirect_user_if_authenticated(self):
         self.client.post('/accounts/login/', {'username': 'user',
                                               'password': 'random'})
@@ -52,6 +59,7 @@ class LoginLogoutTest(TestCase):
                              status_code=302, target_status_code=200)
         self.client.post('/accounts/logout/')
 
+    """Test failed login for user in case of invalid credentials"""
     def test_login_post_fail(self):
         response = self.client.post('/accounts/login/',
                                     self.invalid_credentials, follow=True)
@@ -60,16 +68,17 @@ class LoginLogoutTest(TestCase):
         except ObjectDoesNotExist:
             self.assertFalse(response.context['user'].is_authenticated)
 
+    """Test get login page view"""
     def test_get_login_page(self):
-        # Create an instance of a GET request.
-        client = Client()
-        response = client.get('/accounts/login/')
+        response = self.client.get('/accounts/login/')
         self.assertTemplateUsed(response, 'accounts/login.html')
         self.assertEquals(response.status_code, 200)
 
 
 class RegistrationTest(TestCase):
+    """Class for testing the registration process"""
 
+    """Set up the valid and invalid credentials for registration"""
     def setUp(self):
         self.credentials = {
                             'password1': '1375minglee',
@@ -84,18 +93,25 @@ class RegistrationTest(TestCase):
                                     'email': 'ArtyIsNotOp@example.com',
                                    }
 
+    """Test get registration page view"""
     def test_get_registration_page(self):
-        # Create an instance of a GET request.
-        client = Client()
-        response = client.get('/accounts/registration/')
+        response = self.client.get('/accounts/registration/')
         self.assertTemplateUsed(response, 'accounts/registration.html')
         self.assertEquals(response.status_code, 200)
 
+    """Test the successful registration of a user"""
     def test_registration_post_success(self):
         response = self.client.post('/accounts/registration/',
                                     self.credentials)
+        messages = list(get_messages(response.wsgi_request))
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), "You have successfully registered! We have sent you a confirmation email!")
         self.assertRedirects(response, '/accounts/profile/')
 
+    """
+    Test redirection for user to profile if he/she is already authenticated
+    and tries to access the registration page again
+    """
     def test_redirect_user_if_authenticated(self):
         response = self.client.post('/accounts/registration/',
                                     self.credentials)
@@ -105,6 +121,7 @@ class RegistrationTest(TestCase):
                                     self.credentials)
         self.assertRedirects(response, '/accounts/profile/')
 
+    """Test the unsuccessful registration of a user (password fields don't match)"""
     def test_registration_post_fail(self):
         response = self.client.post('/accounts/registration/',
                                     self.invalid_credentials)
@@ -115,7 +132,9 @@ class RegistrationTest(TestCase):
 
 
 class ProfileUpdateTest(TestCase):
+    """Class for testing profile update"""
 
+    """Set up the credentials for logging in the user"""
     def setUp(self):
         self.credentials = {
             'username': 'user',
@@ -125,6 +144,11 @@ class ProfileUpdateTest(TestCase):
         user.save()
         self.user = {'username': 'complexUser', 'password': 'honoretpatria'}
 
+    """
+    Test profile update after the user is logged in
+    If the user is not logged in he/she is redirected
+    to the login page
+    """
     def test_profile_update(self):
         response = self.client.post('/accounts/profile/', self.user)
         self.assertRedirects(response, '/accounts/login/?next=/accounts/profile/')
@@ -134,21 +158,25 @@ class ProfileUpdateTest(TestCase):
         self.assertEqual(user.is_authenticated, True)
         update_url = '/accounts/profile/'
 
-        # GET the form
-        r = self.client.get(update_url)
+        # GET the profile update form
+        res = self.client.get(update_url)
 
-        # retrieve form data as dict
-        form = r.context['form']
+        # Retrieve form data as dict
+        form = res.context['form']
         data = form.initial
 
-        # manipulate data
+        # Manipulate the form username and email
         data['username'] = 'goagl'
         data['email'] = 'newemail@yahoo.com'
 
-        # POST to the form
-        r = self.client.post(update_url, {'username': data['username'],
-                                          'email': data['email']})
-        # retrieve again
-        r = self.client.get(update_url)
-        self.assertEqual(r.context['form'].initial['username'], 'goagl')
-        self.assertEqual(r.context['form'].initial['email'], 'newemail@yahoo.com')
+        # POST the new username and email to the form
+        res = self.client.post(update_url, {'username': data['username'],
+                                            'email': data['email']})
+        messages = list(get_messages(res.wsgi_request))
+        self.assertEqual(len(messages), 1)
+        self.assertEqual(str(messages[0]), "Your account has been updated!")
+
+        # Retrieve the username and email again
+        res = self.client.get(update_url)
+        self.assertEqual(res.context['form'].initial['username'], 'goagl')
+        self.assertEqual(res.context['form'].initial['email'], 'newemail@yahoo.com')

@@ -71,11 +71,13 @@
 <p id="n2" class="stm run hide_run"><a href="#n2">2</a></p>
 <p id="n3" class="stm run hide_run"><a href="#n3">3</a></p>
 <p id="n4" class="pln"><a href="#n4">4</a></p>
-<p id="n5" class="stm run hide_run"><a href="#n5">5</a></p>
-<p id="n6" class="pln"><a href="#n6">6</a></p>
-<p id="n7" class="stm run hide_run"><a href="#n7">7</a></p>
-<p id="n8" class="stm run hide_run"><a href="#n8">8</a></p>
+<p id="n5" class="pln"><a href="#n5">5</a></p>
+<p id="n6" class="stm run hide_run"><a href="#n6">6</a></p>
+<p id="n7" class="pln"><a href="#n7">7</a></p>
+<p id="n8" class="pln"><a href="#n8">8</a></p>
 <p id="n9" class="stm run hide_run"><a href="#n9">9</a></p>
+<p id="n10" class="stm run hide_run"><a href="#n10">10</a></p>
+<p id="n11" class="stm run hide_run"><a href="#n11">11</a></p>
 
             </td>
             <td class="text">
@@ -83,11 +85,13 @@
 <p id="t2" class="stm run hide_run"><span class="key">from</span> <span class="nam">django</span><span class="op">.</span><span class="nam">test</span> <span class="key">import</span> <span class="nam">TestCase</span><span class="strut">&nbsp;</span></p>
 <p id="t3" class="stm run hide_run"><span class="key">from</span> <span class="nam">shoppingcart</span><span class="op">.</span><span class="nam">apps</span> <span class="key">import</span> <span class="nam">ShoppingcartConfig</span><span class="strut">&nbsp;</span></p>
 <p id="t4" class="pln"><span class="strut">&nbsp;</span></p>
-<p id="t5" class="stm run hide_run"><span class="key">class</span> <span class="nam">ShoppingcartConfigTest</span><span class="op">(</span><span class="nam">TestCase</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
-<p id="t6" class="pln"><span class="strut">&nbsp;</span></p>
-<p id="t7" class="stm run hide_run">    <span class="key">def</span> <span class="nam">test_contact_config</span><span class="op">(</span><span class="nam">self</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
-<p id="t8" class="stm run hide_run">        <span class="nam">self</span><span class="op">.</span><span class="nam">assertEqual</span><span class="op">(</span><span class="nam">ShoppingcartConfig</span><span class="op">.</span><span class="nam">name</span><span class="op">,</span> <span class="str">'shoppingcart'</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
-<p id="t9" class="stm run hide_run">        <span class="nam">self</span><span class="op">.</span><span class="nam">assertEqual</span><span class="op">(</span><span class="nam">apps</span><span class="op">.</span><span class="nam">get_app_config</span><span class="op">(</span><span class="str">'shoppingcart'</span><span class="op">)</span><span class="op">.</span><span class="nam">name</span><span class="op">,</span> <span class="str">'shoppingcart'</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t5" class="pln"><span class="strut">&nbsp;</span></p>
+<p id="t6" class="stm run hide_run"><span class="key">class</span> <span class="nam">ShoppingcartConfigTest</span><span class="op">(</span><span class="nam">TestCase</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t7" class="pln">    <span class="str">"""Class for testing shopping cart app config"""</span><span class="strut">&nbsp;</span></p>
+<p id="t8" class="pln"><span class="strut">&nbsp;</span></p>
+<p id="t9" class="stm run hide_run">    <span class="key">def</span> <span class="nam">test_contact_config</span><span class="op">(</span><span class="nam">self</span><span class="op">)</span><span class="op">:</span><span class="strut">&nbsp;</span></p>
+<p id="t10" class="stm run hide_run">        <span class="nam">self</span><span class="op">.</span><span class="nam">assertEqual</span><span class="op">(</span><span class="nam">ShoppingcartConfig</span><span class="op">.</span><span class="nam">name</span><span class="op">,</span> <span class="str">'shoppingcart'</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
+<p id="t11" class="stm run hide_run">        <span class="nam">self</span><span class="op">.</span><span class="nam">assertEqual</span><span class="op">(</span><span class="nam">apps</span><span class="op">.</span><span class="nam">get_app_config</span><span class="op">(</span><span class="str">'shoppingcart'</span><span class="op">)</span><span class="op">.</span><span class="nam">name</span><span class="op">,</span> <span class="str">'shoppingcart'</span><span class="op">)</span><span class="strut">&nbsp;</span></p>
 
             </td>
         </tr>
@@ -98,7 +102,7 @@
     <div class="content">
         <p>
             <a class="nav" href="index.html">&#xab; index</a> &nbsp; &nbsp; <a class="nav" href="https://coverage.readthedocs.io">coverage.py v4.5.4</a>,
-            created at 2019-08-29 15:15
+            created at 2019-09-01 18:56
         </p>
     </div>
 </div>
