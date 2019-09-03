@@ -17,7 +17,7 @@ DATABASES = {
 # Empty Sendgrid API key for development
 SENDGRID_API_KEY = ''
 
-# Empty Stripe secret key for development
+# Stripe secret key for development (not used in production)
 STRIPE_SECRET_KEY = ''
 
 # Django secret key for development (not used in production)

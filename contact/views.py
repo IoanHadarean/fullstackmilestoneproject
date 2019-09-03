@@ -36,14 +36,27 @@ class ContactView(CreateView):
             enquiry.save()
             messages.success(self.request, "Your enquiry was submitted successfully! Please check your email for confirmation!")
 
-            """Send confirmation email"""
-            send_mail(
-                'Enquiry Wedding Planner',
-                'We have successfully received your enquiry',
-                'weddingplanner@email.com',
-                [self.request.user.email],
-                fail_silently=False,
-                )
+            """
+            Send confirmation email
+            If the user is authenticated, get the email from the request,
+            else get it from the form email input
+            """
+            if self.request.user.is_authenticated:
+                send_mail(
+                    'Enquiry Wedding Planner',
+                    'We have successfully received your enquiry',
+                    'weddingplanner@email.com',
+                    [self.request.user.email],
+                    fail_silently=False,
+                    )
+            else:
+                send_mail(
+                    'Enquiry Wedding Planner',
+                    'We have successfully received your enquiry!',
+                    'weddingplanner@email.com',
+                    [email],
+                    fail_silently=False,
+                    )
             return redirect('/')
         else:
             messages.warning(self.request, "The data entered is invalid!")

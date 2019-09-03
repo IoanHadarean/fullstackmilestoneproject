@@ -16,6 +16,7 @@ class ContactForm(forms.Form):
     email = forms.CharField(min_length=11, required=True,  widget=forms.TextInput(attrs={
         'class': 'form-control',
         'id': 'email',
+        'type': 'email',
     }))
     subject = forms.CharField(max_length=200, required=True, widget=forms.TextInput(attrs={
         'class': 'form-control',

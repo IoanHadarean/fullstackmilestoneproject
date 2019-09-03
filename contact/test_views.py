@@ -27,9 +27,20 @@ class ContactViewTest(TestCase):
         self.assertTemplateUsed(response, 'contact/contact_us.html')
         self.assertEquals(response.status_code, 200)
 
-    """Test for successfully sending the valid contact details"""
-    def test_contact_form_post_success(self):
+    """
+    Test for successfully sending the valid contact details
+    (user is authenticated)
+    """
+    def test_contact_form_post_success_authenticated_user(self):
         self.client.post('/accounts/login/', self.credentials, follow=True)
+        response = self.client.post('/contact/', self.valid_details)
+        self.assertRedirects(response, '/')
+        
+    """
+    Test for successfully sending the valid contact details
+    (user is not authenticated)
+    """
+    def test_contact_form_post_success_not_authenticated_user(self):
         response = self.client.post('/contact/', self.valid_details)
         self.assertRedirects(response, '/')
 
