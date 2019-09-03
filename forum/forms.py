@@ -16,7 +16,7 @@ class PostForm(forms.ModelForm):
 
     class Meta():
         model = Post
-        fields = ('author', 'title', 'text')
+        fields = ('title', 'text')
 
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
@@ -25,11 +25,6 @@ class PostForm(forms.ModelForm):
                 'rows': 5
             })
         }
-
-    def __init__(self, user, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['author'].queryset = User.objects.filter(username=user.username)
-        self.fields['author'].empty_label = None
 
 
 class PostEditForm(forms.ModelForm):
@@ -45,10 +40,9 @@ class PostEditForm(forms.ModelForm):
 
     class Meta():
         model = Post
-        fields = ('author', 'title', 'text')
+        fields = ('title', 'text')
 
         widgets = {
-            'author': forms.Select,
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'text': forms.Textarea(attrs={
                 'class': 'form-control md-textarea',
@@ -56,13 +50,10 @@ class PostEditForm(forms.ModelForm):
             })
         }
 
-    def __init__(self, user, post, *args, **kwargs):
+    def __init__(self, post, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['author'].queryset = User.objects.filter(username=user.username)
         self.fields['title'].initial = post.title
         self.fields['text'].initial = post.text
-        self.fields['author'].empty_label = None
-        self.fields['author'].initial = user.username
 
 
 class CommentForm(forms.ModelForm):
@@ -77,20 +68,14 @@ class CommentForm(forms.ModelForm):
 
     class Meta():
         model = Comment
-        fields = ('author', 'text')
+        fields = ('text',)
 
         widgets = {
-            'author': forms.Select,
             'text': forms.Textarea(attrs={
                 'class': 'form-control md-textarea',
                 'rows': 5
             })
         }
-
-    def __init__(self, user, *args, **kwargs):
-        super().__init__(*args, **kwargs)
-        self.fields['author'].queryset = User.objects.filter(username=user.username)
-        self.fields['author'].empty_label = None
 
 
 class CommentEditForm(forms.ModelForm):
@@ -106,19 +91,15 @@ class CommentEditForm(forms.ModelForm):
 
     class Meta():
         model = Comment
-        fields = ('author', 'text')
+        fields = ('text',)
 
         widgets = {
-            'author': forms.Select,
             'text': forms.Textarea(attrs={
                 'class': 'form-control md-textarea',
                 'rows': 5
             })
         }
 
-    def __init__(self, user, comment, *args, **kwargs):
+    def __init__(self, comment, *args, **kwargs):
         super().__init__(*args, **kwargs)
-        self.fields['author'].queryset = User.objects.filter(username=user.username)
         self.fields['text'].initial = comment.text
-        self.fields['author'].empty_label = None
-        self.fields['author'].initial = user.username

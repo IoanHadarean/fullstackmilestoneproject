@@ -8,3 +8,5 @@ env.py
 /coverage.data
 /coverage/
 htmlcov/ecommerce_env_py.html
+htmlcov/
+.coverage

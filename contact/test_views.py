@@ -35,7 +35,7 @@ class ContactViewTest(TestCase):
         self.client.post('/accounts/login/', self.credentials, follow=True)
         response = self.client.post('/contact/', self.valid_details)
         self.assertRedirects(response, '/')
-        
+
     """
     Test for successfully sending the valid contact details
     (user is not authenticated)

@@ -39,7 +39,7 @@ class CreatePostView(LoginRequiredMixin, CreateView):
     """
     def get(self, *args, **kwargs):
         user = self.request.user
-        form = PostForm(user)
+        form = PostForm()
         form.author = user
         context = {
             'form': form
@@ -48,9 +48,9 @@ class CreatePostView(LoginRequiredMixin, CreateView):
 
     def post(self, *args, **kwargs):
         user = self.request.user
-        form = PostForm(user, self.request.POST or None)
+        form = PostForm(self.request.POST or None)
         if form.is_valid():
-            author = form.cleaned_data.get('author')
+            author = user
             title = form.cleaned_data.get('title')
             text = form.cleaned_data.get('text')
             post = Post(author=author, title=title, text=text)
@@ -67,8 +67,7 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
     def get(self, *args, **kwargs):
         user = self.request.user
         post = Post.objects.get(pk=self.kwargs['pk'])
-        form = PostEditForm(user, post)
-        form.author = user
+        form = PostEditForm(post)
         context = {
             'form': form
         }
@@ -77,9 +76,9 @@ class PostUpdateView(LoginRequiredMixin, UpdateView):
     def post(self, *args, **kwargs):
         user = self.request.user
         post = Post.objects.get(pk=self.kwargs['pk'])
-        form = PostEditForm(user, post, self.request.POST or None)
+        form = PostEditForm(post, self.request.POST or None)
         if form.is_valid():
-            author = form.cleaned_data.get('author')
+            author = user
             title = form.cleaned_data.get('title')
             text = form.cleaned_data.get('text')
             post.author = author
@@ -175,15 +174,16 @@ def add_comment_to_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
     user = request.user
     if request.method == "POST":
-        form = CommentForm(user, request.POST or None)
+        form = CommentForm(request.POST or None)
         if form.is_valid():
             comment = form.save(commit=False)
             comment.post = post
+            comment.author = user
             comment.save()
             messages.success(request, "Your comment is pending approval...")
             return redirect('post_detail', pk=post.pk)
     else:
-        form = CommentForm(user)
+        form = CommentForm()
     return render(request, 'forum/comment_form.html', {'form': form})
 
 
@@ -194,7 +194,7 @@ def add_reply_to_comment(request, pk, id):
     post = get_object_or_404(Post, pk=pk)
     user = request.user
     if request.method == "POST":
-        form = CommentForm(user, request.POST or None)
+        form = CommentForm(request.POST or None)
         if form.is_valid():
             text = request.POST.get('text')
             reply_id = request.POST.get('comment_id')
@@ -208,7 +208,7 @@ def add_reply_to_comment(request, pk, id):
             messages.success(request, "Your reply has been successfully added")
             return HttpResponseRedirect(post.get_absolute_url())
     else:
-        form = CommentForm(user)
+        form = CommentForm()
     return render(request, 'forum/reply_form.html',
                   {'form': form, 'comment': comment})
 
@@ -220,15 +220,16 @@ def edit_reply(request, pk, id):
     post = get_object_or_404(Post, pk=pk)
     user = request.user
     if request.method == "POST":
-        form = CommentEditForm(user, comment, request.POST or None)
+        form = CommentEditForm(comment, request.POST or None)
         if form.is_valid():
             text = request.POST.get('text')
             comment.text = text
+            comment.author = user
             comment.save()
             messages.success(request, "You have successfully edited the reply")
             return HttpResponseRedirect(post.get_absolute_url())
     else:
-        form = CommentEditForm(user, comment)
+        form = CommentEditForm(comment)
     return render(request, 'forum/reply_edit_form.html',
                   {'form': form, 'comment': comment})
 
@@ -270,7 +271,7 @@ class CommentUpdateView(LoginRequiredMixin, UpdateView):
     def get(self, *args, **kwargs):
         user = self.request.user
         comment = Comment.objects.get(pk=self.kwargs['pk'])
-        form = CommentEditForm(user, comment)
+        form = CommentEditForm(comment)
         form.author = user
         context = {
             'form': form
@@ -280,9 +281,9 @@ class CommentUpdateView(LoginRequiredMixin, UpdateView):
     def post(self, *args, **kwargs):
         user = self.request.user
         comment = Comment.objects.get(pk=self.kwargs['pk'])
-        form = CommentEditForm(user, comment, self.request.POST or None)
+        form = CommentEditForm(comment, self.request.POST or None)
         if form.is_valid():
-            author = form.cleaned_data.get('author')
+            author = user
             text = form.cleaned_data.get('text')
             comment.author = author
             comment.text = text
