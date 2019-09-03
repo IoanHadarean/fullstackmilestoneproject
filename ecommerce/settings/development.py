@@ -19,3 +19,6 @@ SENDGRID_API_KEY = ''
 
 # Empty Stripe secret key for development
 STRIPE_SECRET_KEY = ''
+
+# Django secret key for development (not used in production)
+SECRET_KEY = '!4xm)v#w)=7pv)d8z+8p_o8t)bb5p3kbucoj%a0h2t)b1h)e(r'
