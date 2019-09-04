@@ -6,6 +6,7 @@ from shoppingcart.models import Item
 from django.core.paginator import Paginator
 from django.views.generic import ListView
 from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 import random
 
 
@@ -23,7 +24,7 @@ def search_posts(request):
     post_list = Post.objects.filter((Q(title__icontains=search_text) |
                                      Q(text__icontains=search_text) |
                                      Q(created_date__icontains=search_text)) &
-                                    Q(published_date__isnull=False))
+                                    Q(published_date__isnull=False)).order_by('title')
 
     post_list_count = post_list.count()
 
@@ -46,7 +47,7 @@ def posts_results(request, search_text):
         post_list = Post.objects.filter((Q(title__icontains=search_text) |
                                          Q(text__icontains=search_text) |
                                          Q(created_date__icontains=search_text)) &
-                                        Q(published_date__isnull=False))
+                                        Q(published_date__isnull=False)).order_by('title')
         if post_list.count() >= 7:
             post_list = post_list[:7]
         else:
@@ -61,7 +62,7 @@ def posts_results(request, search_text):
 
         return JsonResponse(posts, safe=False)
 
-
+@login_required
 def search_drafts(request):
     """
     Search drafts by title, text, created_date and 'published_date_isnull=True'.
@@ -76,7 +77,7 @@ def search_drafts(request):
     draft_list = Post.objects.filter((Q(title__icontains=search_text) |
                                      Q(text__icontains=search_text) |
                                      Q(created_date__icontains=search_text)) &
-                                     Q(published_date__isnull=True))
+                                     Q(published_date__isnull=True)).order_by('title')
 
     draft_list_count = draft_list.count()
 
@@ -93,13 +94,13 @@ def search_drafts(request):
 
     return render(request, 'forum/post_list.html', context)
 
-
+@login_required
 def drafts_results(request, search_text):
     if request.method == "POST":
         draft_list = Post.objects.filter((Q(title__icontains=search_text) |
                                          Q(text__icontains=search_text) |
                                          Q(created_date__icontains=search_text)) &
-                                         Q(published_date__isnull=True))
+                                         Q(published_date__isnull=True)).order_by('title')
         if draft_list.count() >= 7:
             draft_list = draft_list[:7]
         else:
@@ -107,7 +108,6 @@ def drafts_results(request, search_text):
 
         drafts = []
         for draft in draft_list:
-            print(draft.author)
             dict_item = {}
             if draft.title not in dict_item.keys():
                 dict_item[draft.title] = draft.pk

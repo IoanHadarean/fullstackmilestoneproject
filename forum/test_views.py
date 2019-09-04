@@ -19,7 +19,7 @@ class TestForumViews(TestCase):
         self.post = Post(author=self.user, title='post', likes_total=100,
                          text='this is a post', published_date=datetime.datetime(2019, 9, 4, tzinfo=pytz.UTC))
         self.post.save()
-        self.comment =  Comment(author=self.user, post=self.post, text='comment')
+        self.comment = Comment(author=self.user, post=self.post, text='comment')
         self.comment.save()
     
     def test_get_post_list(self):
