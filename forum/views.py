@@ -164,7 +164,7 @@ def post_publish(request, pk):
     """Allow publishing a post"""
     post = get_object_or_404(Post, pk=pk)
     post.publish()
-    messages.success(request, "Your post has been published successfully.")
+    messages.success(request, "Your post has been successfully published")
     return redirect('post_list')
 
 
@@ -240,7 +240,7 @@ def reply_remove(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
     post_pk = comment.post.pk
     comment.delete()
-    messages.success(request, "You have successfully removed the reply.")
+    messages.success(request, "You have successfully removed the reply")
     return redirect('post_detail', pk=post_pk)
 
 
@@ -249,7 +249,7 @@ def comment_approve(request, pk):
     """Approve a post comment"""
     comment = get_object_or_404(Comment, pk=pk)
     comment.approve()
-    messages.success(request, "You have successfully approved the comment.")
+    messages.success(request, "You have successfully approved the comment")
     return redirect('post_detail', pk=comment.post.pk)
 
 
@@ -259,7 +259,7 @@ def comment_remove(request, pk):
     comment = get_object_or_404(Comment, pk=pk)
     post_pk = comment.post.pk
     comment.delete()
-    messages.success(request, "You have successfully removed the comment.")
+    messages.success(request, "You have successfully removed the comment")
     return redirect('post_detail', pk=post_pk)
 
 

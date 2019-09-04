@@ -15,6 +15,7 @@ class TestForumForms(TestCase):
         self.post = Post(author=self.user, title='post', text='this is a post')
         self.post.save()
         self.comment =  Comment(author=self.user, post=self.post, text='comment')
+        self.comment.save()
         
     def test_post_edit_form(self):
         form_params = {'title': 'edited post', 'text': 'this is an edited post'}
