@@ -75,6 +75,10 @@ ul {
   justify-content:center;
 }
 
+.center-refund-form {
+  margin: 0 auto;
+}
+
 /* ----------------------------------------Navigation---------------------------------- */
 
 .bg-steel {

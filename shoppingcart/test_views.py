@@ -1007,12 +1007,14 @@ class RequestRefundViewTest(TestCase):
         self.refund_form1 = {
             'ref_code': 'test_order',
             'message': 'I want my money back!!!!',
-            'email': 'newuser@yahoo.com'
+            'email': 'newuser@yahoo.com',
+            'name': 'Ioan',
         }
         self.refund_form2 = {
             'ref_code': 'invalid_ref_code',
             'message': 'I want my money back!!!!',
-            'email': 'newuser@yahoo.com'
+            'email': 'newuser@yahoo.com',
+            'name': 'Ioan',
         }
 
     """Test 'GET' request refund view"""

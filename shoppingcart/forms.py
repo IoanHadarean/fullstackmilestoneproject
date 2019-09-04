@@ -48,11 +48,24 @@ class RefundForm(forms.Form):
     Refund form with the reference code
     and a message
     """
-    ref_code = forms.CharField()
-    message = forms.CharField(widget=forms.Textarea(attrs={
-        'rows': 4
+    name = forms.CharField(max_length=50, required=True, widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'id': 'name',
     }))
-    email = forms.EmailField()
+    email = forms.CharField(min_length=11, required=True,  widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'id': 'email',
+        'type': 'email',
+    }))
+    ref_code = forms.CharField(max_length=20, required=True, widget=forms.TextInput(attrs={
+        'class': 'form-control',
+        'id': 'ref_code',
+    }))
+    message = forms.CharField(max_length=500, required=True, widget=forms.Textarea(attrs={
+        'rows': 2,
+        'class': 'form-control md-textarea',
+        'id': 'message',
+    }))
 
 
 class PaymentForm(forms.Form):

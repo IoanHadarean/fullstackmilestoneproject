@@ -26,8 +26,3 @@ class TestForumForms(TestCase):
         form_params = {'text': 'edited comment'}
         comment_edit_form = CommentEditForm(self.comment, form_params)
         self.assertEqual(comment_edit_form.fields['text'].initial, 'comment')
-        
-        
-        
-        
-        

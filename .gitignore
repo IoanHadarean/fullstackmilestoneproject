@@ -9,4 +9,4 @@ env.py
 /coverage/
 htmlcov/ecommerce_env_py.html
 htmlcov/
-.coverage
+*.coverage

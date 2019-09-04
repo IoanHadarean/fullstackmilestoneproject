@@ -788,6 +788,7 @@ class RequestRefundView(View):
             ref_code = form.cleaned_data.get('ref_code')
             message = form.cleaned_data.get('message')
             email = form.cleaned_data.get('email')
+            name = form.cleaned_data.get('name')
             """Edit the order"""
             try:
                 order = Order.objects.get(ref_code=ref_code)
@@ -799,6 +800,7 @@ class RequestRefundView(View):
                 refund.order = order
                 refund.reason = message
                 refund.email = email
+                refund.name = name
                 refund.save()
 
                 messages.info(self.request, "Your refund request was received.")

@@ -1,19 +1,82 @@
-{% extends 'base.html' %}
-{% block custom_title %}
+{% extends 'base.html' %} {% block custom_title %}
 <title>Refund</title>
 {% endblock %}
 {% load crispy_forms_tags %}
 {% block content %}
-<!-- Request Refund Form -->
-    <div class="container">
-        <div class="table-responsive text-nowrap">
-            <h2>Request Refund</h2>
-            <form method="POST">
+<!--Section: Refund-->
+<section class="mb-4">
+
+    <!--Section heading-->
+    <h2 class="h1-responsive font-weight-bold text-center my-4">Request Refund</h2>
+    <!--Section description-->
+    <p class="text-center w-responsive mx-auto mb-5">Unhappy about one of your purchases? Fill out the refund form below and we'll gladly give you the money back if your complaint is deemed valid.</p>
+
+    <div class="row">
+
+        <!--Grid column-->
+        <div class="col-md-9 center-refund-form mb-md-0 mb-5">
+            <form id="refund-form" name="refund-form" method="POST">
                 {% csrf_token %}
-                {{ form|crispy }}
-                <a class="btn btn-primary" href="/">Back To Home</a>
-                <button type="submit" class="btn btn-warning">Submit Request</button>
+                {% if request.user.is_authenticated == False %}
+                 <!--Grid row-->
+                <div class="row">
+
+                    <!--Grid column-->
+                    <div class="col-md-6">
+                        <div class="md-form mb-0">
+                            <label for="name" class="">Your name</label>{{ form.name }}
+                        </div>
+                    </div>
+
+                    <!--Grid column-->
+                    <div class="col-md-6">
+                        <div class="md-form mb-0">
+                            <label for="email" class="">Your email</label> {{ form.email }}
+                        </div>
+                    </div>
+                </div>
+                {% else %}
+                <!--Grid row-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="md-form mb-0">
+                            <label for="name" class="">Your name</label> {{ form.name }}
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Hidden input for email if user is authenticated -->
+                <input type="hidden" name="email" value="{{ request.user.email }}">
+                {% endif %}
+
+                <!--Grid row-->
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="md-form mb-0">
+                            <label for="ref_code" class="">Ref code</label> {{ form.ref_code }}
+                        </div>
+                    </div>
+                </div>
+
+                <!--Grid row-->
+                <div class="row">
+
+                    <!--Grid column-->
+                    <div class="col-md-12">
+
+                        <div class="md-form">
+                            {{ form.message }}
+                            <label for="message">Your message</label>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="text-center text-md-left">
+                    <a class="btn btn-primary" href="/">Back To Home</a>
+                    <button type="submit" class="btn btn-warning">Submit Request</button>
+                </div>
             </form>
         </div>
     </div>
+</section>
 {% endblock %}
