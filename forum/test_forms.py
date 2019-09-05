@@ -5,7 +5,9 @@ from django.contrib.auth.models import User
 
 
 class TestForumForms(TestCase):
-    
+    """Class for testing forum forms"""
+
+    """Set up the credentials for the user, as well as the test post and comment"""
     def setUp(self):
         self.credentials = {
             'username': 'username1',
@@ -16,13 +18,15 @@ class TestForumForms(TestCase):
         self.post.save()
         self.comment =  Comment(author=self.user, post=self.post, text='comment')
         self.comment.save()
-        
+
+    """Test post edit form prepopulated fields"""
     def test_post_edit_form(self):
         form_params = {'title': 'edited post', 'text': 'this is an edited post'}
         post_edit_form = PostEditForm(self.post, form_params)
         self.assertEqual(post_edit_form.fields['title'].initial, 'post')
         self.assertEqual(post_edit_form.fields['text'].initial, 'this is a post')
-        
+
+    """Test comment edit form prepopulated fields"""
     def test_comment_edit_form(self):
         form_params = {'text': 'edited comment'}
         comment_edit_form = CommentEditForm(self.comment, form_params)
