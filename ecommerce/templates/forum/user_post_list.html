@@ -22,8 +22,9 @@
     <!-- Post list -->
     {% for post in post_list %}
     <div class="post">
+        <!-- Post author profile image -->
         {% if post.author.profile.image %}
-        <img class="rounded-circle" src="{{ post.author.profile.image.url }}" alt="profile-image">
+        <img class="rounded-circle" src="{{ post.author.profile.image.url }}"  width = "70" height = "70" alt="profile-image">
         {% else %}
         <img class="rounded-circle" src="{% static 'img/avatar.png' %}" width = "70" height = "70" alt="profile-image">
         <h1><a href="{% url 'post_detail' pk=post.pk %}">{{ post.title }}</a></h1>

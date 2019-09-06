@@ -13,5 +13,5 @@
     </a>
 </form>
 {% elif not request.user.is_authenticated %}
-<p>You need to be logged in to like/dislike a post.</p>
+<p>You need to <a href="{% url 'login' %}">log in</a> in to like/dislike a post.</p>
 {% endif %}

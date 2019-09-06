@@ -7,11 +7,12 @@
     <h2 class="posttitle">{{ post.title }}</h2>
     {% if post.published_date %}
     <div class="date postdate">
-        Written by <a class="mr-2" href="{% url 'user_posts' post.author.username %}">{{ post.author }}</a> on {{post.published_date|date:"D M Y"}}
+        Written by <a class="mr-2" href="{% url 'user_posts' post.author.username %}">{{ post.author }}</a>on {{post.published_date|date:"D M Y"}}
     </div>
     {% else %} {% if post.author == request.user %}
     <a class="btn btn-primary" href="{% url 'post_publish' pk=post.pk %}">Publish</a> {% endif %} {% endif %}
-
+    
+    <!-- Post text -->
     <p class="postcontent">{{post.text|striptags|safe|linebreaksbr}}</p>
 
     <!-- Include likes-form-->
@@ -21,8 +22,8 @@
 
     <!-- Buttons for editing and removing posts -->
     {% if user.is_authenticated %} {% if post.author == request.user %}
-    <a class="btn btn-default post-edit" href="{% url 'post_edit' pk=post.pk %}"><i class="fa fa-edit"></i></a>
-    <a class="btn btn-danger post-remove" href="{% url 'post_remove' pk=post.pk %}"><i class="fa fa-trash-alt"></i></a> {% endif %} {% endif %}
+    <a class="post-edit" href="{% url 'post_edit' pk=post.pk %}"><i class="fa fa-edit"></i></a>
+    <a class="post-remove ml-3" href="{% url 'post_remove' pk=post.pk %}"><i class="fa fa-trash-alt"></i></a> {% endif %} {% endif %}
 
     <!-- Button for adding a comment -->
     <hr>
@@ -35,37 +36,58 @@
     <!-- If the comment is not approved add buttons for removing and approving the comment for the superuser-->
     <!-- If there are no comments add a paragraph with a text of 'No Comments' -->
     <div class="container comments-container">
-        {% for comment in post.comments.all %}
-        {% if user.is_authenticated %} {% if not comment.approved_comment %} {% if user.is_superuser %}
-        <p>{{ comment.created_date }}</p>
-        <p>{{comment.text|safe|linebreaks}}</p>
-        <p>Posted By: {{comment.author}}</p>
-        <a class="btn btn-danger comment-remove" href="{% url 'comment_remove' pk=comment.pk %}"><i class="fa fa-trash"></i></a>
-        <a class="btn btn-primary comment-approve" href="{% url 'comment_approve' pk=comment.pk %}"><i class="fa fa-check"></i></a> {% endif %} {% endif %} {% if comment.approved_comment and not comment.reply %}
-        <p>{{ comment.created_date }}</p>
-        <p>{{comment.text|safe|linebreaks}}</p>
-        <p>Posted By: {{comment.author}}</p>
+        {% for comment in post.comments.all %} {% if user.is_authenticated %} {% if not comment.approved_comment %} {% if user.is_superuser %}
         
+        <!-- Post comment author profile image -->
+        {% if comment.author.profile.image %}
+            <img class="rounded-circle mt-5" src="{{ post.author.profile.image.url }}" width="70" height="70" alt="profile-image">
+        {% else %}
+            <img class="rounded-circle mt-5" src="{% static 'img/avatar.png' %}" width="70" height="70" alt="profile-image">
+        {% endif %}
+        <p>{{ comment.created_date }}</p>
+        <p>{{comment.text|safe|linebreaks}}</p>
+        <p>Posted By: {{comment.author}}</p>
+        <a class="comment-remove" href="{% url 'comment_remove' pk=comment.pk %}"><i class="fa fa-trash-alt"></i></a>
+        <a class="ml-3" href="{% url 'comment_approve' pk=comment.pk %}"><i class="fa fa-check"></i></a> {% endif %} {% endif %} {% if comment.approved_comment and not comment.reply %}
+        
+        <!-- Post comment author profile image -->
+        {% if comment.author.profile.image %}
+            <img class="rounded-circle mt-5" src="{{ post.author.profile.image.url }}" width="70" height="70" alt="profile-image">
+        {% else %}
+            <img class="rounded-circle mt-5" src="{% static 'img/avatar.png' %}" width="70" height="70" alt="profile-image">
+        {% endif %}
+        <p>{{ comment.created_date }}</p>
+        <p>{{comment.text|safe|linebreaks}}</p>
+        <p>Posted By: {{comment.author}}</p>
+
         <div>
             <!-- Comment edit and delete buttons -->
             {% if comment.author == request.user %}
-            <a class="btn btn-default comment-edit" href="{% url 'comment_edit' pk=comment.pk %}"><i class="fa fa-edit"></i></a>
-            <a class="btn btn-danger comment-remove" href="{% url 'comment_remove' pk=comment.pk %}"><i class="fa fa-trash"></i></a>
-            {% endif %}
-        
+            <a class="comment-edit" href="{% url 'comment_edit' pk=comment.pk %}"><i class="fa fa-edit"></i></a>
+            <a class="comment-remove ml-3" href="{% url 'comment_remove' pk=comment.pk %}"><i class="fa fa-trash-alt"></i></a> {% endif %}
+
             <!-- Reply button and reply blockquote container-->
-            <a class="btn btn-primary btn-reply" href="{% url 'add_reply_to_comment' pk=post.pk id=comment.id %}">Reply</a> {% endif %} {% for reply in comment.replies.all %}
+            <a class="ml-3 btn-reply" href="{% url 'add_reply_to_comment' pk=post.pk id=comment.id %}">Reply</a>
         </div>
-        <blockquote class="blockquote">
-            {{ reply.created_date}}
-            <br> {{reply.text|safe|linebreaks|striptags}}
-            <br> Posted By: {{ reply.author|striptags }}
+        {% endif %}
+            {% for reply in comment.replies.all %}
+            <div class="ml-5">
+            <!-- Post comment reply author profile image -->
+            {% if reply.author.profile.image %}
+                <img class="rounded-circle mt-3" src="{{ post.author.profile.image.url }}" width="70" height="70" alt="profile-image">
+            {% else %}
+                <img class="rounded-circle mt-3" src="{% static 'img/avatar.png' %}" width="70" height="70" alt="profile-image">
+            {% endif %}
+            <p>{{ reply.created_date}}</p>
+            <p>{{reply.text|safe|linebreaks|striptags}}</p>
+            <p>Posted By: {{ reply.author|striptags }}</p>
             <div>
-                <a class="btn btn-default comment-edit" href="{% url 'edit_reply' pk=post.pk id=reply.id %}"><i class="fa fa-edit"></i></a>
-                <a class="btn btn-danger comment-remove" href="{% url 'reply_remove' pk=reply.pk %}"><i class="fa fa-trash"></i></a>
+                <a class="comment-edit" href="{% url 'edit_reply' pk=post.pk id=reply.id %}"><i class="fa fa-edit"></i></a>
+                <a class="comment-remove ml-3" href="{% url 'reply_remove' pk=reply.pk %}"><i class="fa fa-trash-alt"></i></a>
             </div>
-        </blockquote>
-        <br> {% endfor %} {% endif %} {% empty %}
+            </div>
+            {% endfor %}
+        {% endif %} {% empty %}
         <p>No Comments</p>
         {% endfor %}
     </div>

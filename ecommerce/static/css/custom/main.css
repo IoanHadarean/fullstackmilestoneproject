@@ -161,10 +161,6 @@ ul {
   margin-top: 0.9375rem;
 }
 
-.postcontent {
-  margin-left: 0.4rem;
-}
-
 .posttitle {
   text-align: center;
 }
@@ -192,6 +188,16 @@ ul {
   margin-top: 4.375rem;
 }
 
+.comment-remove:hover,
+.post-remove:hover {
+  color: red;
+}
+
+.comment-edit,
+.post-edit {
+  color: #2bbbad;
+}
+
 /* -----------------------------------------------Payment-------------------------------- */
 .margin-left-card {
   margin-left: 10px;
@@ -212,9 +218,8 @@ ul {
 }
 
 #btn-search {
-  height: 2.25rem;
+  height: 2.19rem;
   line-height: 0.3125rem;
-  margin: 0;
   margin-top: 0.0625rem;
 }
 
@@ -300,11 +305,6 @@ ul {
   }
 
   .btn-comment,
-  .btn-reply,
-  .post-edit,
-  .post-remove,
-  .comment-remove,
-  .comment-edit,
   #like-post,
   #dislike-post {
     font-size: 0.5625rem;
@@ -314,18 +314,11 @@ ul {
     height: 2.25rem;
   }
   
-  .post-edit,
-  .post-remove,
-  .comment-remove,
-  .comment-edit,
   #like-post,
   #dislike-post {
     width: 4.375rem;
   }
-  
-  .btn-reply {
-    width: 6.25rem;
-  }
+
 }
 
 @media (min-width: 577px) and (max-width: 809px) {
@@ -334,11 +327,6 @@ ul {
   }
   
   .btn-comment,
-  .btn-reply,
-  .post-edit,
-  .post-remove,
-  .comment-remove,
-  .comment-edit,
   #like-post,
   #dislike-post {
     font-size: 0.625rem;
@@ -354,11 +342,6 @@ ul {
 
 @media (min-width: 810px) and (max-width: 991px) {
   .btn-comment,
-  .btn-reply,
-  .post-edit,
-  .post-remove,
-  .comment-remove,
-  .comment-edit,
   #like-post,
   #dislike-post {
     font-size: 0.625rem;
@@ -367,9 +350,6 @@ ul {
 
 @media (min-width: 992px) {
   .btn-comment,
-  .btn-reply,
-  .post-edit,
-  .post-remove,
   #like-post,
   #dislike-post {
     font-size: 0.75rem;
