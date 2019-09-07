@@ -27,6 +27,10 @@ function getCookie(cname) {
 
 function getProductResults() {
     let xhr = new XMLHttpRequest();
+    
+    // Unbind event listener before new AJAX call
+    searchInput.removeEventListener('keyup', getProductResults);
+    
     var searchRequest = null;
     // Abort old pending requests
     if (searchRequest) {
@@ -163,5 +167,5 @@ var debounceTimeout = null;
 
 searchInput.addEventListener('keyup', function(event) {
     clearTimeout(debounceTimeout);
-    debounceTimeout = setTimeout(getProductResults, 500);
+    debounceTimeout = setTimeout(getProductResults, 100);
 });

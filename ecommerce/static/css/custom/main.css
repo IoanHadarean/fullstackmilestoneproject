@@ -79,6 +79,10 @@ ul {
   margin: 0 auto;
 }
 
+.no-padding-left {
+  padding-left: 0;
+}
+
 /* ----------------------------------------Navigation---------------------------------- */
 
 .bg-steel {
@@ -219,12 +223,6 @@ ul {
 
 
 /* ------------------------------------------------Search-------------------------------- */
-
-#search-results-posts,
-#search-results-drafts,
-#search-results-products {
-  padding-left: 0;
-}
 
 #search-typeahead {
   padding-left: 0;

@@ -42,6 +42,9 @@ function getPostsResults() {
     if (searchRequest) {
         searchRequest.abort();
     }
+    
+    // Unbind event listener before new AJAX call
+    searchInputPosts.removeEventListener('keyup', getPostsResults);
 
     // Get the search text from the search input
     let searchText = searchInputPosts.value;
@@ -166,6 +169,9 @@ function getDraftsResults() {
     if (searchRequest) {
         searchRequest.abort();
     }
+    
+    // Unbind event listener before new AJAX call
+    searchInputDrafts.removeEventListener('keyup', getDraftsResults);
 
     // Get the search text from the search input
     let searchText = searchInputDrafts.value;
@@ -283,13 +289,13 @@ var debounceTimeout = null;
 if (searchInputPosts) {
     searchInputPosts.addEventListener('keyup', function(event) {
         clearTimeout(debounceTimeout);
-        debounceTimeout = setTimeout(getPostsResults, 500);
+        debounceTimeout = setTimeout(getPostsResults, 100);
     });
 }
 
 if (searchInputDrafts) {
     searchInputDrafts.addEventListener('keyup', function(event) {
         clearTimeout(debounceTimeout);
-        debounceTimeout = setTimeout(getDraftsResults, 500);
+        debounceTimeout = setTimeout(getDraftsResults, 100);
     });
 }

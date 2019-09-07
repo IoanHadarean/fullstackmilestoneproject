@@ -35,6 +35,7 @@ class Post(models.Model):
 
 
 class Comment(models.Model):
+        
     """A model class used for a single comment"""
     post = models.ForeignKey('forum.Post', related_name='comments', on_delete=models.CASCADE)
     reply = models.ForeignKey("Comment", null=True, related_name='replies', on_delete=models.CASCADE)
@@ -42,6 +43,10 @@ class Comment(models.Model):
     text = models.TextField()
     created_date = models.DateTimeField(default=timezone.now)
     approved_comment = models.BooleanField(default=False)
+    
+    """Order comments by created_date"""
+    class Meta:
+        ordering = ['-created_date']
 
     def approve(self):
         self.approved_comment = True
