@@ -161,6 +161,16 @@ ul {
   margin-top: 0.9375rem;
 }
 
+.postcontent {
+  margin-top: 2.5rem;
+}
+
+.toggle-replies {
+  cursor: pointer;
+  display: inline-block;
+}
+
+
 .posttitle {
   text-align: center;
 }
@@ -186,6 +196,10 @@ ul {
 
 .comments-container {
   margin-top: 4.375rem;
+}
+
+.comment-reply {
+  display: none;
 }
 
 .comment-remove:hover,

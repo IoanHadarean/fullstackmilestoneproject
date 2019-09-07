@@ -4,8 +4,10 @@ var newCardForm = document.getElementsByClassName('new-card-form')[0];
 var useDefaultCard = document.querySelector("input[name=use_default_card]");
 var savedCards = document.getElementsByClassName('saved_card');
 
-// Hide the new card form if use default card is checked, else show it
-// Hide the saved cards if use default card is checked
+/*
+Hide the new card form if use default card is checked, else show it
+Hide the saved cards if use default card is checked
+*/
 if (useDefaultCard) {
     useDefaultCard.addEventListener('change', function() {
         if (this.checked == true) {

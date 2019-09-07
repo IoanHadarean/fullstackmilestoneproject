@@ -1,4 +1,4 @@
-// Get HTML elements
+// Get shipping/billing forms and checkboxes
 var hideableShippingForm = document.getElementsByClassName('hideable_shipping_form')[0];
 var hideableBillingForm = document.getElementsByClassName('hideable_billing_form')[0];
 
@@ -8,8 +8,6 @@ var useDefaultBilling = document.querySelector("input[name=use_default_billing]"
 var useDefaultBillingContainer = document.getElementsByClassName('use-default-billing')[0];
 var saveDefaultShipping = document.querySelector("input[name=set_default_shipping]");
 var saveDefaultShippingContainer = document.getElementsByClassName('save-default-shipping')[0];
-var saveDefaultBilling = document.querySelector("input[name=set_default_billing]");
-var saveDefaultBillingContainer = document.getElementsByClassName("save-default-billing")[0];
 var sameBillingAddress = document.querySelector("input[name=same_billing_address]");
 var setDefaultAddressLabel = document.querySelector('label[for=set_default_shipping]');
 
@@ -54,8 +52,10 @@ if (useDefaultBilling) {
     }
 }
 
-// Hide billing form if same billing address is checked and default shipping is not checked, else show it
-// Change set default shipping address text when same billing address is checked
+/*
+Hide billing form if same billing address is checked and default shipping is not checked, else show it
+Change set default shipping address text when same billing address is checked
+*/
 if (sameBillingAddress) {
 
     // On change event
