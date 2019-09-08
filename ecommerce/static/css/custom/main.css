@@ -71,8 +71,8 @@ ul {
 }
 
 .main-include {
-  align-items:center;
-  justify-content:center;
+  align-items: center;
+  justify-content: center;
 }
 
 .center-refund-form {
@@ -81,6 +81,10 @@ ul {
 
 .no-padding-left {
   padding-left: 0;
+}
+
+.pagination {
+  height: 34px;
 }
 
 /* ----------------------------------------Navigation---------------------------------- */
@@ -217,6 +221,7 @@ ul {
 }
 
 /* -----------------------------------------------Payment-------------------------------- */
+
 .margin-left-card {
   margin-left: 10px;
 }
@@ -306,8 +311,17 @@ ul {
 
 @media (max-width: 440px) {
   #btn-search {
-    margin-left: -0.625rem;
-    font-size: 0.5625rem;
+    margin-left: 30%;
+    margin-top: 0.5rem;
+  }
+  
+  .posts-mobile {
+    margin-top: 5rem;
+  }
+  
+  .search-mobile {
+    max-width: 100%;
+    flex: 0 0 100%;
   }
 }
 
@@ -325,7 +339,7 @@ ul {
     align-items: center;
     height: 2.25rem;
   }
-  
+
   #like-post,
   #dislike-post {
     width: 4.375rem;
@@ -337,7 +351,7 @@ ul {
   .btn-comment {
     margin-right: 3.125rem;
   }
-  
+
   .btn-comment,
   #like-post,
   #dislike-post {
@@ -390,8 +404,32 @@ ul {
   }
 }
 
-@media (min-width: 800px) and (max-width: 850px) {
+@media (max-width: 470px) {
+  .page-mobile {
+    display: inherit;
+  }
 
+  .page-next,
+  .page-last,
+  .page-first,
+  .page-previous {
+    padding: .5rem .4rem;
+  }
+  
+  .pagination .page-item .page-link {
+    font-size: .7rem;
+  }
+  
+  .pagination .page-item .page-link {
+    height: 1.875rem;
+  }
+  
+  .page-link {
+    padding: .5rem .6rem;
+  }
+}
+
+@media (min-width: 800px) and (max-width: 850px) {
   html,
   body,
   header,
@@ -436,7 +474,7 @@ ul {
   .update-card-details {
     display: flex;
   }
-  
+
   .margin-left-card {
     margin-left: 0;
   }

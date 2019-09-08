@@ -42,7 +42,7 @@ function getPostsResults() {
     if (searchRequest) {
         searchRequest.abort();
     }
-    
+
     // Unbind event listener before new AJAX call
     searchInputPosts.removeEventListener('keyup', getPostsResults);
 
@@ -54,7 +54,7 @@ function getPostsResults() {
 
     // Remove search typeahead border after results are cleared
     searchTypeAhead.style.border = 'none';
-    
+
     if (searchText) {
         xhr.onload = function() {
             if (this.readyState == 4 && this.status == 200) {
@@ -78,10 +78,11 @@ function getPostsResults() {
 
                         // Create the li element
                         let li = document.createElement('li');
-                        li.style.paddingTop = '5px';
-                        li.style.paddingBottom = '5px';
-                        li.style.height = '35px';
-                        li.style.paddingLeft = '10px';
+                        li.style.paddingTop = '0.3125rem';
+                        li.style.paddingBottom = '0.3125rem';
+                        li.style.height = '2.1875rem';
+                        li.style.paddingLeft = '0.9375rem';
+                        li.style.fontWeight = '400';
                         li.setAttribute('id', pk);
 
                         // Create link for search result product
@@ -91,7 +92,7 @@ function getPostsResults() {
                         linkTag.style.display = 'block';
 
                         // Change the border of search typeahead
-                        searchTypeAhead.style.border = '1px grey solid';
+                        searchTypeAhead.style.border = '0.0625rem grey solid';
                         searchTypeAhead.style.borderTop = '0';
 
 
@@ -127,14 +128,15 @@ function getPostsResults() {
                 else {
                     // Create the li element
                     let li = document.createElement('li');
-                    li.style.paddingTop = '5px';
-                    li.style.paddingBottom = '5px';
-                    li.style.paddingLeft = '10px';
-                    li.style.height = '35px';
+                    li.style.paddingTop = '0.3125rem';
+                    li.style.paddingBottom = '0.3125rem';
+                    li.style.height = '2.1875rem';
+                    li.style.paddingLeft = '0.9375rem';
+                    li.style.fontWeight = '400';
                     li.innerHTML = searchText;
 
                     // Change the border of search typeahead
-                    searchTypeAhead.style.border = '1px grey solid';
+                    searchTypeAhead.style.border = '0.0625rem grey solid';
                     searchTypeAhead.style.borderTop = '0';
 
                     // Add mouse enter and mouse out event listeners for li
@@ -169,7 +171,7 @@ function getDraftsResults() {
     if (searchRequest) {
         searchRequest.abort();
     }
-    
+
     // Unbind event listener before new AJAX call
     searchInputDrafts.removeEventListener('keyup', getDraftsResults);
 
@@ -205,10 +207,11 @@ function getDraftsResults() {
 
                         // Create the li element
                         let li = document.createElement('li');
-                        li.style.paddingTop = '5px';
-                        li.style.paddingBottom = '5px';
-                        li.style.height = '35px';
-                        li.style.paddingLeft = '10px';
+                        li.style.paddingTop = '0.3125rem';
+                        li.style.paddingBottom = '0.3125rem';
+                        li.style.height = '2.1875rem';
+                        li.style.paddingLeft = '0.9375rem';
+                        li.style.fontWeight = '400';
                         li.setAttribute('id', pk);
 
                         // Create link for search result product
@@ -250,10 +253,11 @@ function getDraftsResults() {
                 else {
                     // Create the li element
                     let li = document.createElement('li');
-                    li.style.paddingTop = '5px';
-                    li.style.paddingBottom = '5px';
-                    li.style.paddingLeft = '10px';
-                    li.style.height = '35px';
+                    li.style.paddingTop = '0.3125rem';
+                    li.style.paddingBottom = '0.3125rem';
+                    li.style.height = '2.1875rem';
+                    li.style.paddingLeft = '0.9375rem';
+                    li.style.fontWeight = '400';
                     li.innerHTML = searchText;
 
                     // Add mouse enter and mouse out event listeners for li

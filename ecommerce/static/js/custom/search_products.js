@@ -27,31 +27,31 @@ function getCookie(cname) {
 
 function getProductResults() {
     let xhr = new XMLHttpRequest();
-    
+
     // Unbind event listener before new AJAX call
     searchInput.removeEventListener('keyup', getProductResults);
-    
+
     var searchRequest = null;
     // Abort old pending requests
     if (searchRequest) {
         searchRequest.abort();
     }
-    
+
     // Get the search text from the search input
     let searchText = searchInput.value;
-    
+
     // Clear the search results
     searchResults.innerHTML = '';
-    
-    
+
+
     // Remove search typeahead border after results are cleared
     searchTypeAhead.style.border = 'none';
-    
+
     if (searchText) {
         xhr.onload = function() {
             if (this.readyState == 4 && this.status == 200) {
                 let results = JSON.parse(xhr.responseText);
-                
+
                 // Clear the search results
                 if (searchResults) {
                     searchResults.innerHTML = '';
@@ -76,9 +76,9 @@ function getProductResults() {
 
                         // Create the li element
                         let li = document.createElement('li');
-                        li.style.paddingTop = '8px';
-                        li.style.paddingBottom = '8px';
-                        li.style.paddingLeft = '10px';
+                        li.style.paddingTop = '0.5rem';
+                        li.style.paddingBottom = '0.5rem';
+                        li.style.paddingLeft = '0.625rem';
                         li.setAttribute('id', slug);
 
                         // Create link for search result product
@@ -88,7 +88,7 @@ function getProductResults() {
                         linkTag.style.display = 'block';
 
                         // Change the border of search typeahead
-                        searchTypeAhead.style.border = '1px grey solid';
+                        searchTypeAhead.style.border = '0.0625rem grey solid';
                         searchTypeAhead.style.borderTop = '0';
 
                         // Add mouse enter and mouse out event listeners for li and link
@@ -111,7 +111,7 @@ function getProductResults() {
                             li.style.backgroundColor = white;
                             linkTag.style.color = black;
                         });
-                        
+
                         // Append title as text node to link
                         linkTag.appendChild(document.createTextNode(title));
 
@@ -123,13 +123,13 @@ function getProductResults() {
                 else {
                     // Create the li element
                     let li = document.createElement('li');
-                    li.style.paddingTop = '8px';
-                    li.style.paddingBottom = '8px';
-                    li.style.paddingLeft = '10px';
+                    li.style.paddingTop = '0.5rem';
+                    li.style.paddingBottom = '0.5rem';
+                    li.style.paddingLeft = '0.625rem';
                     li.innerHTML = searchText;
 
                     // Change the border of search typeahead
-                    searchTypeAhead.style.border = '1px grey solid';
+                    searchTypeAhead.style.border = '0.0625rem grey solid';
                     searchTypeAhead.style.borderTop = '0';
 
 

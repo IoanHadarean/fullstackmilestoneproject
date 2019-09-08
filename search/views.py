@@ -29,7 +29,7 @@ def search_posts(request):
     post_list_count = post_list.count()
 
     """Add pagination for searching posts"""
-    paginator = Paginator(post_list, 8)
+    paginator = Paginator(post_list, 1)
     page = request.GET.get('page')
     post_list = paginator.get_page(page)
 
@@ -82,7 +82,7 @@ def search_drafts(request):
     draft_list_count = draft_list.count()
 
     """Add pagination for searching drafts"""
-    paginator = Paginator(draft_list, 8)
+    paginator = Paginator(draft_list, 6)
     page = request.GET.get('page')
     post_list = paginator.get_page(page)
 
