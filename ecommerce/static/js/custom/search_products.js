@@ -79,6 +79,8 @@ function getProductResults() {
                         li.style.paddingTop = '0.5rem';
                         li.style.paddingBottom = '0.5rem';
                         li.style.paddingLeft = '0.625rem';
+                        li.style.marginRight = '0.625rem';
+                        li.style.overflow = 'hidden';
                         li.setAttribute('id', slug);
 
                         // Create link for search result product
@@ -126,6 +128,8 @@ function getProductResults() {
                     li.style.paddingTop = '0.5rem';
                     li.style.paddingBottom = '0.5rem';
                     li.style.paddingLeft = '0.625rem';
+                    li.style.marginRight = '0.625rem';
+                    li.style.overflow = 'hidden';
                     li.innerHTML = searchText;
 
                     // Change the border of search typeahead

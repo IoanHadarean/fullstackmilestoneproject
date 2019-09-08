@@ -312,7 +312,7 @@ ul {
 @media (max-width: 440px) {
   #btn-search {
     margin-left: 30%;
-    margin-top: 0.5rem;
+    margin-top: -10rem;
   }
   
   .posts-mobile {
@@ -322,6 +322,15 @@ ul {
   .search-mobile {
     max-width: 100%;
     flex: 0 0 100%;
+  }
+  
+  .custom-height-form {
+    margin-top: 4rem;
+  }
+  
+  .count-posts {
+    text-align: center;
+    margin-top: 5rem;
   }
 }
 

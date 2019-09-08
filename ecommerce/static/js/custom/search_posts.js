@@ -4,6 +4,12 @@ var searchInputDrafts = document.getElementById('search_drafts');
 var searchResultsPosts = document.getElementById('search-results-posts');
 var searchResultsDrafts = document.getElementById('search-results-drafts');
 var searchTypeAhead = document.getElementById('search-typeahead');
+var searchBtn = document.getElementById('btn-search');
+
+// Get the search button top style and parse it to an integer
+var searchBtnStyle = window.getComputedStyle(searchBtn, null);
+var styleTopValue = searchBtnStyle.getPropertyValue("margin-top");
+var parsedTopValue = parseInt(styleTopValue, 10);
 
 // Colors
 var white = '#ffffff';
@@ -82,7 +88,9 @@ function getPostsResults() {
                         li.style.paddingBottom = '0.3125rem';
                         li.style.height = '2.1875rem';
                         li.style.paddingLeft = '0.9375rem';
+                        li.style.marginRight = '0.9375rem';
                         li.style.fontWeight = '400';
+                        li.style.overflow = 'hidden';
                         li.setAttribute('id', pk);
 
                         // Create link for search result product
@@ -94,7 +102,6 @@ function getPostsResults() {
                         // Change the border of search typeahead
                         searchTypeAhead.style.border = '0.0625rem grey solid';
                         searchTypeAhead.style.borderTop = '0';
-
 
                         // Add mouse enter and mouse out event listeners for li and link
                         li.addEventListener('mouseenter', function() {
@@ -132,7 +139,9 @@ function getPostsResults() {
                     li.style.paddingBottom = '0.3125rem';
                     li.style.height = '2.1875rem';
                     li.style.paddingLeft = '0.9375rem';
+                    li.style.marginRight = '0.9375rem';
                     li.style.fontWeight = '400';
+                    li.style.overflow = 'hidden';
                     li.innerHTML = searchText;
 
                     // Change the border of search typeahead
@@ -211,7 +220,9 @@ function getDraftsResults() {
                         li.style.paddingBottom = '0.3125rem';
                         li.style.height = '2.1875rem';
                         li.style.paddingLeft = '0.9375rem';
+                        li.style.marginRight = '0.9375rem';
                         li.style.fontWeight = '400';
+                        li.style.overflow = 'hidden';
                         li.setAttribute('id', pk);
 
                         // Create link for search result product
@@ -257,7 +268,9 @@ function getDraftsResults() {
                     li.style.paddingBottom = '0.3125rem';
                     li.style.height = '2.1875rem';
                     li.style.paddingLeft = '0.9375rem';
+                    li.style.marginRight = '0.9375rem';
                     li.style.fontWeight = '400';
+                    li.style.overflow = 'hidden';
                     li.innerHTML = searchText;
 
                     // Add mouse enter and mouse out event listeners for li
