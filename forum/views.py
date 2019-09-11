@@ -134,7 +134,24 @@ def like_post(request, pk):
     if not post.likes.filter(id=request.user.id).exists():
         post.likes.add(request.user)
         post.save()
-    total_likes = post.likes.count()
+    total_likes = []
+    if post.likes.count() == 1:
+        if post.likes.filter(id=request.user.id).exists():
+            total_likes.append("You")
+        else:
+            total_likes.append(post.likes.all()[0])
+    elif post.likes.count() == 2:
+        if post.likes.filter(id=request.user.id).exists():
+            total_likes.append("You")
+            if request.user != post.likes.all()[0]:
+                total_likes.append(post.likes.all()[0].username)
+            else:
+                total_likes.append(post.likes.all()[1].username)
+        else:
+            total_likes.append(post.likes.all()[0].username)
+            total_likes.append(post.likes.all()[1].username)
+    else:
+        total_likes.append(post.likes.count())
     context = {
         'total_likes': total_likes,
     }
@@ -150,7 +167,24 @@ def dislike_post(request, pk):
     if post.likes.filter(id=request.user.id).exists():
         post.likes.remove(request.user)
         post.save()
-    total_likes = post.likes.count()
+    total_likes = []
+    if post.likes.count() == 1:
+        if post.likes.filter(id=request.user.id).exists():
+            total_likes.append("You")
+        else:
+            total_likes.append(post.likes.all()[0].username)
+    elif post.likes.count() == 2:
+        if post.likes.filter(id=request.user.id).exists():
+            total_likes.append("You")
+            if request.user != post.likes.all()[0]:
+                total_likes.append(post.likes.all[0].username)
+            else:
+                total_likes.append(post.likes.all()[1].username)
+        else:
+            total_likes.append(post.likes.all()[0].username)
+            total_likes.append(post.likes.all()[1].username)
+    else:
+        total_likes.append(post.likes.count())
     context = {
         'total_likes': total_likes,
     }

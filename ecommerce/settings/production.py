@@ -4,7 +4,7 @@ import dj_database_url
 from ecommerce import env
 
 # DEBUG set to False for production
-DEBUG = True
+DEBUG = False
 
 # Allowed Hosts
 ALLOWED_HOSTS = ['30549824a1f0499e91d2634f1137317f.vfs.cloud9.us-east-1.amazonaws.com', 'e-commerce-web-app.herokuapp.com']

@@ -36,11 +36,27 @@ function likePost(e) {
     xhr.onload = function() {
         if (this.readyState == 4 && this.status == 200) {
             let response = JSON.parse(xhr.responseText);
-            if (response.total_likes != 1) {
-                totalLikes.innerHTML = response.total_likes + " Likes";
+            
+            // Change the total likes count message and font weight
+            totalLikes.style.fontWeight = 'bolder';
+            if (response.total_likes.length == 1) {
+                if (response.total_likes[0] == 'You') {
+                    totalLikes.innerHTML =  "You like this";
+                }
+                else if (isNaN(response.total_likes[0])) {
+                   totalLikes.innerHTML = response.total_likes[0] + " likes this"; 
+                }
+                else {
+                   totalLikes.innerHTML = response.total_likes[0] + " people like this";  
+                }
             }
-            else {
-                totalLikes.innerHTML = response.total_likes + " Like";
+            else if (response.total_likes.length == 2) {
+                if (response.total_likes[0] == 'You') {
+                   totalLikes.innerHTML = "You and " + response.total_likes[1] + " like this";
+                }
+                else {
+                   totalLikes.innerHTML = response.total_likes[0] + " and " + response.total_likes[1] + " like this"; 
+                }
             }
         }
     };
@@ -61,11 +77,30 @@ function dislikePost(e) {
     xhr.onload = function() {
         if (this.readyState == 4 && this.status == 200) {
             let response = JSON.parse(xhr.responseText);
-            if (response.total_likes != 1) {
-                totalLikes.innerHTML = response.total_likes + " Likes";
+            
+            // Change the total likes count message and font weight
+            totalLikes.style.fontWeight = 'bolder';
+            if (response.total_likes.length == 1) {
+                if (response.total_likes[0] == 'You') {
+                    totalLikes.innerHTML =  "You like this";
+                }
+                else if (isNaN(response.total_likes[0])) {
+                   totalLikes.innerHTML = response.total_likes[0] + " likes this"; 
+                }
+                else if (response.total_likes[0] != 0) {
+                   totalLikes.innerHTML = response.total_likes[0] + " people like this";  
+                }
+                else {
+                   totalLikes.innerHTML = "No likes";
+                }
             }
-            else {
-                totalLikes.innerHTML = response.total_likes + " Like";
+            else if (response.total_likes.length == 2) {
+                if (response.total_likes[0] == 'You') {
+                   totalLikes.innerHTML = "You and " + response.total_likes[1] + " like this";
+                }
+                else {
+                   totalLikes.innerHTML = response.total_likes[0] + " and " + response.total_likes[1] + " like this"; 
+                }
             }
         }
     };

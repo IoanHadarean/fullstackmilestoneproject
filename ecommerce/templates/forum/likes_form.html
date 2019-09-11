@@ -15,7 +15,7 @@
 {% endif %}
 <!-- Likes count -->
 {% if total_likes == 0 %}
-<p id = "total-likes"></p>
+<p id = "total-likes"><strong>No likes</strong></p>
 {% elif total_likes == 1 %}
 {% if request.user in post.likes.all %}
 <p id = "total-likes"><strong>You like this</strong></p>
