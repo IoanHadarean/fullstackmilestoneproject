@@ -178,7 +178,6 @@ ul {
   display: inline-block;
 }
 
-
 .posttitle {
   text-align: center;
 }
@@ -218,6 +217,15 @@ ul {
 .comment-edit,
 .post-edit {
   color: #2bbbad;
+}
+
+#total-likes {
+  margin-top: 0.5rem;
+}
+
+.fa-thumbs-up,
+.fa-thumbs-down {
+  vertical-align: middle;
 }
 
 /* -----------------------------------------------Payment-------------------------------- */

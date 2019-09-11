@@ -55,7 +55,7 @@
         <div>
         <!-- Post comment author profile image -->
         {% if comment.author.profile.image %}
-            <img class="rounded-circle mt-5 mb-2" src="{{ post.author.profile.image.url }}" width="70" height="70" alt="profile-image">
+            <img class="rounded-circle mt-5 mb-2" src="{{ comment.author.profile.image.url }}" width="70" height="70" alt="profile-image">
         {% else %}
             <img class="rounded-circle mt-5 mb-2" src="{% static 'img/avatar.png' %}" width="70" height="70" alt="profile-image">
         {% endif %}
@@ -83,7 +83,7 @@
             <div class="ml-5 comment-reply reply-{{forloop.parentloop.counter}}">
             <!-- Post comment reply author profile image -->
             {% if reply.author.profile.image %}
-                <img class="rounded-circle mt-3 mb-2" src="{{ post.author.profile.image.url }}" width="70" height="70" alt="profile-image">
+                <img class="rounded-circle mt-3 mb-2" src="{{ reply.author.profile.image.url }}" width="70" height="70" alt="profile-image">
             {% else %}
                 <img class="rounded-circle mt-3 mb-2" src="{% static 'img/avatar.png' %}" width="70" height="70" alt="profile-image">
             {% endif %}

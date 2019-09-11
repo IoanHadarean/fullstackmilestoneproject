@@ -133,10 +133,10 @@ def like_post(request, pk):
     post = get_object_or_404(Post, pk=pk)
     if not post.likes.filter(id=request.user.id).exists():
         post.likes.add(request.user)
-        post.likes_total += 1
         post.save()
+    total_likes = post.likes.count()
     context = {
-        'total_likes': post.likes_total,
+        'total_likes': total_likes,
     }
     return JsonResponse(context, safe=False)
 
@@ -150,11 +150,9 @@ def dislike_post(request, pk):
     if post.likes.filter(id=request.user.id).exists():
         post.likes.remove(request.user)
         post.save()
-        if post.likes_total != 0:
-            post.likes_total -= 1
-            post.save()
+    total_likes = post.likes.count()
     context = {
-        'total_likes': post.likes_total,
+        'total_likes': total_likes,
     }
     return JsonResponse(context, safe=False)
 

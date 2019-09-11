@@ -1,17 +1,37 @@
-<!-- Likes count -->
-<p id = "total-likes">{{ total_likes }} Like{{ total_likes|pluralize }}</p>
 {% if post.author != request.user and request.user.is_authenticated %}
 <!-- Form for likes/dislikes -->
 <form id = "like-form" method="POST">
     {% csrf_token %}
     <input type = "hidden" id = "like-form-input" value="{{ post.pk }}">
     <a href = "{% url 'like_post' pk=post.pk %}">
-        <button type="submit"  id = "like-post" class="btn btn-primary">Like</button>
+        <button type="submit" id="like-post" class="btn btn-primary"><i class="fas fa-thumbs-up"></i></button>
     </a>
     <a href = "{% url 'dislike_post' pk=post.pk %}">
-        <button type="submit"  id = "dislike-post" class="btn btn-danger">Dislike</button>
+        <button type="submit" id="dislike-post" class="btn btn-danger"><i class="fas fa-thumbs-down"></i></button>
     </a>
 </form>
 {% elif not request.user.is_authenticated %}
 <p>You need to <a href="{% url 'login' %}">log in</a> in to like/dislike a post or view comments.</p>
+{% endif %}
+<!-- Likes count -->
+{% if total_likes == 0 %}
+<p id = "total-likes"></p>
+{% elif total_likes == 1 %}
+{% if request.user in post.likes.all %}
+<p id = "total-likes"><strong>You like this</strong></p>
+{% else %}
+<p id = "total-likes"><strong>{{ post.likes.all.0 }} likes this</strong></p>
+{% endif %}
+{% elif total_likes == 2 %}
+{% if request.user in post.likes.all %}
+{% if request.user != post.likes.all.0 %}
+<p id = "total-likes"><strong>You and {{ post.likes.all.0 }} like this</strong></p>
+{% else %}
+<p id = "total-likes"><strong>You and {{ post.likes.all.1 }} like this</strong></p>
+{% endif %}
+{% else %}
+<p id = "total-likes"><strong>{{ post.likes.all.0 }} and {{ post.likes.all.1 }} like this</strong></p>
+{% endif %}
+{% else %}
+<p id = "total-likes"><strong>{{ total_likes }} people like this</strong></p>
 {% endif %}
