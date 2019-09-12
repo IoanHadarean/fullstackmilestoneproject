@@ -7,7 +7,8 @@ from django.core.paginator import Paginator
 from django.views.generic import ListView
 from django.http import JsonResponse
 from django.contrib.auth.decorators import login_required
-import random
+import operator
+from functools import reduce
 
 
 def search_posts(request):
@@ -17,14 +18,15 @@ def search_posts(request):
     foreign key.
     """
     if request.method == "POST":
-        search_text = request.POST.get('posts')
+        search_text = request.POST.get('posts').strip().split()
     else:
         search_text = ''
 
-    post_list = Post.objects.filter((Q(title__icontains=search_text) |
-                                     Q(text__icontains=search_text) |
-                                     Q(created_date__icontains=search_text)) &
-                                    Q(published_date__isnull=False)).order_by('title')
+    query_set = reduce(operator.__or__, [(Q(title__istartswith=word) |
+                                          Q(created_date__icontains=word)) &
+                                         Q(published_date__isnull=False) for word in search_text])
+
+    post_list = Post.objects.filter(query_set).order_by('title')
 
     post_list_count = post_list.count()
 
@@ -43,11 +45,20 @@ def search_posts(request):
 
 
 def posts_results(request, search_text):
+
+    """
+    Get the first seven post results (post titles) according
+    to the search text and return them as JSON
+    """
     if request.method == "POST":
-        post_list = Post.objects.filter((Q(title__icontains=search_text) |
-                                         Q(text__icontains=search_text) |
-                                         Q(created_date__icontains=search_text)) &
-                                        Q(published_date__isnull=False)).order_by('title')
+        search_text = search_text.strip().split()
+
+        query_set = reduce(operator.__or__, [(Q(title__istartswith=word) |
+                                              Q(created_date__icontains=word)) &
+                                             Q(published_date__isnull=False) for word in search_text])
+
+        post_list = Post.objects.filter(query_set).order_by('title')
+
         if post_list.count() >= 7:
             post_list = post_list[:7]
         else:
@@ -62,6 +73,7 @@ def posts_results(request, search_text):
 
         return JsonResponse(posts, safe=False)
 
+
 @login_required
 def search_drafts(request):
     """
@@ -70,14 +82,15 @@ def search_drafts(request):
     foreign key.
     """
     if request.method == "POST":
-        search_text = request.POST.get('drafts')
+        search_text = request.POST.get('drafts').strip().split()
     else:
         search_text = ''
 
-    draft_list = Post.objects.filter((Q(title__icontains=search_text) |
-                                     Q(text__icontains=search_text) |
-                                     Q(created_date__icontains=search_text)) &
-                                     Q(published_date__isnull=True)).order_by('title')
+    query_set = reduce(operator.__or__, [(Q(title__istartswith=word) |
+                                          Q(created_date__icontains=word)) &
+                                         Q(published_date__isnull=True) for word in search_text])
+
+    draft_list = Post.objects.filter(query_set).order_by('title')
 
     draft_list_count = draft_list.count()
 
@@ -94,13 +107,24 @@ def search_drafts(request):
 
     return render(request, 'forum/post_list.html', context)
 
+
 @login_required
 def drafts_results(request, search_text):
+
+    """
+    Get the first seven draft results (draft titles) according
+    to the search text and return them as JSON
+    """
+
     if request.method == "POST":
-        draft_list = Post.objects.filter((Q(title__icontains=search_text) |
-                                         Q(text__icontains=search_text) |
-                                         Q(created_date__icontains=search_text)) &
-                                         Q(published_date__isnull=True)).order_by('title')
+        search_text = search_text.strip().split()
+
+        query_set = reduce(operator.__or__, [(Q(title__istartswith=word) |
+                                              Q(created_date__icontains=word)) &
+                                             Q(published_date__isnull=True) for word in search_text])
+
+        draft_list = Post.objects.filter(query_set).order_by('title')
+
         if draft_list.count() >= 7:
             draft_list = draft_list[:7]
         else:
@@ -123,13 +147,16 @@ def search_products(request):
     category and description.
     """
     if request.method == "POST":
-        search_text = request.POST.get('item_search')
+        search_text = request.POST.get('item_search').strip().split()
     else:
         search_text = ''
-    item_list = Item.objects.filter(Q(title__icontains=search_text) |
-                                    Q(price__iexact=search_text) |
-                                    Q(discount_price__iexact=search_text) |
-                                    Q(category__icontains=search_text)).order_by('title')
+
+    query_set = reduce(operator.__or__, [Q(title__istartswith=word) |
+                                         Q(price__iexact=word) |
+                                         Q(discount_price__iexact=word) for word in search_text])
+
+    item_list = Item.objects.filter(query_set).order_by('title')
+
     item_list_count = item_list.count()
 
     """Add pagination for search"""
@@ -147,11 +174,20 @@ def search_products(request):
 
 
 def products_results(request, search_text):
+
+    """
+    Get the first seven product results (product titles) according
+    to the search text and return them as JSON
+    """
     if request.method == "POST":
-        item_list = Item.objects.filter(Q(title__icontains=search_text) |
-                                        Q(price__iexact=search_text) |
-                                        Q(discount_price__iexact=search_text) |
-                                        Q(category__icontains=search_text)).order_by('title')
+        search_text = search_text.strip().split()
+
+        query_set = reduce(operator.__or__, [Q(title__istartswith=word) |
+                                             Q(price__iexact=word) |
+                                             Q(discount_price__iexact=word) for word in search_text])
+
+        item_list = Item.objects.filter(query_set).order_by('title')
+
         if item_list.count() >= 7:
             item_list = item_list[:7]
         else:
