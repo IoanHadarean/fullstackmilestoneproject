@@ -1,5 +1,3 @@
-Notes: django-countries HTML validation 5 errors: alt for django-countries image and  
-the value of the for attribute of the label element must be the ID of a non-hidden form control.
 # Wedding Planner
 
 ## User Experience Design(UXD)
@@ -20,7 +18,6 @@ a lot more functionalities will be added too. Relish has been designed in such a
 of this is allowing users to be redirected back to the page they were visiting upon login or register. The security of the end-users matters, therefore 
 a functionality for loggin them out after one hour of inactivity has been implemented. It is also worth mentioning that users also get logged out of their
 accounts if he/she would use different devices to prevent fraudulent activity. The website can be viewed [here](https://relish-cookbook.herokuapp.com/recipes?limit=6&offset=0).
-
 
 
 ### Wireframes
@@ -363,38 +360,28 @@ For more information about MySQL database schema please refer to the [flaskapp.s
 Note: for the userlikes table a new column has been added, `count_liked`, defaulted to 0.
 
 
-
-
 ## Testing
 
 1. Code was written and tested using Cloud9 and Cloud9 debugger tools.
 2. All HTML and CSS code used on the site has been tested using [The W3 CSS Validation Service](https://jigsaw.w3.org/css-validator/) 
-and [The W3 Markup Validation Service](https://validator.w3.org/). There were no CSS errors, the CSS warnings relate to box-shadow, border-radius, transform
-and object-fit unknown vendor extensions. There were a number of HTML errors, but most of them were related to unclosed elements due to for loops in Jinja templates.
-Some of the errors and warnings have been solved, such as style and script unnecessary type issues or empty form actions and inexistent alt tags for images, 
-but most of them could not be fixed because they would have created bugs in the functionality and overall aspect of the project. It's also important to mention the fact that [Tidy](https://github.com/htacg/tidy-html5), 
-another HTML validator does not count some of the errors that the W3 does. 
-3. All Javascript code on the website has been tested using [JSHint](https://jshint.com/). There were no errors found, the warnings found
-state the fact that class, arrow functions and template literals are only available in ES6. There are also warnings about let and const related
-to ES6 JavaScript.
+and [The W3 Markup Validation Service](https://validator.w3.org/). There were no CSS errors, there were 6 CSS warnings related to font-smoothing and transition 
+unknown vendor extensions. There were 3 HTML errors and one warning found, a duplicated id `stripeBtn` due to payment form toggle and the value of the for attribute
+of the label element must be the ID of a non-hidden form control for the `private-stripe-element`.
+3. All Javascript code on the website has been tested using [JSHint](https://jshint.com/). There were no errors and 67 warnings found related to let 
+available in ES6 and Mozilla JS extensions and Functions declared within loops referencing an outer scoped variable may lead to confusing semantics.
 4. A lot of manual testing has been done for this project to ensure the website looks well on all devices and to ensure that the functionalities of the project are working
 correctly. Therefore, site was viewed and tested in the following browsers:
 <br>    i Google Chrome
 <br>    ii Mozilla Firefox
 <br>    iii Opera
-<br>    iv Internet Explorer
-<br>    v Safari\
-The website has limited support for Internet Explorer and no support for Safari.
-Manual testing also included registering a user to the website, logging in to the website, updating the profile, adding and editing new recipes, as well as liking/disliking
-database recipes and rating them. The pagination, search and filter results and functionalities were thoroughly tested to check for any bugs. The tests have been done with 
-multiple accounts to see if the functionalities persist between users. Manual testing helped in finding two bugs within the project, a bug with the likes/dislikes functionality
-and another one with the ratings for each recipe.
-5. Postman was used for sending GET and POST requests to the website in order to test it.
-6. Added automated unit tests for the register and edit forms in Python, as well as basic tests for GET requests.
-It's admittable that the tests performed for the app are not the most extensive tests, but having 
-some tests is better than having none at all.
-7. Tested the Python code for [PEP8](https://pypi.org/project/pep8/) standards and solved numerous issues regarding
-beautifying the code. There were a number of errors related to the length of the lines that I did not solve because they 
+<br>    iv Microsoft Edge\
+The website has limited support for Internet Explorer and Safari.
+5. Added automated unit tests for models, views, forms and apps for each Django-app and used the `coverage` Python module to assess
+the testing coverage of each app. The `coverage` module was installed by typing `pip install coverage` in the terminal.
+Each Django app was tested individually using the command  `coverage run --source=app-name manage.py test app-name`. In order to get the HTML
+templates with the results the following command was issued `coverage html`.
+6. Tested the Python code for [PEP8](https://pypi.org/project/pep8/) standards and solved numerous issues regarding
+beautifying the code. There were a number of errors related to the length of the lines that were ignored because they 
 would decrease readability of the code, not increase it.
 
 
@@ -429,34 +416,34 @@ Flask or Django.
 
 
 ### Getting the code up and running
-The project runs on a production server called Heroku. If you want to run the project locally please follow these instructions.
+The project runs on a production server called Heroku. If you want to run the project locally please follow these instructions:
 1. Download and install Python3 via the Command Line Interface(CLI) (Make sure you are using Python3, the project won't run on Python2). 
 In order to check the version of Python installed type python --version in the terminal.
 2. Clone the following project using *`git clone https://github.com/IoanHadarean/fullstackmilestoneproject.git`* or download it and then unzip it
 3. Install the packages needed for the project via the terminal by typing (sudo) pip3 install -r requirements.txt.
 4. Add all environment variables to an env.py file that is in the following format:
 
-All connection details must be in a string format.\
-Note: you can run the project with the development settings as well, but for accessing the
-full functionalities of the app you would need to create a STRIPE, SENDGRID and AWS (S3) account in
-order to get the keys necessary for sending emails, making payments and storing media and static files.
-For additional information on how to setup these accounts please take a look at the documentation on the
-following websites: [Stripe](https://stripe.com), [Sendgrid](https://sendgrid.com) and [AWS](https://aws.amazon.com).
-***
-```import os
-os.environ.setdefault("SECRET_KEY", SECRET_KEY_STRING)
-os.environ.setdefault("DATABASE_URL", DATABASE_URL_STRING)
-os.environ.setdefault("SENGRID_API_KEY", SENGRID_API_KEY_STRING)
-os.environ.setdefault("STRIPE_SECRET_KEY", STRIPE_SECRET_KEY_STRING)
-os.environ.setdefault("AWS_ACCESS_KEY_ID", AWS_ACCESS_KEY_ID_STRING)
-os.environ.setdefault("AWS_SECRET_ACCESS_KEY", AWS_SECRET_ACCESS_KEY_STRING)
-```
-***
-Additional Notes: you don't need to import the env file as it is already imported in the project\
+    All connection details must be in a string format.\
+    Note: you can run the project with the development settings as well, but for accessing the
+    full functionalities of the app you would need to create a STRIPE, SENDGRID and AWS (S3) account in
+    order to get the keys necessary for sending emails, making payments and storing media and static files.
+    For additional information on how to setup these accounts please take a look at the documentation on the
+    following websites: [Stripe](https://stripe.com), [Sendgrid](https://sendgrid.com) and [AWS](https://aws.amazon.com).
+    ***
+    ```import os
+    os.environ.setdefault("SECRET_KEY", SECRET_KEY_STRING)
+    os.environ.setdefault("DATABASE_URL", DATABASE_URL_STRING)
+    os.environ.setdefault("SENGRID_API_KEY", SENGRID_API_KEY_STRING)
+    os.environ.setdefault("STRIPE_SECRET_KEY", STRIPE_SECRET_KEY_STRING)
+    os.environ.setdefault("AWS_ACCESS_KEY_ID", AWS_ACCESS_KEY_ID_STRING)
+    os.environ.setdefault("AWS_SECRET_ACCESS_KEY", AWS_SECRET_ACCESS_KEY_STRING)
+    ```
+    ***
+    Additional Notes: you don't need to import the env file as it is already imported in the project\
 5. Run the app by typing *`python3 manage.py runserver $IP:$PORT`* in the terminal. Alternatively, you
 could set up a shortcut for running the app by adding an alias into the *`~/.bashrc`* or *`/etc/bash.bashrc`*
 file like so *`alias python3 manage.py runserver $IP:$PORT="run"`*.
-Note: the debug is by default set to FALSE, but you can set it to TRUE to allow debugging
+Note: the debug is by default set to FALSE, but you can set it to TRUE to allow debugging.
 
 
 ## Credits

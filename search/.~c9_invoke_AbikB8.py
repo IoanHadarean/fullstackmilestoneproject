@@ -29,7 +29,7 @@ def search_posts(request):
                                              Q(published_date__isnull=False) for word in search_text],
                            (Q(title__istartswith=search_text) |
                             Q(created_date__icontains=search_text)) &
-                           Q(published_date__isnull=False))
+                           Q(published_date__isnull=search_text))
     else:
         search_text = search_text.strip().split()
         query_set = reduce(operator.__or__, [(Q(title__istartswith=word) |
@@ -39,7 +39,7 @@ def search_posts(request):
                            (Q(title__istartswith=search_text) |
                             Q(title__icontains=search_text) |
                             Q(created_date__icontains=search_text)) &
-                           Q(published_date__isnull=False))
+                           Q(published_date__isnull=search_text))
 
     post_list = Post.objects.filter(query_set).order_by('title')
 
@@ -71,20 +71,13 @@ def posts_results(request, search_text):
             search_text = search_text.strip().split()
             query_set = reduce(operator.__or__, [(Q(title__istartswith=word) |
                                                   Q(created_date__icontains=word)) &
-                                                 Q(published_date__isnull=False) for word in search_text],
-                               (Q(title__istartswith=search_text) |
-                                Q(created_date__icontains=search_text)) &
-                               Q(published_date__isnull=False))
+                                                 Q(published_date__isnull=False) for word in search_text])
         else:
             search_text = search_text.strip().split()
             query_set = reduce(operator.__or__, [(Q(title__istartswith=word) |
                                                   Q(title__icontains=word) |
                                                   Q(created_date__icontains=word)) &
-                                                 Q(published_date__isnull=False) for word in search_text],
-                               (Q(title__istartswith=search_text) |
-                                Q(title__icontains=search_text) |
-                                Q(created_date__icontains=search_text)) &
-                               Q(published_date__isnull=False))
+                                                 Q(published_date__isnull=False) for word in search_text])
 
         post_list = Post.objects.filter(query_set).order_by('title')
 
@@ -119,20 +112,13 @@ def search_drafts(request):
             search_text = search_text.strip().split()
             query_set = reduce(operator.__or__, [(Q(title__istartswith=word) |
                                                   Q(created_date__icontains=word)) &
-                                                 Q(published_date__isnull=True) for word in search_text],
-                               (Q(title__istartswith=search_text) |
-                                Q(created_date__icontains=search_text)) &
-                               Q(published_date__isnull=True))
+                                                 Q(published_date__isnull=True) for word in search_text])
     else:
         search_text = search_text.strip().split()
         query_set = reduce(operator.__or__, [(Q(title__istartswith=word) |
                                               Q(title__icontains=word) |
                                               Q(created_date__icontains=word)) &
-                                             Q(published_date__isnull=True) for word in search_text],
-                           (Q(title__istartswith=search_text) |
-                            Q(title__icontains=search_text) |
-                            Q(created_date__icontains=search_text)) &
-                           Q(published_date__isnull=True))
+                                             Q(published_date__isnull=True) for word in search_text])
 
     draft_list = Post.objects.filter(query_set).order_by('title')
 
@@ -166,20 +152,13 @@ def drafts_results(request, search_text):
             search_text = search_text.strip().split()
             query_set = reduce(operator.__or__, [(Q(title__istartswith=word) |
                                                   Q(created_date__icontains=word)) &
-                                                 Q(published_date__isnull=True) for word in search_text],
-                               (Q(title__istartswith=search_text) |
-                                Q(created_date__icontains=search_text)) &
-                               Q(published_date__isnull=True))
+                                                 Q(published_date__isnull=True) for word in search_text])
         else:
             search_text = search_text.strip().split()
             query_set = reduce(operator.__or__, [(Q(title__istartswith=word) |
                                                   Q(title__icontains=word) |
                                                   Q(created_date__icontains=word)) &
-                                                 Q(published_date__isnull=True) for word in search_text],
-                               (Q(title__istartswith=search_text) |
-                                Q(title__icontains=search_text) |
-                                Q(created_date__icontains=search_text)) &
-                               Q(published_date__isnull=True))
+                                                 Q(published_date__isnull=True) for word in search_text])
 
         draft_list = Post.objects.filter(query_set).order_by('title')
 
@@ -213,20 +192,13 @@ def search_products(request):
         search_text = search_text.strip().split()
         query_set = reduce(operator.__or__, [Q(title__istartswith=word) |
                                              Q(price__iexact=word) |
-                                             Q(discount_price__iexact=word) for word in search_text],
-                           Q(title__istartswith=search_text) |
-                           Q(price__iexact=search_text) |
-                           Q(discount_price__iexact=search_text))
+                                             Q(discount_price__iexact=word) for word in search_text])
     else:
         search_text = search_text.strip().split()
         query_set = reduce(operator.__or__, [Q(title__istartswith=word) |
                                              Q(title__icontains=word) |
                                              Q(price__iexact=word) |
-                                             Q(discount_price__iexact=word) for word in search_text],
-                          Q(title__istartswith=search_text) |
-                          Q(title__icontains=search_text) |
-                          Q(price__iexact=search_text) |
-                          Q(discount_price__iexact=search_text))
+                                             Q(discount_price__iexact=word) for word in search_text])
 
     item_list = Item.objects.filter(query_set).order_by('title')
 
@@ -253,25 +225,18 @@ def products_results(request, search_text):
     to the search text and return them as JSON
     """
     if request.method == "POST":
-
+        
         if len(search_text) == 1:
             search_text = search_text.strip().split()
             query_set = reduce(operator.__or__, [Q(title__istartswith=word) |
                                                  Q(price__iexact=word) |
-                                                 Q(discount_price__iexact=word) for word in search_text],
-                               Q(title__istartswith=search_text) |
-                               Q(price__iexact=search_text) |
-                               Q(discount_price__iexact=search_text))
+                                                 Q(discount_price__iexact=word) for word in search_text])
         else:
             search_text = search_text.strip().split()
             query_set = reduce(operator.__or__, [Q(title__istartswith=word) |
                                                  Q(title__icontains=word) |
                                                  Q(price__iexact=word) |
-                                                 Q(discount_price__iexact=word) for word in search_text],
-                               Q(title__istartswith=search_text) |
-                               Q(title__icontains=search_text) |
-                               Q(price__iexact=search_text) |
-                               Q(discount_price__iexact=search_text))
+                                                 Q(discount_price__iexact=word) for word in search_text])
 
         item_list = Item.objects.filter(query_set).order_by('title')
 

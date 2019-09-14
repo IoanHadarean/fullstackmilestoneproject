@@ -3,11 +3,11 @@
 <form id = "like-form" method="POST">
     {% csrf_token %}
     <input type = "hidden" id = "like-form-input" value="{{ post.pk }}">
-    <a href = "{% url 'like_post' pk=post.pk %}">
-        <button type="submit" id="like-post" class="btn btn-primary"><i class="fas fa-thumbs-up"></i></button>
+    <a href = "{% url 'like_post' pk=post.pk %}" id="like-post" class="btn btn-primary">
+        <i class="fas fa-thumbs-up"></i>
     </a>
-    <a href = "{% url 'dislike_post' pk=post.pk %}">
-        <button type="submit" id="dislike-post" class="btn btn-danger"><i class="fas fa-thumbs-down"></i></button>
+    <a href = "{% url 'dislike_post' pk=post.pk %}" id="dislike-post" class="btn btn-danger">
+        <i class="fas fa-thumbs-down"></i>
     </a>
 </form>
 {% elif not request.user.is_authenticated %}

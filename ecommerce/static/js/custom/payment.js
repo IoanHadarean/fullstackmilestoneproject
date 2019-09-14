@@ -18,8 +18,8 @@ if (useDefaultCard) {
             currentCardForm.style.display = 'block';
         }
         else {
-            for (var j = 0; j < savedCards.length; j++) {
-                savedCards[j].style.display = 'block';
+            for (var i = 0; i < savedCards.length; i++) {
+                savedCards[i].style.display = 'block';
             }
             newCardForm.style.display = 'block';
             currentCardForm.style.display = 'none';

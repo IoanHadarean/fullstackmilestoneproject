@@ -16,10 +16,25 @@ class TestForumAppViews(TestCase):
         self.credentials = {
             'username': 'username1',
             'password': 'random'}
+        self.new_credentials = {
+            'username': 'username2',
+            'password': 'random'}
+        self.new_credentials2 = {
+            'username': 'username3',
+            'password': 'random'}
+        self.new_credentials3 = {
+            'username': 'username4',
+            'password': 'random'}
         self.user = User.objects.create_user(**self.credentials)
         self.user.save()
-        self.post = Post(author=self.user, title='post', likes_total=100,
-                         text='this is a post', published_date=datetime.datetime(2019, 9, 4, tzinfo=pytz.UTC))
+        self.new_user = User.objects.create_user(**self.new_credentials)
+        self.new_user.save()
+        self.new_user2 = User.objects.create_user(**self.new_credentials2)
+        self.new_user2.save()
+        self.new_user3 = User.objects.create_user(**self.new_credentials3)
+        self.new_user3.save()
+        self.post = Post(author=self.user, title='post', text='this is a post',
+                         published_date=datetime.datetime(2019, 9, 4, tzinfo=pytz.UTC))
         self.post.save()
         self.comment = Comment(author=self.user, post=self.post, text='comment')
         self.comment.save()
@@ -68,21 +83,71 @@ class TestForumAppViews(TestCase):
         self.assertEqual(str(messages[0]), 'You have successfully edited the post')
         self.assertRedirects(response, '/forum/post/1/')
 
-    """Test liking a post ('total_likes' JSON response)"""
-    def test_like_post(self):
+    """Test liking a post ('total_likes' JSON response - likes count = 1)"""
+    def test_like_post_likes_count_one_user_exists(self):
         self.client.post('/accounts/login/', self.credentials, follow=True)
         response = self.client.post('/forum/post/1/like/')
         self.assertJSONEqual(str(response.content, encoding='utf8'),
-                             {'total_likes': 101})
- 
-    """Test disliking a post ('total_likes' JSON response)"""
-    def test_dislike_post(self):
+                             {'total_likes': ['You']})
+
+    """Test liking a post ('total_likes' JSON response - likes count greater than 2)"""
+    def test_like_post_likes_count_more_than_two(self):
+        self.client.post('/accounts/login/', self.credentials, follow=True)
+        self.post.likes.add(self.new_user)
+        self.post.save()
+        self.post.likes.add(self.new_user2)
+        self.post.save()
+        response = self.client.post('/forum/post/1/like/')
+        self.assertJSONEqual(str(response.content, encoding='utf8'),
+                             {'total_likes': [3]})
+
+    """Test liking a post ('total_likes' JSON response - likes count = 2)"""
+    def test_like_post_likes_count_two_request_user_first_user(self):
+        self.client.post('/accounts/login/', self.credentials, follow=True)
+        self.post.likes.add(self.new_user)
+        self.post.save()
+        response = self.client.post('/forum/post/1/like/')
+        self.assertJSONEqual(str(response.content, encoding='utf8'),
+                             {'total_likes': ['You', 'username2']})
+
+    """Test disliking a post ('total_likes' JSON response - likes count = 1)"""
+    def test_dislike_post_likes_count_one(self):
         self.client.post('/accounts/login/', self.credentials, follow=True)
         self.post.likes.add(self.user)
         self.post.save()
+        self.post.likes.add(self.new_user)
+        self.post.save()
         response = self.client.post('/forum/post/1/dislike/')
         self.assertJSONEqual(str(response.content, encoding='utf8'),
-                             {'total_likes': 99})
+                             {'total_likes': ['username2']})
+
+    """Test disliking a post ('total_likes' JSON response - likes count = 2)"""
+    def test_dislike_post_likes_count_two(self):
+        self.client.post('/accounts/login/', self.credentials, follow=True)
+        self.post.likes.add(self.user)
+        self.post.save()
+        self.post.likes.add(self.new_user)
+        self.post.save()
+        self.post.likes.add(self.new_user2)
+        self.post.save()
+        response = self.client.post('/forum/post/1/dislike/')
+        self.assertJSONEqual(str(response.content, encoding='utf8'),
+                             {'total_likes': ['username2', 'username3']})
+
+    """Test disliking a post ('total_likes' JSON response - likes count more than 2)"""
+    def test_dislike_post_likes_count_greater_than_two(self):
+        self.client.post('/accounts/login/', self.credentials, follow=True)
+        self.post.likes.add(self.user)
+        self.post.save()
+        self.post.likes.add(self.new_user)
+        self.post.save()
+        self.post.likes.add(self.new_user2)
+        self.post.save()
+        self.post.likes.add(self.new_user3)
+        self.post.save()
+        response = self.client.post('/forum/post/1/dislike/')
+        self.assertJSONEqual(str(response.content, encoding='utf8'),
+                             {'total_likes': [3]})
 
     """Test publishing a post (adding a post to all posts)"""
     def test_post_publish(self):

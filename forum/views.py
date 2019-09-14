@@ -128,7 +128,9 @@ def like_post(request, pk):
     """
     Like a specific post if the user id from the request
     does not exist in the post likes. Return count of
-    total likes as a JsonResponse.
+    total likes as a JsonResponse if the count is more than 2 or
+    the persons who liked the post if the count is less than or equal to 2.
+    Note: handling no likes is done from JavaScript.
     """
     post = get_object_or_404(Post, pk=pk)
     if not post.likes.filter(id=request.user.id).exists():
@@ -136,20 +138,10 @@ def like_post(request, pk):
         post.save()
     total_likes = []
     if post.likes.count() == 1:
-        if post.likes.filter(id=request.user.id).exists():
-            total_likes.append("You")
-        else:
-            total_likes.append(post.likes.all()[0])
+        total_likes.append("You")
     elif post.likes.count() == 2:
-        if post.likes.filter(id=request.user.id).exists():
-            total_likes.append("You")
-            if request.user != post.likes.all()[0]:
-                total_likes.append(post.likes.all()[0].username)
-            else:
-                total_likes.append(post.likes.all()[1].username)
-        else:
-            total_likes.append(post.likes.all()[0].username)
-            total_likes.append(post.likes.all()[1].username)
+        total_likes.append("You")
+        total_likes.append(post.likes.all()[1].username)
     else:
         total_likes.append(post.likes.count())
     context = {
@@ -160,8 +152,12 @@ def like_post(request, pk):
 
 def dislike_post(request, pk):
     """
-    Like a specific post. If the like already exists
+    Dislike a specific post. If the like already exists
     in the database, remove the like for that user.
+    Return count of total likes as a JsonResponse if the 
+    count is more than 2 or the persons who liked the post
+    if the count is less than or equal to 2.
+    Note: handling no user likes is done from JavaScript.
     """
     post = get_object_or_404(Post, pk=pk)
     if post.likes.filter(id=request.user.id).exists():
@@ -169,20 +165,10 @@ def dislike_post(request, pk):
         post.save()
     total_likes = []
     if post.likes.count() == 1:
-        if post.likes.filter(id=request.user.id).exists():
-            total_likes.append("You")
-        else:
-            total_likes.append(post.likes.all()[0].username)
+        total_likes.append(post.likes.all()[0].username)
     elif post.likes.count() == 2:
-        if post.likes.filter(id=request.user.id).exists():
-            total_likes.append("You")
-            if request.user != post.likes.all()[0]:
-                total_likes.append(post.likes.all[0].username)
-            else:
-                total_likes.append(post.likes.all()[1].username)
-        else:
-            total_likes.append(post.likes.all()[0].username)
-            total_likes.append(post.likes.all()[1].username)
+        total_likes.append(post.likes.all()[0].username)
+        total_likes.append(post.likes.all()[1].username)
     else:
         total_likes.append(post.likes.count())
     context = {
