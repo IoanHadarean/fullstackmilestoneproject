@@ -298,68 +298,6 @@ worth mentioning, and since he tries to be critical about himself, it was the ri
 3. All packages used in this project can be seen in the [requirements.txt](../master/requirements.txt) file.
 
 
-## Database Schema
-Two types of database were used in the creation of this project: a non-relational (NOSQL) database and a relational database(MYSQL).
-1. NOSQL database - [MongoDB](https://mlab.com/welcome/) - was used for storing the information related to the recipes, including the
-connections with MYSQL that were constructed with the Python logic. The recipe database consists of six collections:
-* allergens\
-    Each allergen has an *`_id`*(object) and an *`allergen_name`*(string). There are 4 allergens in the collection:
-    * egg
-    * milk
-    * garlic
-    * nuts
-* courses\
-    Each course has an *`_id`*(object) and a *`course_name`*(string). There are 5 courses in the collection:
-	* appetizer
-	* soup
-	* dinner
-	* dessert
-	* main dish
-* cuisines\
-    Each cuisine has an *`_id`*(object) and a *`cuisine_name`*(string). There are 8 cuisines in the collection:
-    * Mexican
-	* French
-	* Asian
-	* Italian
-	* Greek
-	* Irish
-	* Indian
-	* English
-* ratings\
-    Each rating has the following keys:
-	* _id(object)
-	* rateText(string)
-	* user_id(string)
-	* rating(string)
-	* recipe_id(string)
-    Note: rateText is initially set to *`Rate Recipe`* and it changes to *`Edit Rating`* when the user already rated a recipe
-* recipes\
-    There are 24 database recipes. Each recipes has the following keys:
-    * _id(object)
-    * id(string)
-    * recipe_name(string)
-    * recipe_image(string)
-    * cuisine_name(string)
-    * course_name(string)
-    * allergen_name(string)
-    * ingredients(array)
-    * cooking_directions(array)
-    * author_name(string)
-    * preparation_time(string)
-    * cooking_time(string)
-    * servings(string) 
-    * calories(string) 
-    * likes(int) - initially set to 0
-    * dislikes(int) - initially set to 0
-    * rating(int) - initially set to 0/ or to the initial recipe rating
-2. MySQL database - [JawsDB](https://www.jawsdb.com) - was used for storing the information related to the users, including the
-connections with MYSQL that were constructed with the Python logic. It consists of 2 tables:
-* users
-* userlikes\
-For more information about MySQL database schema please refer to the [flaskapp.sql](../master/flaskapp.sql) script.
-Note: for the userlikes table a new column has been added, `count_liked`, defaulted to 0.
-
-
 ## Testing
 
 1. Code was written and tested using Cloud9 and Cloud9 debugger tools.

@@ -79,7 +79,6 @@ function getProductResults() {
                         li.style.paddingTop = '0.5rem';
                         li.style.paddingBottom = '0.5rem';
                         li.style.paddingLeft = '0.625rem';
-                        li.style.marginRight = '0.625rem';
                         li.style.overflow = 'hidden';
                         li.setAttribute('id', slug);
 
@@ -128,7 +127,6 @@ function getProductResults() {
                     li.style.paddingTop = '0.5rem';
                     li.style.paddingBottom = '0.5rem';
                     li.style.paddingLeft = '0.625rem';
-                    li.style.marginRight = '0.625rem';
                     li.style.overflow = 'hidden';
                     li.innerHTML = searchText;
 

@@ -1,5 +1,4 @@
-{% extends "base.html" %} {% load static %} {% block custom_css %}
-<link rel="stylesheet" href="{% static 'css/custom.css' %}" type="text/css" /> {% endblock %} {% block custom_title %}
+{% extends "base.html" %} {% load static %} {% block custom_title %}
 <title>Posts</title>
 {% endblock %} {% block content %}
 <div class="centerstage">
@@ -11,7 +10,7 @@
             <!-- Search drafts form -->
             <form class="custom-height-form" action="{% url 'search_drafts' %}" method="POST">
                 {% csrf_token %}
-                <input type="text" id="search_drafts" class="search-mobile col-md-8 col-sm-8 col-7 col-lg-8" name="drafts">
+                <input type="text" id="search_drafts" value="{{ search_text }}" class="search-mobile col-md-8 col-sm-8 col-7 col-lg-8" name="drafts">
                 <button id="btn-search" class="btn btn-primary" type="submit">Search</button>
             </form>
             
@@ -25,7 +24,7 @@
             <!-- Search posts form -->
             <form class="custom-height-form" action="{% url 'search_posts' %}" method="POST">
                 {% csrf_token %}
-                <input type="text" id="search_posts" class="search-mobile col-md-8 col-sm-8 col-7 col-lg-8" name="posts">
+                <input type="text" id="search_posts" value="{{ search_text }}" class="search-mobile col-md-8 col-sm-8 col-7 col-lg-8" name="posts">
                 <button id="btn-search" class="btn btn-primary" type="submit">Search</button>
             </form>
             

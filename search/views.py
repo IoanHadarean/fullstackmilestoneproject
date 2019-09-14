@@ -23,19 +23,19 @@ def search_posts(request):
         search_text = ''
 
     if len(search_text) == 1:
-        search_text = search_text.strip().split()
+        cleaned_search_text = search_text.strip().split()
         query_set = reduce(operator.__or__, [(Q(title__istartswith=word) |
                                               Q(created_date__icontains=word)) &
-                                             Q(published_date__isnull=False) for word in search_text],
+                                             Q(published_date__isnull=False) for word in cleaned_search_text if len(word) > 1],
                            (Q(title__istartswith=search_text) |
                             Q(created_date__icontains=search_text)) &
                            Q(published_date__isnull=False))
     else:
-        search_text = search_text.strip().split()
+        cleaned_search_text = search_text.strip().split()
         query_set = reduce(operator.__or__, [(Q(title__istartswith=word) |
                                               Q(title__icontains=word) |
                                               Q(created_date__icontains=word)) &
-                                             Q(published_date__isnull=False) for word in search_text],
+                                             Q(published_date__isnull=False) for word in cleaned_search_text if len(word) > 1],
                            (Q(title__istartswith=search_text) |
                             Q(title__icontains=search_text) |
                             Q(created_date__icontains=search_text)) &
@@ -68,19 +68,19 @@ def posts_results(request, search_text):
     if request.method == "POST":
 
         if len(search_text) == 1:
-            search_text = search_text.strip().split()
+            cleaned_search_text = search_text.strip().split()
             query_set = reduce(operator.__or__, [(Q(title__istartswith=word) |
                                                   Q(created_date__icontains=word)) &
-                                                 Q(published_date__isnull=False) for word in search_text],
+                                                 Q(published_date__isnull=False) for word in cleaned_search_text if len(word) > 1],
                                (Q(title__istartswith=search_text) |
                                 Q(created_date__icontains=search_text)) &
                                Q(published_date__isnull=False))
         else:
-            search_text = search_text.strip().split()
+            cleaned_search_text = search_text.strip().split()
             query_set = reduce(operator.__or__, [(Q(title__istartswith=word) |
                                                   Q(title__icontains=word) |
                                                   Q(created_date__icontains=word)) &
-                                                 Q(published_date__isnull=False) for word in search_text],
+                                                 Q(published_date__isnull=False) for word in cleaned_search_text if len(word) > 1],
                                (Q(title__istartswith=search_text) |
                                 Q(title__icontains=search_text) |
                                 Q(created_date__icontains=search_text)) &
@@ -116,19 +116,19 @@ def search_drafts(request):
         search_text = ''
 
     if len(search_text) == 1:
-            search_text = search_text.strip().split()
+            cleaned_search_text = search_text.strip().split()
             query_set = reduce(operator.__or__, [(Q(title__istartswith=word) |
                                                   Q(created_date__icontains=word)) &
-                                                 Q(published_date__isnull=True) for word in search_text],
+                                                 Q(published_date__isnull=True) for word in cleaned_search_text if len(word) > 1],
                                (Q(title__istartswith=search_text) |
                                 Q(created_date__icontains=search_text)) &
                                Q(published_date__isnull=True))
     else:
-        search_text = search_text.strip().split()
+        cleaned_search_text = search_text.strip().split()
         query_set = reduce(operator.__or__, [(Q(title__istartswith=word) |
                                               Q(title__icontains=word) |
                                               Q(created_date__icontains=word)) &
-                                             Q(published_date__isnull=True) for word in search_text],
+                                             Q(published_date__isnull=True) for word in cleaned_search_text if len(word) > 1],
                            (Q(title__istartswith=search_text) |
                             Q(title__icontains=search_text) |
                             Q(created_date__icontains=search_text)) &
@@ -163,19 +163,19 @@ def drafts_results(request, search_text):
     if request.method == "POST":
 
         if len(search_text) == 1:
-            search_text = search_text.strip().split()
+            cleaned_search_text = search_text.strip().split()
             query_set = reduce(operator.__or__, [(Q(title__istartswith=word) |
                                                   Q(created_date__icontains=word)) &
-                                                 Q(published_date__isnull=True) for word in search_text],
+                                                 Q(published_date__isnull=True) for word in cleaned_search_text if len(word) > 1],
                                (Q(title__istartswith=search_text) |
                                 Q(created_date__icontains=search_text)) &
                                Q(published_date__isnull=True))
         else:
-            search_text = search_text.strip().split()
+            cleaned_search_text = search_text.strip().split()
             query_set = reduce(operator.__or__, [(Q(title__istartswith=word) |
                                                   Q(title__icontains=word) |
                                                   Q(created_date__icontains=word)) &
-                                                 Q(published_date__isnull=True) for word in search_text],
+                                                 Q(published_date__isnull=True) for word in cleaned_search_text if len(word) > 1],
                                (Q(title__istartswith=search_text) |
                                 Q(title__icontains=search_text) |
                                 Q(created_date__icontains=search_text)) &
@@ -210,19 +210,19 @@ def search_products(request):
         search_text = ''
 
     if len(search_text) == 1:
-        search_text = search_text.strip().split()
+        cleaned_search_text = search_text.strip().split()
         query_set = reduce(operator.__or__, [Q(title__istartswith=word) |
                                              Q(price__iexact=word) |
-                                             Q(discount_price__iexact=word) for word in search_text],
+                                             Q(discount_price__iexact=word) for word in cleaned_search_text if len(word) > 1],
                            Q(title__istartswith=search_text) |
                            Q(price__iexact=search_text) |
                            Q(discount_price__iexact=search_text))
     else:
-        search_text = search_text.strip().split()
+        cleaned_search_text= search_text.strip().split()
         query_set = reduce(operator.__or__, [Q(title__istartswith=word) |
                                              Q(title__icontains=word) |
                                              Q(price__iexact=word) |
-                                             Q(discount_price__iexact=word) for word in search_text],
+                                             Q(discount_price__iexact=word) for word in cleaned_search_text if len(word) > 1],
                           Q(title__istartswith=search_text) |
                           Q(title__icontains=search_text) |
                           Q(price__iexact=search_text) |
@@ -255,19 +255,19 @@ def products_results(request, search_text):
     if request.method == "POST":
 
         if len(search_text) == 1:
-            search_text = search_text.strip().split()
+            cleaned_search_text = search_text.strip().split()
             query_set = reduce(operator.__or__, [Q(title__istartswith=word) |
                                                  Q(price__iexact=word) |
-                                                 Q(discount_price__iexact=word) for word in search_text],
+                                                 Q(discount_price__iexact=word) for word in cleaned_search_text if len(word) > 1],
                                Q(title__istartswith=search_text) |
                                Q(price__iexact=search_text) |
                                Q(discount_price__iexact=search_text))
         else:
-            search_text = search_text.strip().split()
+            cleaned_search_text = search_text.strip().split()
             query_set = reduce(operator.__or__, [Q(title__istartswith=word) |
                                                  Q(title__icontains=word) |
                                                  Q(price__iexact=word) |
-                                                 Q(discount_price__iexact=word) for word in search_text],
+                                                 Q(discount_price__iexact=word) for word in cleaned_search_text if len(word) > 1],
                                Q(title__istartswith=search_text) |
                                Q(title__icontains=search_text) |
                                Q(price__iexact=search_text) |
