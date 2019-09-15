@@ -23,7 +23,7 @@
           <div class="p-4">
 
             <div class="mb-3">
-              <a href="{% url 'filter_by_dresses' %}">
+              <a href="{% url 'filter_by_tags' category=item.category %}">
                 <span class="badge badge-pill {{ item.get_label_display }}-color">{{ item.get_category_display }}</span>
               </a>
             </div>

@@ -60,7 +60,7 @@ function getProductResults() {
                 // Colors
                 var white = '#ffffff';
                 var black = '#000000';
-                var rockBlue = '#929fba';
+                var eastBay = '#45526e';
 
 
                 // Modify the search ul background Color to white
@@ -94,7 +94,7 @@ function getProductResults() {
 
                         // Add mouse enter and mouse out event listeners for li and link
                         li.addEventListener('mouseenter', function() {
-                            li.style.backgroundColor = rockBlue;
+                            li.style.backgroundColor = eastBay;
                             linkTag.style.color = 'white';
                         });
 
@@ -104,7 +104,7 @@ function getProductResults() {
                         });
 
                         linkTag.addEventListener('mouseenter', function() {
-                            li.style.backgroundColor = rockBlue;
+                            li.style.backgroundColor = eastBay;
                             linkTag.style.color = white;
                         });
 
@@ -137,7 +137,7 @@ function getProductResults() {
 
                     // Add mouse enter and mouse out event listeners for li
                     li.addEventListener('mouseenter', function() {
-                        li.style.backgroundColor = rockBlue;
+                        li.style.backgroundColor = eastBay;
                     });
 
                     li.addEventListener('mouseout', function() {

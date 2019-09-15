@@ -75,6 +75,12 @@ class Item(models.Model):
             img.thumbnail(output_size)
             img.save(self.image.name)
 
+    def get_choices(self):
+        category_choices = []
+        for category in CATEGORY_CHOICES:
+            category_choices.append(category[1])
+        return category_choices
+
 
 class OrderItem(models.Model):
     """

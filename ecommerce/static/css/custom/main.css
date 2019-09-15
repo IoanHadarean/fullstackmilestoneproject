@@ -227,6 +227,10 @@ ul {
   color: #2bbbad;
 }
 
+#btn-search {
+  background-color: #45526e !important;
+}
+
 #total-likes {
   margin-top: 0.5rem;
 }

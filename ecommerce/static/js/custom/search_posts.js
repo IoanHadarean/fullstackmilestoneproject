@@ -7,7 +7,7 @@ var searchTypeAhead = document.getElementById('search-typeahead');
 
 // Colors
 var white = '#ffffff';
-var royalBlue = '#4285f4';
+var eastBay = '#45526e';
 var black = '#000000';
 
 // Add event listeners
@@ -98,7 +98,7 @@ function getPostsResults() {
 
                         // Add mouse enter and mouse out event listeners for li and link
                         li.addEventListener('mouseenter', function() {
-                            li.style.backgroundColor = royalBlue;
+                            li.style.backgroundColor = eastBay;
                             linkTag.style.color = white;
                         });
 
@@ -108,7 +108,7 @@ function getPostsResults() {
                         });
 
                         linkTag.addEventListener('mouseenter', function() {
-                            li.style.backgroundColor = royalBlue;
+                            li.style.backgroundColor = eastBay;
                             linkTag.style.color = white;
                         });
 
@@ -142,7 +142,7 @@ function getPostsResults() {
 
                     // Add mouse enter and mouse out event listeners for li
                     li.addEventListener('mouseenter', function() {
-                        li.style.backgroundColor = royalBlue;
+                        li.style.backgroundColor = eastBay;
                     });
 
                     li.addEventListener('mouseout', function() {
@@ -225,7 +225,7 @@ function getDraftsResults() {
 
                         // Add mouse enter and mouse out event listeners for li and link
                         li.addEventListener('mouseenter', function() {
-                            li.style.backgroundColor = royalBlue;
+                            li.style.backgroundColor = eastBay;
                             linkTag.style.color = white;
                         });
 
@@ -235,7 +235,7 @@ function getDraftsResults() {
                         });
 
                         linkTag.addEventListener('mouseenter', function() {
-                            li.style.backgroundColor = royalBlue;
+                            li.style.backgroundColor = eastBay;
                             linkTag.style.color = white;
                         });
 
@@ -265,7 +265,7 @@ function getDraftsResults() {
 
                     // Add mouse enter and mouse out event listeners for li
                     li.addEventListener('mouseenter', function() {
-                        li.style.backgroundColor = royalBlue;
+                        li.style.backgroundColor = eastBay;
                     });
 
                     li.addEventListener('mouseout', function() {

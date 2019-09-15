@@ -25,37 +25,11 @@
                 <span class="sr-only">(current)</span>
               </a>
         </li>
-        <li class="nav-item">
-          <a class="nav-link nav-filter" href="{% url 'filter_by_dresses' %}">Dresses</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link nav-filter" href="{% url 'filter_by_shoes' %}">Shoes</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link nav-filter" href="{% url 'filter_by_suits' %}">Suits</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link nav-filter" href="{% url 'filter_by_veils' %}">Veils</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link nav-filter" href="{% url 'filter_by_rings' %}">Rings</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link nav-filter" href="{% url 'filter_by_flowers' %}">Flowers</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link nav-filter" href="{% url 'filter_by_hair_accessories' %}">Hair Accessories</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link nav-filter" href="{% url 'filter_by_purses' %}">Purses</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link nav-filter" href="{% url 'filter_by_shirts' %}">Shirts</a>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link nav-filter" href="{% url 'filter_by_belts' %}">Belts</a>
-        </li>
-      </ul>
+        {% for category in object_list.0.get_choices %}
+          <li class="nav-item">
+            <a class="nav-link nav-filter" href="{% url 'filter_by_tags' category=category %}">{{ category }}</a>
+          </li>
+        {% endfor %}
 
       <form class="form-inline" action="{% url 'search_products' %}" method="POST">
         {% csrf_token %}

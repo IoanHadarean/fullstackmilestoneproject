@@ -121,56 +121,6 @@ class SearchAppViewsTest(TestCase):
         response = self.client.post('/shoppingcart/products_results/s/')
         self.assertJSONEqual(str(response.content, encoding='utf8'), [{'Shirt': 'random-slug'}])
 
-    """Test filter products by dresses"""
-    def test_filter_by_dresses(self):
-        response = self.client.post('/shoppingcart/filter/dresses/')
-        self.assertTemplateUsed(response, 'shoppingcart/home.html')
-
-    """Test filter products by shoes"""
-    def test_filter_by_shoes(self):
-        response = self.client.post('/shoppingcart/filter/shoes/')
-        self.assertTemplateUsed(response, 'shoppingcart/home.html')
-
-    """Test filter products by suits"""
-    def test_filter_by_suits(self):
-        response = self.client.post('/shoppingcart/filter/suits/')
-        self.assertTemplateUsed(response, 'shoppingcart/home.html')
-
-    """Test filter products by veils"""
-    def test_filter_by_veils(self):
-        response = self.client.post('/shoppingcart/filter/veils/')
-        self.assertTemplateUsed(response, 'shoppingcart/home.html')
-
-    """Test filter products by rings"""
-    def test_filter_by_rings(self):
-        response = self.client.post('/shoppingcart/filter/rings/')
-        self.assertTemplateUsed(response, 'shoppingcart/home.html')
-
-    """Test filter products by flowers"""
-    def test_filter_by_flowers(self):
-        response = self.client.post('/shoppingcart/filter/flowers/')
-        self.assertTemplateUsed(response, 'shoppingcart/home.html')
-
-    """Test filter products by hair accessories"""
-    def test_filter_by_hair_accessories(self):
-        response = self.client.post('/shoppingcart/filter/hair_accessories/')
-        self.assertTemplateUsed(response, 'shoppingcart/home.html')
-
-    """Test filter products by shirts"""
-    def test_filter_by_shirts(self):
-        response = self.client.post('/shoppingcart/filter/shirts/')
-        self.assertTemplateUsed(response, 'shoppingcart/home.html')
-
-    """Test filter products by purses"""
-    def test_filter_by_purses(self):
-        response = self.client.post('/shoppingcart/filter/purses/')
-        self.assertTemplateUsed(response, 'shoppingcart/home.html')
-
-    """Test filter products by belts"""
-    def test_filter_by_belts(self):
-        response = self.client.post('/shoppingcart/filter/belts/')
-        self.assertTemplateUsed(response, 'shoppingcart/home.html')
-
     """Test filter products by tags"""
     def test_filter_by_tags(self):
         response = self.client.post('/shoppingcart/filter_by_tags/belts/')
