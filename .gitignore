@@ -5,6 +5,7 @@ __pycache__/
 env.py
 /.c9/
 **/*.jpg
+**/*.jpeg
 /coverage.data
 /coverage/
 htmlcov/ecommerce_env_py.html
