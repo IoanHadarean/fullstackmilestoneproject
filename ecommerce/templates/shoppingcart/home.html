@@ -103,7 +103,7 @@
   </section>
 
   <!-- Pagination for search and filters -->
-  {% if 'search_products/' in request.path or 'filter/' in request.path %} {% if object_list.has_other_pages %}
+  {% if 'search_products/' in request.path or 'filter_by_tags/' in request.path %} {% if object_list.has_other_pages %}
   <nav class="d-flex justify-content-center wow fadeIn">
     <ul class="pagination pg-blue">
 

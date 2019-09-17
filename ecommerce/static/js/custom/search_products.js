@@ -138,10 +138,12 @@ function getProductResults() {
                     // Add mouse enter and mouse out event listeners for li
                     li.addEventListener('mouseenter', function() {
                         li.style.backgroundColor = eastBay;
+                        li.style.color = white;
                     });
 
                     li.addEventListener('mouseout', function() {
                         li.style.backgroundColor = white;
+                        li.style.color = black;
                     });
 
                     // Append li to search results
