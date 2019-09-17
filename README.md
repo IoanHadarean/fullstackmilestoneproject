@@ -318,10 +318,15 @@ The website has limited support for Internet Explorer and Safari.
 the testing coverage of each app. The `coverage` module was installed by typing `pip install coverage` in the terminal.
 Each Django app was tested individually using the command  `coverage run --source=app-name manage.py test app-name` and the report was
 done with the command `coverage report`. In order to get the HTML templates with the results the following command was issued `coverage html`.
-There are `141` written automated tests for the entire project, `17` for the `accounts` app, `5` for the `contacts` app, `9` for the `charts` app,
+There are `141` written automated tests for the entire project, `17` for the `accounts` app, `5` for the `contact` app, `9` for the `charts` app,
 `33` for the `forum` app, `17` for the `search` app and `60` for the `shoppingcart` app. (See below the coverage report for each app)
 
-<img src="/ecommerce/static/img/coverage_report_shoppingcart.png" alt="coverage-report-shoppingcart" border="0">
+    <img src="/ecommerce/static/img/coverage_report_accounts.png" alt="coverage-report-shoppingcart" border="0">
+    <img src="/ecommerce/static/img/coverage_report_contact.png" alt="coverage-report-contact" border="0">
+    <img src="/ecommerce/static/img/coverage_report_charts.png" alt="coverage-report-charts" border="0">
+    <img src="/ecommerce/static/img/coverage_report_forum.png" alt="coverage-report-forum" border="0">
+    <img src="/ecommerce/static/img/coverage_report_search.png" alt="coverage-report-search" border="0">
+    <img src="/ecommerce/static/img/coverage_report_shoppingcart.png" alt="coverage-report-shoppingcart" border="0">
 
 6. Tested the Python code for [PEP8](https://pypi.org/project/pep8/) standards and solved numerous issues regarding
 beautifying the code. There were a number of errors related to the length of the lines that were ignored because they 
