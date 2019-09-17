@@ -73,6 +73,11 @@ def registration(request):
                     'Wedding planner',
                     """
                     Thank you for registering to our website!
+                    As a way of gratitude, we are offering you 
+                    some unique discount coupons that you can use
+                    when purchasing a product on our website: WEDDING_FIESTA,
+                    WEDDING and WEDDING_2019. Please use them as soon as possible
+                    as they have a limited number of usages.
                     Feel free to explore our range of products!
                     Your username is : {}""".format(request.user.username),
                     'weddingplanner@email.com',

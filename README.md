@@ -4,20 +4,17 @@
 
 ### Overview
 
-Relish is a website that is designed for people who love cooking and would like to experience new things out. It has a clear and straight
-forward design that does not get in the way for people who want to access the website. It allows users to register to the website and create 
-an account by following a defensive design approach (users can not register to the website if they do not meet the checks criteria). Relish is what the name 
-reflects, a cooking website, meaning it contains a lot of valuable information in terms of the author, cuisine, allergens, course, ingredients of a certain recipe, 
-instructions, cooking time and preparation time, servings and calories. On top of that, users can also get some interesting facts about recipe statistics in an 
-interactive way. The statistics have been contructed in an easily digestible way, so that website end-users can easily read the graphs and assess the information 
-immediately. Relish is a web page designed with pashion, that also incorporates useful functionalities. Not only does it allows end-users to like/dislike recipes,
-but it also enables them to add and edit their own recipes. This practice is widely used in a lot of cooking (and not only) websites on the Internet because the consumers
-feel like they can contribute as well to the creation of the website. One can definitely argue that user recipes can't be added to the database recipes,
-which is true. However, the website is contructed in such a way that more and more functionalities can be added along the way so, in the future,
-a lot more functionalities will be added too. Relish has been designed in such a way that users can easily navigate through the website. One example
-of this is allowing users to be redirected back to the page they were visiting upon login or register. The security of the end-users matters, therefore 
-a functionality for loggin them out after one hour of inactivity has been implemented. It is also worth mentioning that users also get logged out of their
-accounts if he/she would use different devices to prevent fraudulent activity. The website can be viewed [here](https://relish-cookbook.herokuapp.com/recipes?limit=6&offset=0).
+Wedding Planner is an easy to use and simple website that can help you plan the perfect wedding. The website design is clean and does not hinder accessibility in any way. Anyone can choose 
+from the wide range of wedding products offered such as dresses, shoes, suits and so on and so forth. Not only does the website allow users to register and login to the website, 
+but it also incorporates functionalities such as a shopping cart for purchasing products and a forum for customers to share their impressions about the website. Charts have been used as a
+marketing technique to assess how many orders and sales were done in the last 3 days and the last 3 months. Furthermore, users can contact the support team (admin) in case of technical issues
+They can also get the money back if they are not happy with their purchases by submitting a refund request with the reference code that they get by email when buying a product. Users can search
+for products/posts and can also filter them by category/user. In addition, they can edit and add images to their profiles as well as publish and edit their own posts (posts are saved as drafts in the
+first instance and they can be published afterwards). The website offers an easy to use like and comment system where customers can toggle the replies visibility. Last but not least, pagination has been 
+implemented to improve navigation throughout the website. In case users forget their password, Django comes in with an easy to use reset password functionality. Wedding Planner also has a responsive implementation
+due to the fact that users can access it on all types of platforms, such as mobile, tablet and desktop/PC. The main strength of the website comes from its powerful and useful checkout and payment system that allows 
+users to save their shipping/billing addresses and cards for their next purchases. Another crucial factor for the business is the provision of discount coupons for new registering clients. Please check out our website at 
+[https://e-commerce-web-app.herokuapp.com](https://e-commerce-web-app.herokuapp.com) and register soon as our coupons have a limited number of usages.
 
 
 ### Wireframes
@@ -183,23 +180,49 @@ and imports were kept in case of further uses.
 * Added timeout after an hour for a logged in user.
 
 ### User Stories
-* A user can register to the website with an username and password.
+* A user can register to the website with an username, email and password.
 * A user can login to the website.
 * A user can logout from the website.
-* A user can edit his/her own profile and add a picture to his/her profile.
-* A user can add a recipe to his/her profile.
-* A user can edit/delete his/her own recipes.
-* A user can cancel adding/editing/deleting his/her own recipes.
-* A user can navigate to the statistics page.
-* A user can search recipes based on full-text search.
-* A user can filter recipes based on certain criteria (allergen, cuisine, course).
-* A user can go back to all recipes after filtering/searching recipes.
-* A user can navigate to the recipes page and use the left and right arrows to navigate
-through all the recipes.
-* A user can view the details of a recipe.
-* A user can like/dislike a recipe.
-* A user can rate a recipe.
-* A user can edit the rating in case he/she already rated the recipe.
+* A user can request a password reset.
+* A user can choose a new password for his/her account.
+* A user can edit his/her username and email and add a picture to his/her profile.
+* A user can access the contact us page and send an enquiry using the contact form.
+* A user can access the refund page and send a refund request.
+* A user can access the charts for viewing orders and sales in the last 3 months and last 3 days.
+* A user can search for posts, view posts and navigate through them using the pagination.
+* A user can access posts directly from the search typeahead.
+* A user can add a post (saved in drafts first) and go back to all posts.
+* A user can access his/her own drafts.
+* A user can publish a post and add a comment to a post (comments have to be approved
+* by the admin first).
+* A user can reply to other people's comments.
+* A user can view/hide replies for a comment.
+* A user can edit and delete his own posts and comments/replies.
+* A user can like/dislike other peoples' posts.
+* A user can view the title, text and published date of a post.
+* A user can view all the products on the home page and navigate through them.
+* A user can search products and filter them by category.
+* A user can access products directly from the typeahead.
+* A user can view the details of a product and access products with the same category
+* from the details view.
+* A user can add/remove a product from cart.
+* A user can update a product quantity in the cart.
+* A user can view the details of an order in the order summary and continue shopping.
+* A user can navigate to the checkout page from the order summary and go back to order summary
+* from checkout.
+* A user can add a discount coupon for an order.
+* A user can not use a discount coupon more than once.
+* A user can not use a discount coupon for orders with the amount less of equal to the value
+* of the coupon.
+* A user can add a shipping/billing address for an order and save it as default/update it.
+* A user can use a default shipping/billing address if there is one.
+* A user can navigate to the payment page and back to checkout from the payment page.
+* A user can pay using a new card or with the default card if there is one.
+* A user can save a card for future purchases.
+* A user can set the new default card for future purchases.
+* A user can remove a card from the saved cards and update the card details.
+* Besides the in-built Django admin features, an admin can approve/disapprove a user's comment,
+set the refund status as `accepted` and the order status as `being delivered` or `received`.
 
 
 ### Features Left To Implement
@@ -317,15 +340,20 @@ The website has limited support for Internet Explorer and Safari.
 5. Added automated unit tests for models, views, forms and apps for each Django-app and used the `coverage` Python module to assess
 the testing coverage of each app. The `coverage` module was installed by typing `pip install coverage` in the terminal.
 Each Django app was tested individually using the command  `coverage run --source=app-name manage.py test app-name` and the report was
-done with the command `coverage report`. In order to get the HTML templates with the results the following command was issued `coverage html`.
+done with the command `coverage report`. In order to get the HTML templates with the results the following command was issued: `coverage html`.
 There are `141` written automated tests for the entire project, `17` for the `accounts` app, `5` for the `contact` app, `9` for the `charts` app,
 `33` for the `forum` app, `17` for the `search` app and `60` for the `shoppingcart` app. (See below the coverage report for each app)
 
     <img src="/ecommerce/static/img/coverage_report_accounts.png" alt="coverage-report-shoppingcart" border="0">
+    
     <img src="/ecommerce/static/img/coverage_report_contact.png" alt="coverage-report-contact" border="0">
+    
     <img src="/ecommerce/static/img/coverage_report_charts.png" alt="coverage-report-charts" border="0">
+    
     <img src="/ecommerce/static/img/coverage_report_forum.png" alt="coverage-report-forum" border="0">
+    
     <img src="/ecommerce/static/img/coverage_report_search.png" alt="coverage-report-search" border="0">
+    
     <img src="/ecommerce/static/img/coverage_report_shoppingcart.png" alt="coverage-report-shoppingcart" border="0">
 
 6. Tested the Python code for [PEP8](https://pypi.org/project/pep8/) standards and solved numerous issues regarding

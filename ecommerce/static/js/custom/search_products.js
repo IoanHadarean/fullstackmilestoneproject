@@ -60,7 +60,7 @@ function getProductResults() {
                 // Colors
                 var white = '#ffffff';
                 var black = '#000000';
-                var eastBay = '#45526e';
+                var lightGrey = '#F5F5F5';
 
 
                 // Modify the search ul background Color to white
@@ -94,23 +94,19 @@ function getProductResults() {
 
                         // Add mouse enter and mouse out event listeners for li and link
                         li.addEventListener('mouseenter', function() {
-                            li.style.backgroundColor = eastBay;
-                            linkTag.style.color = 'white';
+                            li.style.backgroundColor = lightGrey;
                         });
 
                         li.addEventListener('mouseout', function() {
                             li.style.backgroundColor = white;
-                            linkTag.style.color = black;
                         });
 
                         linkTag.addEventListener('mouseenter', function() {
-                            li.style.backgroundColor = eastBay;
-                            linkTag.style.color = white;
+                            li.style.backgroundColor = lightGrey;
                         });
 
                         linkTag.addEventListener('mouseout', function() {
                             li.style.backgroundColor = white;
-                            linkTag.style.color = black;
                         });
 
                         // Append title as text node to link
@@ -137,13 +133,11 @@ function getProductResults() {
 
                     // Add mouse enter and mouse out event listeners for li
                     li.addEventListener('mouseenter', function() {
-                        li.style.backgroundColor = eastBay;
-                        li.style.color = white;
+                        li.style.backgroundColor = lightGrey;
                     });
 
                     li.addEventListener('mouseout', function() {
                         li.style.backgroundColor = white;
-                        li.style.color = black;
                     });
 
                     // Append li to search results

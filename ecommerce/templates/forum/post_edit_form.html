@@ -9,8 +9,8 @@
     <form class="post-form" method="POST">
         {% csrf_token %}
         {{form.as_p}}
-        <button type="submit" class="save btn btn-default">Save Post</button>
-        <button type="button" class="save btn back-button">Back To Post</button>
+        <button type="button" class="save btn back-button btn-primary">Back To Forum</button>
+        <button type="submit" class="save btn btn-warning">Save Post</button>
     </form>
 {% endblock %}
 
