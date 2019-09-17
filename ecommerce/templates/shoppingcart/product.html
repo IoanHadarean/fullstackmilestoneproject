@@ -13,7 +13,7 @@
         
         <!--Grid column-->
         <div class="col-md-6 mb-4">
-          <img src="{{ item.image.url }}" class="img-fluid" alt="product-image">
+          <img src="{{ item.image.url }}" class="img-fluid product-image" alt="product-image">
         </div>
 
         <!--Grid column-->
@@ -71,14 +71,14 @@
 
         <!--Card-->
         <div class="card">
-
-          <!--Card image-->
-          <div class="view overlay">
-            <img src="{{ item.image.url }}" class="card-img-top" alt="product-image">
-            <a href="{{ item.get_absolute_url }}">
-              <div class="mask rgba-white-slight"></div>
-            </a>
-          </div>
+        
+            <!--Card image-->
+            <div class="view overlay">
+              <img src="{{ item.image.url }}" class="card-img-top" alt="product-image">
+              <a href="{{ item.get_absolute_url }}">
+                <div class="mask rgba-white-slight"></div>
+              </a>
+            </div>
 
           <!--Card content-->
           <div class="card-body text-center">

@@ -13,8 +13,8 @@ for products/posts and can also filter them by category/user. In addition, they 
 first instance and they can be published afterwards). The website offers an easy to use like and comment system where customers can toggle the replies visibility. Last but not least, pagination has been 
 implemented to improve navigation throughout the website. In case users forget their password, Django comes in with an easy to use reset password functionality. Wedding Planner also has a responsive implementation
 due to the fact that users can access it on all types of platforms, such as mobile, tablet and desktop/PC. The main strength of the website comes from its powerful and useful checkout and payment system that allows 
-users to save their shipping/billing addresses and cards for their next purchases. Another crucial factor for the business is the provision of discount coupons for new registering clients. Please check out our website at 
-[https://e-commerce-web-app.herokuapp.com](https://e-commerce-web-app.herokuapp.com) and register soon as our coupons have a limited number of usages.
+users to save their shipping/billing addresses and cards for their next purchases. Another crucial factor for the business is the provision of discount coupons for new registering clients. Please check out the 
+website at [https://e-commerce-web-app.herokuapp.com](https://e-commerce-web-app.herokuapp.com) and register soon as coupons have a limited number of usages.
 
 
 ### Wireframes

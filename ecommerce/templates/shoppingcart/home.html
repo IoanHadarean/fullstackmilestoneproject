@@ -63,38 +63,43 @@
 
         <!--Card-->
         <div class="card">
-
-          <!--Card image-->
-          <div class="view overlay">
-            <img src="{{ item.image.url }}" class="card-img-top" alt="product-image">
-            <a href="{{ item.get_absolute_url }}">
-              <div class="mask rgba-white-slight"></div>
-            </a>
+        
+          <div class="front">
+            <!--Card image-->
+            <div class="view overlay">
+              <img src="{{ item.image.url }}" class="card-img-top" alt="product-image">
+            </div>
           </div>
-
+          
+          <div class="back">
+              <a href="{{ item.get_add_to_cart_url }}" class="btn btn-primary btn-md my-0 p">Add to cart
+                <i class="fas fa-shopping-cart ml-1"></i>
+              </a>
+              <a href="{{ item.get_remove_from_cart_url }}" class="btn btn-danger btn-md my-0 p">Remove from cart
+              </a>
+          </div>
+  
           <!--Card content-->
-          <div class="card-body text-center">
-            <!--Category & Title-->
-            <a href="{% url 'filter_by_tags' item.category %}" class="grey-text">
-              <h5 class="badge badge-pill {{ item.get_label_display }}-color">{{ item.get_category_display }}</h5>
-            </a>
-            <h5>
-              <strong>
-                    <a href="{{ item.get_absolute_url }}" class="dark-grey-text">{{ item.title|title }}
-                    </a>
-                  </strong>
-            </h5>
-            <h4 class="font-weight-bold blue-text">
-              {% if item.discount_price %}
-              <span class="mr-1">
-                  <del>£{{ item.price|floatformat }}</del>
-                </span>
-              <span>£{{ item.get_discount_price|floatformat }}</span> {% else %}
-              <span>£{{ item.price|floatformat }}</span> {% endif %}
-            </h4>
-          </div>
+            <div class="card-body text-center">
+              <!--Category & Title-->
+              <a href="{% url 'filter_by_tags' item.category %}" class="grey-text">
+                <h5 class="badge badge-pill {{ item.get_label_display }}-color">{{ item.get_category_display }}</h5>
+              </a>
+              <h5>
+                <strong>
+                  <a href="{{ item.get_absolute_url }}" class="dark-grey-text">{{ item.title|title }}</a>
+                </strong>
+              </h5>
+              <h4 class="font-weight-bold blue-text">
+                {% if item.discount_price %}
+                <span class="mr-1">
+                    <del>£{{ item.price|floatformat }}</del>
+                  </span>
+                <span>£{{ item.get_discount_price|floatformat }}</span> {% else %}
+                <span>£{{ item.price|floatformat }}</span> {% endif %}
+              </h4>
+            </div>
         </div>
-
       </div>
       {% endfor %}
 
