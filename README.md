@@ -227,70 +227,45 @@ set the refund status as `accepted` and the order status as `being delivered` or
 
 ### Features Left To Implement
 
-1. A thing can be added to the website is a functionality for saving progress when the user tries to add a recipe.
-2. Another functionality that can be implemented is to allow the admin to approve user recipes in order to add them
-to the database recipes.
-3. Website design can be improved and CSS fixes can also be made.
-4. Pages on screen resizing should look much better, but since the project focused more on functionalities, this aspect was
-neglected. 
-5. The Python code could be better structured with the help of classes.
-6. A comments section (that also contains likes and dislikes) can be added to each recipe so users can post their opinions.
-7. A chat could be added so that users could interact with each other.
-8. A remember me functionality can be added for login, as well as reset password.
-
+1. A subscribe to our email newsletter functionality.
+2. Another functionality that can be implemented is for the admin to approve/disapprove posts.
+3. The shopping cart app could be split into several more apps.
+4. A subscription type could be implemented for registered users.
+5. The search for posts and products could be slightly improved.
 
 
 ## Bugs Fixed
 
-* Fixed footer span alignment issues.
-* Needed to import create_logger from flask.loggings since app.logger.info was not working and the inline
-errors would not display for the form helpers.
-* Fixed welcome message and styled login and logout buttons flickering bug by adding a hidden class 
-to html and then removing it on load. This was an issue related to the fact that the HTML needed to be hidden
-before the random message would actually show up on the page.
-* Fixed bug with pagination (pagination buttons added even if the number of results exceeded the total number
-of recipes) by checking if the offset + limit is less than the total number of recipes.
-* Added fix for footer positioning (in the middle of the page) when searching and filtering recipes by adding a custom
-`vh100` class for the footer, setting the min-height to `100vh`.
-* Fixed overflow for recipe section.
-* Implemented fix for bug with likes/dislikes by adding liked and unliked flags for each recipe, so that users could not like 
-or dislike a recipe more than once.
-* Fixed bug with edit rating text, which actually needed to be inserted into the database before the user would
-click on the rate button.
-* Added fix for view recipe bug when the user was not in session.
-* Fixed image path bug on profile (caused by `urandom` module) by replacing "/" from the random string with "|".
-* Implemented fix for bug with rate text changing for each user after one user already rated a specific recipe.
-* Fixed bug for pagination when filtering and searching recipes. This was accomplished with some checks in the
-[recipes](/app/templates/recipes.html)  and [search_recipes](/app/templates/search_recipes.html) and by revising the 
-pagination logic in the filter and search routes.
-* Fixed bug with local time not being shown, converted date from `datetime.utcnow()` to local string using JavaScript.
-* Implemented fix for broken image links by adding a custom image on error for the recipe images and profile image.
-* Fixed bug with clear and add icons when removing an ingredient or instruction. Needed to find the parent of the
-button when the button was clicked and the parent.parent of the icon when the icon was clicked.
-* Added fix for global MySQL cursor not being closed in the profile route.
-* Added fix for search results on active filtering by performing debouncing for the AJAX requests. Also aborted the null requests.
-* Fixed flash of original content (FOOC) when trying to remove the first ingredient and instruction from the add and edit
-recipe forms by disabling the remove button. It is to be agreed that the fix could have been better since the alerts timeout is 
-slightly too fast. jQuery could have been used to prevent it, but only vanilla JS was used for the project.
-* Fixed delete recipe bug caused by the ID of the recipe.
-* Fixed security flaws caused by accessing user specific urls even if the user is not logged in.
-* Fixed rating bug caused by not initialising the rating of a recipe to 0.
-* Fixed bug with cancel update modal not firing up.
-* Fixed average rating bug caused by the instance count of ratings for a certain recipe that also included `0`.
-* Fixed bug with likes (dislikes would not go down by 1 after liking a recipe and likes would not go up by 1 after disliking
-a recipe). The approach was to use two separate spans for likes and dislikes and to toggle the number of likes and dislikes.
-The only condition was for likes and dislikes to be greater than or equal to 0.
-* Fixed localStorage bug not being cleared by adding sessionStorage (this was also fixed with the JavaScript utility,
-but it turned out that sessionStorage is a much better solution, at least for the scope of this project; it is to be 
-mentioned that for the next improvements on the website, localStorage will be used, hence why the utility was not deleted).\
-Note for the persons that will look at the website in more depth or the assessors of the project:
-There is a bug/inconsistency in the website that I am totally aware of. When adding new inputs and deleting
-them, an extra input is added on page refresh, even if the first input (the one persisted through HTML) was deleted. 
-For solving this inconsistency/bug, the approach is to just use one input for adding recipes, and then append the 
-deletion icon to each added input.
-Additional Note: even if the creator of the website is going to get marked down for this aspect, he believes it was 
-worth mentioning, and since he tries to be critical about himself, it was the right choice to make.
-
+* Fixed bug with registration route misspelling.
+* Fixed bug with footer aligned in the middle of the page and posts CSS positioning.
+* Fixed bug with profile not being automatically created when the user was registered
+with a try/except block when the user profile did not exist.
+* Fixed bug with media path not being correctly configured.
+* Fixed bug with drafts not being shown for a user and added login required so the route
+could not be accessed when the user would be logged out.
+* Fixed bug with item quantity going below 0 in the shopping cart.
+* Fixed bug with coupon typo that prevented the coupon from being added to an order.
+* Fixed bug with total item price not being correctly calculated with the discount coupon.
+* Fixed bug with cart item count in case there are no items and bug with item quantity when adding the same
+item to the cart.
+* Fixed bug with all authors being shown on the dropdown by overwriting the `__init__` function for the `PostForm`
+class. (Note: In later releases, the author was no longer shown)
+* Fixed bug with pagination not being shown for searching posts and products.
+* Fixed bug with charts info not being shown if there were no orders/sales.
+* Fixed default image for profile by providing a static image for the user profile 
+if there were no saved images.
+* Fixed bug with active class not being changed throughout the navbar products category filter.
+* Fixed bug with default shipping address/billing address not being overwritten if there already was a default one
+and the user wanted to set a new shipping/billing address as default.
+* Fixed saved payment cards so each user could not store more than 3 payment cards.
+* Fixed loader/spinner for charts and the speed of getting the charts data by optimizing the for loops used.
+* Fixed width/height for default user profile image.
+* Fixed bug with coupon that could be added multiple times for the same order.
+* Fixed bug with typeahead search results being shown even if there was no search word by debouncing it.
+* Fixed overflow for pagination on mobile and search typeahead overflow.
+* Fixed bug with search for products and posts (users could only get results for typing a sentence separated
+by spaces with words of length 1 (`a b e f`) or length more than 1(`du tr dress`), but not the combination of the
+two (`a tr ring`).
 
 ## Tech Used
 
@@ -425,7 +400,9 @@ Note: the debug is by default set to FALSE, but you can set it to TRUE to allow 
 ## Credits
 
 I would like to thank all the people who gave constructive feedback on the website and took their time to test it,
-including my mentor Moosa Hassan.
+including my mentor Moosa Hassan. Special thanks goes to [JustDjango](https://www.youtube.com/channel/UCRM1gWNTDx0SHIqUJygD-kQ?&ab_channel=JustDjango)
+for the Youtube tutorials that I used for some of the features in the `shoppingcart` app and to [Corey Schafer](https://www.youtube.com/user/schafer5)
+for the Youtube tutorials that I used for `pagination` and `user profile`.
 
 ### Media and Information
 
@@ -437,6 +414,9 @@ The `images` and `information` used on this site were obtained from:
 5. [Bloominous](https://bloominous.com)
 6. [Nordstrom](https://shop.nordstrom.com)
 
+The `ecommerce` Bootstrap template used for the `shoppingcart` app was obtained from [MD-Bootstrap](https://mdbootstrap.com/freebies/jquery/e-commerce/).
+
 The `domains` used for whitelisting in [Sendgrid](https://sendgrid.com) were obtained from
 [AWeber](https://blog.aweber.com/email-deliverability/top-10-email-domains-of-2006.htm).
 
+License Agreement: This project is for educational purposes only no content is intended for public use.

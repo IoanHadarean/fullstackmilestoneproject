@@ -160,10 +160,12 @@ ul {
   backface-visibility: hidden;
   transform: rotateX(0deg);
   transition: 0.5s;
+  visibility: hidden;
 }
 
 .card:hover .back {
   transform: rotateX(0deg);
+  visibility: visible;
 }
 
 .product-image:hover {
