@@ -22,13 +22,13 @@ website at [https://e-commerce-web-app.herokuapp.com](https://e-commerce-web-app
 Note: the wireframes are not entirely accurate, they only give a rough estimate on how the website will look on mobile/tablet/desktop.
 
 #### Wireframe for desktop
-<img src="/app/static/wireframes/relish-cookbook-desktop.png" alt="Relish-CookBook" border="0">
+<img src="/ecommerce/static/wireframes/home-page-desktop.png" alt="home-page-desktop" border="0">
 
 #### Wireframe for tablet
-<img src="/app/static/wireframes/relish-cookbook-tablet.png" alt="Relish-CookBook" border="0">
+<img src="/ecommerce/static/wireframes/home-page-tablet.png" alt="home-page-tablet" border="0">
 
 #### Wireframe for mobile
-<img src="/app/static/wireframes/relish-cookbook-mobile.png" alt="Relish-CookBook" border="0">
+<img src="/ecommerce/static/wireframes/home-page-mobile.png" alt="home-page-mobile" border="0">
 
 ### Existing Features and Functionalities
 The application consists of 14 HTML templates, 15 SCSS files, 17 JavaScript files, 1 utility written in JavaScript
@@ -266,6 +266,7 @@ and the user wanted to set a new shipping/billing address as default.
 * Fixed bug with search for products and posts (users could only get results for typing a sentence separated
 by spaces with words of length 1 (`a b e f`) or length more than 1(`du tr dress`), but not the combination of the
 two (`a tr ring`).
+
 
 ## Tech Used
 
