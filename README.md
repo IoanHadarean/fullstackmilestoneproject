@@ -31,153 +31,20 @@ Note: the wireframes are not entirely accurate, they only give a rough estimate 
 <img src="/ecommerce/static/wireframes/home-page-mobile.png" alt="home-page-mobile" border="0">
 
 ### Existing Features and Functionalities
-The application consists of 14 HTML templates, 15 SCSS files, 17 JavaScript files, 1 utility written in JavaScript
-and 6 Python files, including the env file which stores the environment variables and connection strings plus
-[test_app.py](/app/tests/test_app.py), which incorporates automated tests used to measure the performance and behaviour of the project.
-The main [__init__.py](/app/__init__.py) file includes a collection of all the functions and routes that have been used for
-creating the logic of the website and it also stores the connections to MongoDB and MySQL. The [graphs.py](/app/models/graphs.py) file incorporates 
-the functions that have been used for the creation of the statistics graphs designed with [Pygal](http://pygal.org/en/stable/), which is a Python library for designing
-and creating charts. The [forms.py](/app/models/forms.py) includes the forms that have been used for registration and editing the user profiles.
-Last but not least, the [values.py](/app/models/values.py) file was used for modifying the point dimensions from 
-the statistics page. Finally, the [helpers.py](/app/models/helpers.py) file has been used for returning the dictionary that has been used
-for filtering recipes and also includes the scripts that have been used for the statistics charts. Even though the initial plan was not to use any CSS frameworks, 
-it turned out that it would take too much time to make everything from scratch. Hence the project focused more on functionalities and it reflects a steep learning curve.
-Note: the [run.py](../master/run.py) has been later added for running the application and to ensure a better project structure.
+The application consists of 6 Django apps that were created using the command `django-admin startapp app_name`:
+`accounts`, `contact`,  `charts`, `forum`, `search`, `shoppingcart`. All the static and media files used in the app
+were collected on [AWS S3](https://aws.amazon.com/s3/) using the command `python3 manage.py collectstatic`. All the emails
+are sent using [Sendgrid](https://sendgrid.com) and the product payments are done using [Stripe](https://stripe.com).
 
 
-#### Website Pages
-1. [Register Page](/app/templates/register.html)
-* Consists of a form that allows the user to create an account.
-* It's constructed following a defensive design, each of the fields in the register form
-will produce an inline error if the required checks are not met (For example: Passwords do not match).
-* If the username or the email are already in the database, the user can not register to the website.
-* When clicking register, the user is automatically redirected to the profile page, without having to go through login.
-* The form fields are required, so an empty form can not be submitted.
-* The form checks are achieved using a class named RegisterForm, created with the help of 
-[Flask-WTF](https://flask-wtf.readthedocs.io/en/stable/) and [WTForms](https://wtforms.readthedocs.io/en/stable/).
-2. [Login Page](/app/templates/login.html)
-* Has a form that allows the user to login to the website.
-* It's constructed following a defensive design, each of the fields in the login form
-will produce an error if the required checks are not met( if the user entered the wrong password
-the error will be invalid login, if the user does not exist in the database the error shown will be user not found).
-* The form fields are required, so an empty form can not be submitted.
-* When clicking login, the user is automatically redirected to the profile page.
-3. [Profile Page](/app/templates/profile.html)
-* Allows the logged in user to update his/her profile.
-* The update profile form is constructed following a defensive design, each of the fields 
-in the login form will produce an error if the required checks are not met, except the about me field
-(For example: if the user does not choose a png, jpeg or jpg file, an error is rendered below the input file field).
-* The form checks are achieved using a class named EditForm, created with the help of 
-[Flask-WTF](https://flask-wtf.readthedocs.io/en/stable/) and [WTForms](https://wtforms.readthedocs.io/en/stable/).
-* The local date is shown on each user's profile.
-* When clicking the update button, the user's profile is automatically updated, provided there are no errors.
-* When clicking the cancel button, a modal opens asking the user for confirmation (if the user clicks reset progress
-the form is resetted, if the user clicks continue he/she can proceed to updating his/her profile).
-* The recipe cards for each user are shown on the profile page.
-* If the user clicks on the edit recipe button she/he will be redirected to the edit page for that specific recipe.
-* Whenever a user clicks on the delete button, a modal pops up asking the user for confirmation(if the user clicks delete
-the recipe is deleted from the database and his/her profile, if the user clicks cancel the delete modal closes).
-* If the user clicks on the recipe image or the view recipe button, she/he will be redirected to the view
-for that specific recipe.
-4. [Recipes Page](/app/templates/recipes.html)
-* It has a form with three selects, that allow the user to filter recipes by a combination of three: 
-allergens, cuisines and courses.
-* The filter results are shown on active input, the recipe container is cleared when the select options change.
-* When clicking the filter recipes button, the corresponding recipes are shown according to the filters,
-as well as the number of results. 
-* Users can go back to all recipes at any time by clicking the all recipes button.
-* Users can navigate through the recipes with the help of pagination, which is implemented
-both for all recipes and the filtered recipes (6 recipes per pagination page).
-* The filter button is disabled, unless the user clicks on a filter.
-* The header welcome message changes every time the user accesses or refreshes the page.
-* If a user clicks on the image of the recipe or the view recipe button, he/she is redirected to the
-view for that specific recipe.
-* All users can view the recipes page and filter through recipes, regardless if they are logged in or not.
-5. [Search Page](/app/templates/search_recipes.html)
-* It has an input that allows users to search recipes when clicking on the search button.
-* The number of results are shown on active input, as well as after clicking the search button.
-* All users can view the search page and search recipes, logged in or not.
-* The search button is disabled if the input is empty or if the input has less than three characters.
-The input is also trimmed of white spaces.
-* The recipe container is cleared on input change.
-* Users can go back to all recipes at any time by clicking the all recipes button.
-* Pagination is implemented for the search recipes results (6 recipes per pagination page).
-* If a user clicks on the image of the recipe or the view recipe button, he/she is redirected to the
-view for that specific recipe.
-6. [Statistics Page](/app/templates/statistics.html)
-* Has three graphs that have been constructed with the help of functions existent in the 
-[models.py](/app/helpers.py) Python file.
-* The first graph (dot chart) shows the recipe statistics ingredients per cuisine. That is explained by how
-many recipes from a specific cuisine contain egg, milk, sugar, flour, salt, water, garlic, vanilla or butter
-(For example: 2 out of 4 French recipes contain egg).
-* The second graph (solid gauge chart) illustrates the recipes allergens statistics in % (For example: the garlic
-allergen is found in 41.66% of the recipes).
-* The third graph (gauge chart) displays the average calories by cuisine (For example: the Greek cuisine has an average
-of 599 calories).
-* Logged in or not, all users can look at the statistics page.
-7. [Database Recipe Page](/app/templates/get_recipe.html)
-* When a user who is not logged in clicks on the like/dislike or rate recipe button, a modal pops up which requires the user
-to login if he/she has an account or to register if he/she does not have an account.
-* The user is redirected back to the recipe he was viewing after registering/logging in to the website.
-* The user can view all the details of the recipe and he can also click on the add recipe button to add her/his own recipes.
-* A logged in user can like and dislike a recipe the following way: when she/he clicks on the like button, the number of likes
-goes up by 1 and dislikes go down by 1 if they are not 0, when he/she clicks on the dislike button the number of dislikes goes up by 1
-and the number of likes goes down by 1 if the number is not 0 (Note: the page does not refresh on like/dislike due to AJAX).
-* When a logged in user tries to click on the rate button, a modal pops up that allows the user to fill the number of stars 
-according to his/her rating. Upon clicking on save and continue, the rating is saved and the average rating for that recipe is 
-updated.
-* When a logged in user tries to rate a recipe, the initial rate text is set to `Rate Recipe`, but if the user tries to update
-his previous rating, the rate text changes to `Edit Rating` (Note: this happens for every recipe a logged in user tries to rate).
-8. [User Recipe Page](/app/templates/get_user_recipe.html)
-* The user can view all the details of his/her recipe and he can also click on the add recipe button to add another recipe.
-* If the user clicks on the edit recipe button she/he will be redirected to the edit page for her/his specific recipe.
-* Whenever a user clicks on the delete button, a modal pops up asking the user for confirmation (if the user clicks delete
-the recipe is deleted from the database and his/her profile and he/she is redirected to the profile page, if the user clicks cancel 
-the delete modal closes).
-9. [Add Recipe Page](/app/templates/add_recipe.html)
-* It has a form that allows a user to fill the recipe name, add ingredients and instructions, as well as choose the cuisine,
-course and allergen for the recipe that they are trying to add.
-* The user can add instructions and ingredients by clicking on the add icon and can delete ingredients and instructions
-by clicking on the clear icon.
-* The user has the ingredient and instruction fields preserved through sessionStorage. (Note: this feature needs to be 
-modified by allowing the user to save his progress, so the form values are saved as well).
-* Whenever a user clicks on the reset progress button, a modal pops up asking for confirmation (if the user clicks on the reset
-progress button, the form is cleared, if the user clicks on the continue button, she/he can proceed to add her/his recipe).
-* A recipe needs to have at least one instruction and at least one ingredient, so when a user clicks on the first ingredient or 
-the first instruction an alert is shown at the top of the page.
-* It's constructed following a defensive design, each of the fields in the add recipe form will produce an error if the required 
-checks are not met (the recipe name needs to have at least 6 characters, an ingredient must have at least 3 characters, an
-instruction must have at least 4 characters, all the form fields are required).
-* When the user clicks on the add recipe button, the recipe is added in the user recipes collection and the user is redirected to
-his/her profile, where he/she can see the recipe.
-10. [Edit Recipe Page](/app/templates/edit_recipe.html)
-* It's constructed following a defensive design, each of the fields in the edit recipe form will produce an error if the required 
-checks are not met(the recipe name needs to have at least 6 characters, an ingredient must have at least 3 characters, an
-instruction must have at least 4 characters, all the form fields are required).
-* A recipe needs to have at least one instruction and at least one ingredient, so when a user clicks on the first ingredient or 
-the first instruction an alert is shown at the top of the page.
-* When a user clicks on the cancel button, he/she is redirected to the view for that recipe (The redirect could have been to the
-previous page, but this allows the user to find out that his/her modifications were recorded to the database).
-* The user has the ingredient and instruction fields preserved through sessionStorage. (Note: for the edit recipe form, the inputs
-are not preserved when he/she leaves the edit page. An extra feature could be added so each user could save his/her edit progress).
-11. [Error 404 Page](/app/templates/error404.html)
-* Comprises a custom page not found error.
-12. [Error 405 Page](/app/templates/error405.html)
-* Comprises a custom method not allowed error.
-13. [Error 500 Page](/app/templates/error500.html)
-* Comprises a custom server error.
-14. [Base Template](/app/templates/base.html)
-* Includes all the scripts and css files that have been used for the construction of the other templates.
-(Note: 6 additional helper templates have been used for creating the cancel and delete modals, navbar, as well as
-inline errors and alerts. They can be found [here](/app/templates/includes)).
-15. Additional Notes
-* When clicking logout, the user is automatically removed from the session.
-* Added longer set timeout for alerts for improved user experience.
-* Paranoid was added to automatically log out the user on a different device. (See notes in 
-[app.py](../master/app/__init__.py))
-* Added SSL certificates and Flask-SSLify that turned out to be no longer needed, but the packages
-and imports were kept in case of further uses.
-* Added timeout after an hour for a logged in user.
+#### Django Apps
+1. [Accounts App](/accounts)
+2. [Contact App](/contact)
+3. [Charts App](/charts)
+4. [Forum App](/forum)
+5. [Search App](/searc)
+6. [Shoppingcart App](/shoppingcart)
+
 
 ### User Stories
 * A user can register to the website with an username, email and password.
@@ -316,7 +183,10 @@ The website has limited support for Internet Explorer and Safari.
 5. Added automated unit tests for models, views, forms and apps for each Django-app and used the `coverage` Python module to assess
 the testing coverage of each app. The `coverage` module was installed by typing `pip install coverage` in the terminal.
 Each Django app was tested individually using the command  `coverage run --source=app-name manage.py test app-name` and the report was
-done with the command `coverage report`. In order to get the HTML templates with the results the following command was issued: `coverage html`.
+done with the command `coverage report`. In order to get the HTML templates (auto generated folder `htmlcov`) with the results the following 
+command was issued: `coverage html`.
+Note: needed to change all the API and secret keys in the env file and add `htmlcov` to gitignore since htmlcov actually stored an
+HTML template for the env file as well.
 There are `141` written automated tests for the entire project, `17` for the `accounts` app, `5` for the `contact` app, `9` for the `charts` app,
 `33` for the `forum` app, `17` for the `search` app and `60` for the `shoppingcart` app. (See below the coverage report for each app)
 
