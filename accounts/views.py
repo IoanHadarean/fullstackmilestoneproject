@@ -95,8 +95,8 @@ def registration(request):
 @login_required
 def profile(request):
     """
-    Return the user's profile page. Allows editing the profile
-    for a user.
+    Return the user's profile page. Allows editing the profile,
+    as well as the login details for a user.
     """
 
     if request.method == 'POST':

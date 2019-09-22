@@ -7,7 +7,7 @@
 Wedding Planner is an easy to use and simple website that can help you plan the perfect wedding. The website design is clean and does not hinder accessibility in any way. Anyone can choose 
 from the wide range of wedding products offered such as dresses, shoes, suits and so on and so forth. Not only does the website allow users to register and login to the website, 
 but it also incorporates functionalities such as a shopping cart for purchasing products and a forum for customers to share their impressions about the website. Charts have been used as a
-marketing technique to assess how many orders and sales were done in the last 3 days and the last 3 months. Furthermore, users can contact the support team (admin) in case of technical issues
+marketing technique to assess how many orders and sales were done in the last 3 days and the last 3 months. Furthermore, users can contact the support team (admin) in case of technical issues.
 They can also get the money back if they are not happy with their purchases by submitting a refund request with the reference code that they get by email when buying a product. Users can search
 for products/posts and can also filter them by category/user. In addition, they can edit and add images to their profiles as well as publish and edit their own posts (posts are saved as drafts in the
 first instance and they can be published afterwards). The website offers an easy to use like and comment system where customers can toggle the replies visibility. Last but not least, pagination has been 
@@ -32,18 +32,60 @@ Note: the wireframes are not entirely accurate, they only give a rough estimate 
 
 ### Existing Features and Functionalities
 The application consists of 6 Django apps that were created using the command `django-admin startapp app_name`:
-`accounts`, `contact`,  `charts`, `forum`, `search`, `shoppingcart`. All the static and media files used in the app
-were collected on [AWS S3](https://aws.amazon.com/s3/) using the command `python3 manage.py collectstatic`. All the emails
-are sent using [Sendgrid](https://sendgrid.com) and the product payments are done using [Stripe](https://stripe.com).
+`accounts`, `contact`,  `charts`, `forum`, `search` and `shoppingcart`. All the static and media files used in the app
+were collected on [AWS S3](https://aws.amazon.com/s3/) using the command `python3 manage.py collectstatic`.
+The migrations for the project were done using the commands `python3 manage.py makemigrations` and `python3 manage.py migrate`.
+All the emails are sent using [Sendgrid](https://sendgrid.com) and the product payments are done using [Stripe](https://stripe.com).
 
 
 #### Django Apps
 1. [Accounts App](/accounts)
-2. [Contact App](/contact)
-3. [Charts App](/charts)
+   The accounts app allows the user to register to the website with a username and password. When the successful registration is
+   done, the registered user will receive an email with a thank you message and some discount coupons that can be used for purchasing
+   products on the website. Furthermore, a profile is created automatically for a registered user using a `django signal`. After registration,
+   a user can login to the website with the username and the password that they used for registration. If a user forgets the password, he/she can reset it
+   by clicking the forgot password button and inputting the email used for registration. Afterwards, the user receives an email with a link that they can use
+   for choosing a new password. The app also includes a `backends` file with an `EmailAuth` class that can be used to replace the normal authentication system (username and password)
+   so that a user can login with the email and password. With regards to models, the app has a profile model with an overwritten `save` function that is 
+   used for resizing the image. Last but not least, a user can update the profile using the profile update form on the profile page (the login details are 
+   also updated). Finally, the app has a logout functionality for logging the users out of their accounts.
+2. [Charts App](/charts)
+   The charts app gathers all the data necessary for displaying the orders and sales on the charts page. All the data (orders and sales) is gathered by
+   iterating over all the finished orders (`ordered=True`) and checking if the orders/sales are in the last 3 days and last 3 months. Firstly, the day and
+   month orders/sales are gathered as a key/value pair in a dictionary with the name of the day/month and the number of orders/sales in that day with duplicate keys.
+   Afterwards, the daily/monthly orders and sales are updated for each day/month so that there are no more duplicate keys. The total of orders and sales is also added as a key/value
+   pair in a dictionary. The charts data (in the form of lists containing dictionaries) is then sent to the `get data` function that returns it as a `JsonResponse`.
+   Note: if the orders or sales for a specific day or month are empty, the number of orders/sales gets set to `0`. For each of the lists in the `JsonResponse`, a chart is created using
+   [Chart.js](https://www.chartjs.org) (before the data is fully loaded, a spinner is shown on the charts page through JavaScript).
+3. [Contact App](/contact)
+   The contact app has a contact form that is used for sending a user related enquiry to the support team(admin). When the contact form gets submitted, the user gets notified
+   by email that the enquiry was received successfully. The user can also navigate to the home page using the `BACK TO HOME` button. Note: when the user is logged in, there is no
+   email field for the contact form as the email is automatically retrieved from the `request` object. The email field is only shown when the user is logged out.
 4. [Forum App](/forum)
-5. [Search App](/searc)
+   The forum app adds up to the project functionalities by permitting users to access all the posts and to filter posts by a certain user. A logged in user can add a new post on the
+   website, that is added to the user drafts and can be later be published (and therefore added to all posts). Logged in users can edit/delete their own drafts or published posts. Also, the forum app
+   enhances the user experience by authorizing logged in users to like/dislike another person's post and to add comments for a post, as well as replies for a comment. However, the admin has to
+   approve a comment before it is shown on the website. In addition, logged in customers can edit/delete their own comments and replies and can toggle the replies view/hide functionality. Not only do users have
+   the ability to filter posts by users, they can also search through all the posts and through their drafts. Persons who are not logged in on the website can search for posts, however they can not access their 
+   drafts, like/dislike a post or view and add comments for a post, as well as edit/delete their own posts or comments. The like/dislike functionality is enhanced through AJAX so the page does not refresh
+   when liking/disliking a post. When adding/editing a post or a comment/reply, a user can go back to the post at any time by pressing the `BACK TO POST` button.
+5. [Search App](/search)
+   The search app helps in improving the user experience by allowing customers to filter the products by category (tags). Furthermore, it enhances the search functionality by retrieving the first 
+   7 results for posts/drafts/products that match the search text and return them as a `JsonResponse` that is used with AJAX to display the titles in a search typeahead. With the help of the typeahead, 
+   users can access posts/drafts/products directly from the search list.
 6. [Shoppingcart App](/shoppingcart)
+   The shopping cart app allows users to add products in the cart, update the quantity of existing ones and remove items from cart. Customers can access their order summary which includes the total price
+   and the details of each of the items in the cart, as well as the quantity. From the order summary view, customers can either continue shopping or go to the checkout page. On the checkout page, users
+   have to input their shipping/billing address for the order and they also have the option to save the addresses for later purchases. If customers already got a default shipping/billing address, they can use it for the
+   checkout. Furthermore, customers can set a new shipping/billing address as default and in that case the old address is updated in the database. From the checkout view, users can either go back to the order summary
+   or to the payment page. On the checkout page, customers can add a discount coupon for an order, which can not be used more than twice for the same user and has a limited number of usages. In addition, a discount code
+   can not be used for items with the value less than or equal to the value of the coupon. On the payment page, customers have to fill out the card details for purchasing a product and they can also save it for later 
+   purchases (a user can save up to 3 cards). The first card that a user saves is set automatically to the default payment method and next time a product is purchased he/she can use the default card. From the payment view,
+   users can go back to the checkout page, where the state of the checkboxes is saved for the order (for example, if a user checks the save shipping address as default, when the user gets back to the checkout page the save
+   shipping address as default is checked). It is also worth mentioning that from the payment page, customers can also remove a saved card or set a new card as default using the `Remove Card` and `Save As Default` buttons. Last
+   but not least, users can update their card details by clicking the `Update Card Details` button (users get redirected to a new view where they can fill in the card update form). When customers submit the payment and the payment
+   is successful, they receive a success notification email that contains the reference code for an order. This reference code can be used for submitting a refund request in case customers are not happy with their purchase.
+   Note: when the user is logged in, there is no email field for the refund form as the email is automatically retrieved from the `request` object. The email field is only shown when the user is logged out.
 
 
 ### User Stories
