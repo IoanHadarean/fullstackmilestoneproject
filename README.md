@@ -39,7 +39,7 @@ All the emails are sent using [Sendgrid](https://sendgrid.com) and the product p
 
 
 #### Django Apps
-1. [Accounts App](/accounts)
+1. [Accounts App](/accounts)\
    The accounts app allows the user to register to the website with a username and password. When the successful registration is
    done, the registered user will receive an email with a thank you message and some discount coupons that can be used for purchasing
    products on the website. Furthermore, a profile is created automatically for a registered user using a `django signal`. After registration,
@@ -49,7 +49,7 @@ All the emails are sent using [Sendgrid](https://sendgrid.com) and the product p
    so that a user can login with the email and password. With regards to models, the app has a profile model with an overwritten `save` function that is 
    used for resizing the image. Last but not least, a user can update the profile using the profile update form on the profile page (the login details are 
    also updated). Finally, the app has a logout functionality for logging the users out of their accounts.
-2. [Charts App](/charts)
+2. [Charts App](/charts)\
    The charts app gathers all the data necessary for displaying the orders and sales on the charts page. All the data (orders and sales) is gathered by
    iterating over all the finished orders (`ordered=True`) and checking if the orders/sales are in the last 3 days and last 3 months. Firstly, the day and
    month orders/sales are gathered as a key/value pair in a dictionary with the name of the day/month and the number of orders/sales in that day with duplicate keys.
@@ -57,11 +57,11 @@ All the emails are sent using [Sendgrid](https://sendgrid.com) and the product p
    pair in a dictionary. The charts data (in the form of lists containing dictionaries) is then sent to the `get data` function that returns it as a `JsonResponse`.
    If the orders or sales for a specific day or month are empty, the number of orders/sales gets set to `0`. For each of the lists in the `JsonResponse`, a chart is created using
    [Chart.js](https://www.chartjs.org) (before the data is fully loaded, a spinner is shown on the charts page through JavaScript).
-3. [Contact App](/contact)
+3. [Contact App](/contact)\
    The contact app has a contact form that is used for sending a user related enquiry to the support team(admin). When the contact form gets submitted, the user gets notified
    by email that the enquiry was received successfully. The user can also navigate to the home page using the `BACK TO HOME` button. When the user is logged in, there is no
    email field for the contact form as the email is automatically retrieved from the `request` object. The email field is only shown when the user is logged out.
-4. [Forum App](/forum)
+4. [Forum App](/forum)\
    The forum app adds up to the project functionalities by permitting users to access all the posts and to filter posts by a certain user. A logged in user can add a new post on the
    website, that is added to the user drafts and can be later be published (and therefore added to all posts). Logged in users can edit/delete their own drafts or published posts. Also, the forum app
    enhances the user experience by authorizing logged in users to like/dislike another person's post and to add comments for a post, as well as replies for a comment. However, the admin has to
@@ -69,11 +69,11 @@ All the emails are sent using [Sendgrid](https://sendgrid.com) and the product p
    the ability to filter posts by users, they can also search through all the posts and through their drafts. Persons who are not logged in on the website can search for posts, however they can not access their 
    drafts, like/dislike a post or view and add comments for a post, as well as edit/delete their own posts or comments. The like/dislike functionality is enhanced through AJAX so the page does not refresh
    when liking/disliking a post. When adding/editing a post or a comment/reply, a user can go back to the post at any time by pressing the `BACK TO POST` button.
-5. [Search App](/search)
+5. [Search App](/search)\
    The search app helps in improving the user experience by allowing customers to filter the products by category (tags). Furthermore, it enhances the search functionality by retrieving the first 
    7 results for posts/drafts/products that match the search text and return them as a `JsonResponse` that is used with AJAX to display the titles in a search typeahead. With the help of the typeahead, 
    users can access posts/drafts/products directly from the search list.
-6. [Shoppingcart App](/shoppingcart)
+6. [Shoppingcart App](/shoppingcart)\
    The shopping cart app allows users to add products in the cart, update the quantity of existing ones and remove items from cart. Customers can access their order summary which includes the total price
    and the details of each of the items in the cart, as well as the quantity. From the order summary view, customers can either continue shopping or go to the checkout page. On the checkout page, users
    have to input their shipping/billing address for the order and they also have the option to save the addresses for later purchases. If customers already got a default shipping/billing address, they can use it for the
@@ -84,7 +84,7 @@ All the emails are sent using [Sendgrid](https://sendgrid.com) and the product p
    users can go back to the checkout page, where the state of the checkboxes is saved for the order (for example, if a user checks the save shipping address as default, when the user gets back to the checkout page the save
    shipping address as default is checked). It is also worth mentioning that from the payment page, customers can also remove a saved card or set a new card as default using the `Remove Card` and `Save As Default` buttons. Last
    but not least, users can update their card details by clicking the `Update Card Details` button (users get redirected to a new view where they can fill in the card update form). From the update card view, customers can get back
-   the payment page using the `BACK TO PAYMENT` button. When customers submit the payment and the payment is successful, they receive a success notification email that contains the reference code for an order. This reference code 
+   to the payment page using the `BACK TO PAYMENT` button. When customers submit the payment and the payment is successful, they receive a success notification email that contains the reference code for an order. This reference code 
    can be used for submitting a refund request in case customers are not happy with their purchase. When the user is logged in, there is no email field for the refund form as the email is automatically retrieved from the `request` object.
    The email field is only shown when the user is logged out.
 
@@ -131,6 +131,7 @@ All the emails are sent using [Sendgrid](https://sendgrid.com) and the product p
 * A user can save a card for future purchases.
 * A user can set the new default card for future purchases.
 * A user can remove a card from the saved cards and update the card details.
+* A user can go back to the payment page from the update card page.
 * Besides the in-built Django admin features, an admin can approve/disapprove a user's comment,
 set the refund status as `accepted` and the order status as `being delivered` or `received`.
 
@@ -149,10 +150,10 @@ set the refund status as `accepted` and the order status as `being delivered` or
 * Fixed bug with registration route misspelling.
 * Fixed bug with footer aligned in the middle of the page and posts CSS positioning.
 * Fixed bug with profile not being automatically created when the user was registered
-with a try/except block when the user profile did not exist.
+(with a try/except block when the user profile does not exist).
 * Fixed bug with media path not being correctly configured.
 * Fixed bug with drafts not being shown for a user and added login required so the route
-could not be accessed when the user would be logged out.
+can not be accessed when the user is logged out.
 * Fixed bug with item quantity going below 0 in the shopping cart.
 * Fixed bug with coupon typo that prevented the coupon from being added to an order.
 * Fixed bug with total item price not being correctly calculated with the discount coupon.
@@ -214,10 +215,10 @@ two (`a tr ring`).
 and [The W3 Markup Validation Service](https://validator.w3.org/). There were no CSS errors, there were 6 CSS warnings related to font-smoothing and transition 
 unknown vendor extensions. There were 3 HTML errors and one warning found, a duplicated id `stripeBtn` due to payment form toggle and the value of the for attribute
 of the label element must be the ID of a non-hidden form control for the `private-stripe-element`.
-3. All Javascript code on the website has been tested using [JSHint](https://jshint.com/). There were no errors and 67 warnings found related to let 
-available in ES6 and Mozilla JS extensions and Functions declared within loops referencing an outer scoped variable may lead to confusing semantics.
+3. All Javascript code on the website has been tested using [JSHint](https://jshint.com/). There were no errors and 67 warnings found related to
+`let available in ES6 and Mozilla JS extensions` and `functions declared within loops referencing an outer scoped variable may lead to confusing semantics`.
 4. A lot of manual testing has been done for this project to ensure the website looks well on all devices and to ensure that the functionalities of the project are working
-correctly. Therefore, site was viewed and tested in the following browsers:
+correctly. Therefore, the site was viewed and tested in the following browsers:
 <br>    i Google Chrome
 <br>    ii Mozilla Firefox
 <br>    iii Opera
@@ -316,7 +317,9 @@ Note: the debug is by default set to FALSE, but you can set it to TRUE to allow 
 I would like to thank all the people who gave constructive feedback on the website and took their time to test it,
 including my mentor Moosa Hassan. Special thanks goes to [JustDjango](https://www.youtube.com/channel/UCRM1gWNTDx0SHIqUJygD-kQ?&ab_channel=JustDjango)
 for the Youtube tutorials that I used for some of the features in the `shoppingcart` app and to [Corey Schafer](https://www.youtube.com/user/schafer5)
-for the Youtube tutorials that I used for `pagination` and `user profile`.
+for the Youtube tutorials that I used for `pagination` and `user profile`. I would also like to thank Code Institute for the Django lessons provided in
+the course.
+
 
 ### Media and Information
 
@@ -333,4 +336,4 @@ The `ecommerce` Bootstrap template used for the `shoppingcart` app was obtained 
 The `domains` used for whitelisting in [Sendgrid](https://sendgrid.com) were obtained from
 [AWeber](https://blog.aweber.com/email-deliverability/top-10-email-domains-of-2006.htm).
 
-License Agreement: This project is for educational purposes only no content is intended for public use.
+License Agreement: This project is for educational purposes only. No content is intended for public use.
