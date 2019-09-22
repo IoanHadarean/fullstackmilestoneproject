@@ -55,11 +55,11 @@ All the emails are sent using [Sendgrid](https://sendgrid.com) and the product p
    month orders/sales are gathered as a key/value pair in a dictionary with the name of the day/month and the number of orders/sales in that day with duplicate keys.
    Afterwards, the daily/monthly orders and sales are updated for each day/month so that there are no more duplicate keys. The total of orders and sales is also added as a key/value
    pair in a dictionary. The charts data (in the form of lists containing dictionaries) is then sent to the `get data` function that returns it as a `JsonResponse`.
-   Note: if the orders or sales for a specific day or month are empty, the number of orders/sales gets set to `0`. For each of the lists in the `JsonResponse`, a chart is created using
+   If the orders or sales for a specific day or month are empty, the number of orders/sales gets set to `0`. For each of the lists in the `JsonResponse`, a chart is created using
    [Chart.js](https://www.chartjs.org) (before the data is fully loaded, a spinner is shown on the charts page through JavaScript).
 3. [Contact App](/contact)
    The contact app has a contact form that is used for sending a user related enquiry to the support team(admin). When the contact form gets submitted, the user gets notified
-   by email that the enquiry was received successfully. The user can also navigate to the home page using the `BACK TO HOME` button. Note: when the user is logged in, there is no
+   by email that the enquiry was received successfully. The user can also navigate to the home page using the `BACK TO HOME` button. When the user is logged in, there is no
    email field for the contact form as the email is automatically retrieved from the `request` object. The email field is only shown when the user is logged out.
 4. [Forum App](/forum)
    The forum app adds up to the project functionalities by permitting users to access all the posts and to filter posts by a certain user. A logged in user can add a new post on the
@@ -83,9 +83,10 @@ All the emails are sent using [Sendgrid](https://sendgrid.com) and the product p
    purchases (a user can save up to 3 cards). The first card that a user saves is set automatically to the default payment method and next time a product is purchased he/she can use the default card. From the payment view,
    users can go back to the checkout page, where the state of the checkboxes is saved for the order (for example, if a user checks the save shipping address as default, when the user gets back to the checkout page the save
    shipping address as default is checked). It is also worth mentioning that from the payment page, customers can also remove a saved card or set a new card as default using the `Remove Card` and `Save As Default` buttons. Last
-   but not least, users can update their card details by clicking the `Update Card Details` button (users get redirected to a new view where they can fill in the card update form). When customers submit the payment and the payment
-   is successful, they receive a success notification email that contains the reference code for an order. This reference code can be used for submitting a refund request in case customers are not happy with their purchase.
-   Note: when the user is logged in, there is no email field for the refund form as the email is automatically retrieved from the `request` object. The email field is only shown when the user is logged out.
+   but not least, users can update their card details by clicking the `Update Card Details` button (users get redirected to a new view where they can fill in the card update form). From the update card view, customers can get back
+   the payment page using the `BACK TO PAYMENT` button. When customers submit the payment and the payment is successful, they receive a success notification email that contains the reference code for an order. This reference code 
+   can be used for submitting a refund request in case customers are not happy with their purchase. When the user is logged in, there is no email field for the refund form as the email is automatically retrieved from the `request` object.
+   The email field is only shown when the user is logged out.
 
 
 ### User Stories
