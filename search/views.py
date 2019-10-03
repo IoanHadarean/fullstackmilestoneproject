@@ -245,6 +245,8 @@ def search_products(request):
 
     item_list = Item.objects.filter(query_set).order_by('title')
 
+    all_items = Item.objects.all()
+
     item_list_count = item_list.count()
 
     """Add pagination for search"""
@@ -255,6 +257,7 @@ def search_products(request):
     context = {
         'search_text': search_text,
         'object_list': object_list,
+        'all_items': all_items,
         'item_list_count': item_list_count
     }
 

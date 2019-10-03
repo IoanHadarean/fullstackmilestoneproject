@@ -39,6 +39,8 @@ function getProductResults() {
 
     // Get the search text from the search input
     let searchText = searchInput.value;
+    
+    console.log(searchText);
 
     // Clear the search results
     searchResults.innerHTML = '';
@@ -47,7 +49,7 @@ function getProductResults() {
     // Remove search typeahead border after results are cleared
     searchTypeAhead.style.border = 'none';
 
-    if (searchText) {
+    if (searchText && searchText.trim() != '') {
         xhr.onload = function() {
             if (this.readyState == 4 && this.status == 200) {
                 let results = JSON.parse(xhr.responseText);
