@@ -12,3 +12,4 @@ env.py
 htmlcov/ecommerce_env_py.html
 htmlcov/
 *.coverage
+.idea/
