@@ -1,7 +1,7 @@
 from .base import *
 
 import dj_database_url
-from ecommerce import env
+# from ecommerce import env
 
 # DEBUG set to False for production
 DEBUG = False
