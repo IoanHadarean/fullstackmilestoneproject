@@ -11,7 +11,10 @@ ALLOWED_HOSTS = ['30549824a1f0499e91d2634f1137317f.vfs.cloud9.us-east-1.amazonaw
                  '127.0.0.1']
 
 # PostGre SQL database for production
-DATABASES = {'default': dj_database_url.parse(os.environ.get('DATABASE_URL'))}
+DATABASE_URL = os.getenv('DATABASE_URL')
+DATABASES = {
+    'default': dj_database_url.config(),
+}
 
 # Get Sendgrid API key from environment
 SENDGRID_API_KEY = os.environ.get("SENDGRID_API_KEY")
