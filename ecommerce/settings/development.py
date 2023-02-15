@@ -4,7 +4,7 @@ from .base import *
 DEBUG = True
 
 # Allowed Hosts
-ALLOWED_HOSTS = ['30549824a1f0499e91d2634f1137317f.vfs.cloud9.us-east-1.amazonaws.com']
+ALLOWED_HOSTS = ['30549824a1f0499e91d2634f1137317f.vfs.cloud9.us-east-1.amazonaws.com', '127.0.0.1']
 
 # SQLite database for development
 DATABASES = {
